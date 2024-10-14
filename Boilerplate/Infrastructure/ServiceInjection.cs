@@ -59,7 +59,7 @@ public static class ServiceInjection
     {
         var authConfiguration = new AuthConfiguration(configuration);
 
-        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+        services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
         {
             options.SignIn.RequireConfirmedEmail = true;
             options.User.RequireUniqueEmail = true;
