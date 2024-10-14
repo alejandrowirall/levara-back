@@ -1,42 +1,47 @@
-﻿using Boilerplate.Domain.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Boilerplate.Domain.Configurations;
+using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
-using Microsoft.AspNetCore.Authentication.BearerToken;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace Boilerplate.Application.Identity.Refresh;
 
-public class RefreshCommandHandler : ICommandHandler<RefreshCommand, SignInHttpResult>
+public class RefreshCommandHandler : ICommandHandler<RefreshCommand, RefreshCommandResponse>
 {
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IOptionsMonitor<BearerTokenOptions> _bearerTokenOptions;
-    private readonly TimeProvider _timeProvider;
-    public RefreshCommandHandler(SignInManager<ApplicationUser> signInManager,
-        IOptionsMonitor<BearerTokenOptions> bearerTokenOptions,
-        TimeProvider timeProvider)
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly JwtService _jwtService;
+    private readonly IAuthConfiguration _authConfiguration;
+    public RefreshCommandHandler(UserManager<ApplicationUser> userManager,
+        JwtService jwtService,
+        IAuthConfiguration authConfiguration)
     {
-        _signInManager = signInManager;
-        _bearerTokenOptions = bearerTokenOptions;
-        _timeProvider = timeProvider;
+        _userManager = userManager;
+        _jwtService = jwtService;
+        _authConfiguration = authConfiguration;
     }
 
-    public async Task<OperationResult<SignInHttpResult>> Handle(RefreshCommand command)
+    public async Task<OperationResult<RefreshCommandResponse>> Handle(RefreshCommand command)
     {
-        var refreshTokenProtector = _bearerTokenOptions.Get(IdentityConstants.BearerScheme).RefreshTokenProtector;
-        var refreshTicket = refreshTokenProtector.Unprotect(command.RefreshToken);
+        _jwtService.GetPrincipalFromToken(command.Access_token);
 
-        // Reject the /refresh attempt with a 401 if the token expired or the security stamp validation fails
-        if (refreshTicket?.Properties?.ExpiresUtc is not { } expiresUtc ||
-            _timeProvider.GetUtcNow() >= expiresUtc ||
-            await _signInManager.ValidateSecurityStampAsync(refreshTicket.Principal) is not ApplicationUser user)
+        var principal = _jwtService.GetPrincipalFromToken(command.Access_token, validateExpiration: false);
+        var username = principal.Identity.Name;
+
+        var user = await _userManager.FindByEmailAsync(username);
+
+        if (user.RefreshToken != command.Refresh_token)
+            return OperationResult<RefreshCommandResponse>.ErrorResult(new ErrorDetails(403, "Invalid refreshToken"));
+
+        string acessToken = await _jwtService.GenerateAccessToken(user);
+
+        RefreshCommandResponse response = new()
         {
-            return OperationResult<SignInHttpResult>.ErrorResult(new ErrorDetails(401, "Reject the /refresh attempt with a 401 if the token expired or the security stamp validation fails"));
-        }
+            Access_token = acessToken,
+            Refresh_token = user.RefreshToken,
+            Token_type = "Bearer",
+            Expires_in = Convert.ToInt32(TimeSpan.FromMinutes(_authConfiguration.ExpirationMinutes).TotalSeconds)
+        };
 
-        var newPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
-        return OperationResult<SignInHttpResult>.SuccessResult(TypedResults.SignIn(newPrincipal, authenticationScheme: IdentityConstants.BearerScheme));
+        return OperationResult<RefreshCommandResponse>.SuccessResult(response);
     }
 }

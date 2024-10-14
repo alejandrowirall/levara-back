@@ -35,6 +35,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterC
         var emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
 
         var user = new ApplicationUser();
+        user.RefreshToken = Guid.NewGuid().ToString();
 
         await _userStore.SetUserNameAsync(user, command.Email, CancellationToken.None);
         await emailStore.SetEmailAsync(user, command.Email, CancellationToken.None);

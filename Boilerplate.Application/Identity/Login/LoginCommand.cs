@@ -4,7 +4,7 @@ using Boilerplate.Shared.Domain.Bus.Commands;
 
 namespace Boilerplate.Application.Identity.Login;
 
-public class LoginCommand : Command<bool>
+public class LoginCommand : Command<LoginCommandResponse>
 {
     /// <summary>
     /// The user's email address which acts as a user name.
@@ -27,8 +27,4 @@ public class LoginCommand : Command<bool>
     /// This is required for users who have enabled two-factor authentication but lost access to their <see cref="TwoFactorCode"/>.
     /// </summary>
     public string? TwoFactorRecoveryCode { get; init; }
-
-    public bool? UseCookies { get; set; }
-
-    public bool? UseSessionCookies { get; set; }
 }

@@ -3,33 +3,35 @@ using Boilerplate.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
+using Boilerplate.Domain.Configurations;
 
 namespace Boilerplate.Application.Identity.Login;
 
-public class LoginCommandHandler : ICommandHandler<LoginCommand, bool>
+public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginCommandResponse>
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly JwtService _jwtService;
+    private readonly IAuthConfiguration _authConfiguration;
     public LoginCommandHandler(SignInManager<ApplicationUser> signInManager,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        JwtService jwtService,
+        IAuthConfiguration authConfiguration)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _jwtService = jwtService;
+        _authConfiguration = authConfiguration;
     }
 
-    public async Task<OperationResult<bool>> Handle(LoginCommand command)
+    public async Task<OperationResult<LoginCommandResponse>> Handle(LoginCommand command)
     {
-        var useCookieScheme = (command.UseCookies == true) || (command.UseSessionCookies == true);
-        var isPersistent = (command.UseCookies == true) && (command.UseSessionCookies != true);
-
-        _signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
-
-        var result = await _signInManager.PasswordSignInAsync(command.Email, command.Password, isPersistent, lockoutOnFailure: true);
+        var result = await _signInManager.PasswordSignInAsync(command.Email, command.Password, false, lockoutOnFailure: true);
         if (result.RequiresTwoFactor)
         {
             if (!string.IsNullOrEmpty(command.TwoFactorCode))
             {
-                result = await _signInManager.TwoFactorAuthenticatorSignInAsync(command.TwoFactorCode, isPersistent, rememberClient: isPersistent);
+                result = await _signInManager.TwoFactorAuthenticatorSignInAsync(command.TwoFactorCode, false, rememberClient: false);
             }
             else if (!string.IsNullOrEmpty(command.TwoFactorRecoveryCode))
             {
@@ -38,13 +40,23 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, bool>
         }
 
         if (!result.Succeeded)
-            return OperationResult<bool>.ErrorResult(new ErrorDetails(401, result.ToString()));
+            return OperationResult<LoginCommandResponse>.ErrorResult(new ErrorDetails(401, result.ToString()));
 
         var user = await _userManager.FindByEmailAsync(command.Email);
         if (user == null)
-            return OperationResult<bool>.ErrorResult(new ErrorDetails(404, "User not found"));
+            return OperationResult<LoginCommandResponse>.ErrorResult(new ErrorDetails(404, "User not found"));
 
-        return OperationResult<bool>.SuccessResult(true);
+        string acessToken = await _jwtService.GenerateAccessToken(user);
+
+        LoginCommandResponse response = new ()
+        {
+            Access_token = acessToken,
+            Refresh_token = user.RefreshToken,
+            Token_type = "Bearer",
+            Expires_in = Convert.ToInt32(TimeSpan.FromMinutes(_authConfiguration.ExpirationMinutes).TotalSeconds)
+        };
+
+        return OperationResult<LoginCommandResponse>.SuccessResult(response);
 
     }
 }

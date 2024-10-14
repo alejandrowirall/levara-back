@@ -5,7 +5,6 @@ using Boilerplate.Application.Identity.Register;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Domain.Contexts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Boilerplate.Controllers
@@ -54,19 +53,23 @@ namespace Boilerplate.Controllers
             }
                 
 
-            return Ok(TypedResults.Empty);
+            return Ok(response.Result);
         }
 
         [HttpPost("refresh")]
         [AllowAnonymous]
-        public async Task<SignInHttpResult> Refresh([FromBody] RefreshCommand refreshCommand)
+        public async Task<IActionResult> Refresh([FromBody] RefreshCommand refreshCommand)
         {
             var response = await _commandBus.Dispatch(refreshCommand);
-
             if (!response.Success)
-                TypedResults.Challenge();
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error.StatusCode
+                };
+            }
 
-            return response.Result;
+            return Ok(response.Result);
         }
 
         [HttpGet("confirmEmail")]
@@ -77,6 +80,7 @@ namespace Boilerplate.Controllers
 
             return Ok(response);
         }
+
     }
 
  }

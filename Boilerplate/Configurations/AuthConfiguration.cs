@@ -5,11 +5,12 @@ namespace Boilerplate.WebApi.Configurations;
 
 public class AuthConfiguration : IAuthConfiguration
 {
-    public required string BaseAddress { get; init; }
-    public required string ConfirmEmailEndpoint { get; init; }
-    public required string JwtKey { get; init; }
-    public required string JwtIssuer { get; init; }
-    public required string JwtAudience { get; init; }
+    public string BaseAddress { get; init; }
+    public string ConfirmEmailEndpoint { get; init; }
+    public string JwtKey { get; init; }
+    public string JwtIssuer { get; init; }
+    public string JwtAudience { get; init; }
+    public int ExpirationMinutes { get; init; }
 
     public AuthConfiguration(IConfiguration configuration)
     {

@@ -13,4 +13,6 @@ public interface IAuthConfiguration
 
     public string JwtAudience { get; }
 
+    public int ExpirationMinutes { get; }
+
 }

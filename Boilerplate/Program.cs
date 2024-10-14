@@ -1,26 +1,8 @@
-using Boilerplate.Data;
-using Boilerplate.Domain.Models;
 using Boilerplate.Infrastructure;
-using Microsoft.AspNetCore.Identity;
 
 const string AllowAnyOrigin = "_allowAnyOrigin";
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-}).AddBearerToken(IdentityConstants.BearerScheme)
-  .AddIdentityCookies();
-
-builder.Services.AddIdentityCore<ApplicationUser>(options =>
-{
-    options.Stores.MaxLengthForKeys = 128;
-    options.SignIn.RequireConfirmedAccount = true;
-}).AddSignInManager()
-  .AddDefaultTokenProviders()
-  .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddCors(options =>
 {
@@ -32,8 +14,6 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
-
-builder.Services.AddAuthorization();
 
 // Add services to the container.
 
@@ -55,14 +35,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseSwagger();
-//app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
 
-app.UseCors(AllowAnyOrigin);
+app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors(AllowAnyOrigin);
 
 app.MapControllers();
 
