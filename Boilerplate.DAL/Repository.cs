@@ -1,0 +1,75 @@
+﻿using Boilerplate.Data;
+using Boilerplate.Domain.DAL;
+using Boilerplate.Domain.Models;
+using Boilerplate.Shared.Domain.Contexts;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace Boilerplate.DAL
+{
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly DbSet<TEntity> _dbSet;
+        private readonly IUserContext _userContext;
+
+        public Repository(ApplicationDbContext context, IUserContext userContext)
+        {
+            _context = context;
+            _dbSet = _context.Set<TEntity>();
+            _userContext = userContext;
+        }
+
+        public async Task<TEntity?> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> filter, int pageNumber, int pageSize)
+        {
+            return await _dbSet
+                .Where(filter)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task AddAsync(TEntity entity)
+        {
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.CreatorId = _userContext.Id;
+            entity.LastEditedDate = DateTime.UtcNow;
+            entity.LastEditorId = _userContext.Id;
+
+            await _dbSet.AddAsync(entity);
+        }
+
+        public void Update(TEntity entity)
+        {
+            entity.LastEditedDate = DateTime.UtcNow;
+            entity.LastEditorId = _userContext.Id;
+
+            _dbSet.Update(entity);
+        }
+
+        public void Delete(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null)
+        {
+            return filter == null ? await _dbSet.CountAsync() : await _dbSet.CountAsync(filter);
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null)
+        {
+            return filter == null ? await _dbSet.AnyAsync() : await _dbSet.AnyAsync(filter);
+        }
+    }
+}

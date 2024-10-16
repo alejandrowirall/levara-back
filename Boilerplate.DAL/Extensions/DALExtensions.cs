@@ -1,6 +1,7 @@
 ﻿using Boilerplate.DAL.Configuration;
 using Boilerplate.Data;
 using Boilerplate.Domain.Configurations;
+using Boilerplate.Domain.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +47,9 @@ public static class DALExtensions
     private static IServiceCollection AddDALServices(this IServiceCollection services)
     {
         services.AddScoped<IDatabaseConfiguration, DatabaseConfiguration>();
-        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
         return services;
     }
 }

@@ -11,16 +11,15 @@ public class WebUserContext : IUserContext
     {
         _httpContextAccessor = httpContextAccessor;
     }
-    public Guid Id
+    public int Id
     {
         get 
         {
             string? id = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id is null)
-                return Guid.Empty;
+                return 0;
 
-            Guid userId = Guid.Empty;
-            Guid.TryParse(id, out userId);
+            int.TryParse(id,  out int userId);
 
             return userId;
         } 

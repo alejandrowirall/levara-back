@@ -1,4 +1,5 @@
-﻿using Boilerplate.Domain.Models;
+﻿using Boilerplate.DAL.DbContext.EntityConfigurations;
+using Boilerplate.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,4 +11,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
         base(options)
     { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyModelAssemblyEntityConfigurations();
+    }
 }
