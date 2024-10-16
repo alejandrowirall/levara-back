@@ -6,7 +6,10 @@ namespace Boilerplate.Domain.DAL;
 public interface IRepository<TEntity> where TEntity : Entity
 {
     Task<TEntity?> GetByIdAsync(int id);
+    IQueryable<TEntity> GetAll();
     Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<IEnumerable<T>> ToListAsync<T>(IQueryable<T> query);
+    Task<PagedList<T>> ToListPagedAsync<T>(IQueryable<T> query, int pageNumber, int pageSize);
     Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> filter, int pageNumber, int pageSize);
     Task AddAsync(TEntity entity);
     void Update(TEntity entity);

@@ -27,9 +27,4 @@
     <ProjectReference Include="..\Shared\Boilerplate.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Owers\GetByFilter\" />
-    <Folder Include="Owers\Update\" />
-  </ItemGroup>
-
 </Project>

@@ -26,7 +26,7 @@ namespace Boilerplate.DAL.DbContext.EntityConfigurations
                    .HasForeignKey(o => o.ApplicationUserId)
                    .IsRequired();
 
-            builder.HasOne<Address>()
+            builder.HasOne(o => o.Address)
                    .WithMany()
                    .HasForeignKey(o => o.AddressId);
 

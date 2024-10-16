@@ -5,19 +5,21 @@ namespace Boilerplate.Shared.Extensions;
 
 public static class EnumExtensions
 {
-    public static List<ListModel> ToListModel<T>() where T : Enum
+    public static List<ListModel> ToListModel<T>(int? id = null) where T : Enum
     {
         return Enum.GetValues(typeof(T))
             .Cast<T>()
             .Select(e => new ListModel
             {
                 Id = Convert.ToInt32(e),
-                Text = GetEnumDescription(e)
+                Text = GetEnumDescription(e),
+                Selected = id.HasValue && Convert.ToInt32(e) == id
             })
+            .OrderBy(e => e.Id)
             .ToList();
     }
 
-    private static string GetEnumDescription<T>(T enumValue)
+    public static string GetEnumDescription<T>(T enumValue)
     {
         var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
         var attributes = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
