@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Boilerplate.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/owner")]
     [ApiController]
     public class OwnerController : ControllerBase
     {

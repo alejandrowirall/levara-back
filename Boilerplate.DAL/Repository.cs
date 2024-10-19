@@ -38,9 +38,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public async Task<PagedList<T>> ToListPagedAsync<T>(IQueryable<T> query, int pageNumber, int pageSize)
     {
-        int count = await query.Skip((pageNumber - 1) * pageSize)
-                               .Take(pageSize)
-                               .CountAsync();
+        int count = await query.CountAsync();
 
         var result = await query.Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize) 
