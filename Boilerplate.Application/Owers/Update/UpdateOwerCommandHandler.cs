@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Domain.DAL;
+using Boilerplate.Domain.DAL.Repositories;
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
@@ -8,21 +9,25 @@ namespace Boilerplate.Application.Owers.Update;
 public class UpdateOwerCommandHandler : ICommandHandler<UpdateOwerCommand, UpdateOwerCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public UpdateOwerCommandHandler(IUnitOfWork unitOfWork) 
+    private readonly IOwnerRepository _ownerRepository;
+    public UpdateOwerCommandHandler(IUnitOfWork unitOfWork,
+        IOwnerRepository ownerRepository) 
     {
         _unitOfWork = unitOfWork;
+        _ownerRepository = ownerRepository;
     }
     public async Task<OperationResult<UpdateOwerCommandResponse>> Handle(UpdateOwerCommand command)
     {
-        IRepository<Owner> ownerRepository = _unitOfWork.Repository<Owner>();
-
-        if (await ownerRepository.AnyAsync(o => o.Id == command.Id!.Value &&
+        if (await _ownerRepository.AnyAsync(o => o.Id != command.Id!.Value &&
                                                 o.IdentificationType == command.IdentificationType && 
                                                 o.Identification == command.Identification))
             return OperationResult<UpdateOwerCommandResponse>.ErrorResult(new ErrorDetails(400, "An Owner with the same Identification already exists"));
 
-        Owner? owner = await ownerRepository.GetByIdAsync(command.Id!.Value);
-        if(owner == null)
+        var ownerQuery = _ownerRepository.GetAllWithAddress()
+                                         .Where(o => o.Id == command.Id!);
+
+        Owner? owner = await _ownerRepository.FirstOrDefaultAsync(ownerQuery);
+        if (owner == null)
             return OperationResult<UpdateOwerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
         owner.Name = command.Name!;
@@ -42,7 +47,7 @@ public class UpdateOwerCommandHandler : ICommandHandler<UpdateOwerCommand, Updat
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-            await ownerRepository.AddAsync(owner);
+            _ownerRepository.Update(owner);
         });
 
         var response = new UpdateOwerCommandResponse

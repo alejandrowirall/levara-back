@@ -7,7 +7,7 @@ namespace Boilerplate.Application.Owers.GetForUpdate
     public class GetOwnerForUpdateQuery : Query<GetOwnerForUpdateQueryResponse>
     {
         [Required]
-        [Length(1, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int? Id { get; set; }
     }
 }

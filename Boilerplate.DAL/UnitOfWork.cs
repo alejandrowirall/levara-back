@@ -23,6 +23,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         return _serviceProvider.GetRequiredService<IRepository<TEntity>>();
     }
 
+    public ApplicationDbContext Context { get { return _context; } }
+
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
@@ -34,6 +36,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         try
         {
             await asyncLogic();
+            await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
         catch (Exception)

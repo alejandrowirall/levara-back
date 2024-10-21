@@ -8,7 +8,7 @@ namespace Boilerplate.Application.Owers.Update
     public class UpdateOwerCommand : Command<UpdateOwerCommandResponse>
     {
         [Required]
-        [Length(1, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int? Id {  get; set; }
         
         [Required]
@@ -48,7 +48,7 @@ namespace Boilerplate.Application.Owers.Update
         public string? Street { get; set; }
 
         [Required]
-        [Length(1, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int? Number { get; set; }
 
         public string? AdditionalLine { get; set; }

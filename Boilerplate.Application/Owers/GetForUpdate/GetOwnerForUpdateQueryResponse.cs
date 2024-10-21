@@ -7,11 +7,11 @@ namespace Boilerplate.Application.Owers.GetForUpdate;
 
 public class GetOwnerForUpdateQueryResponse
 {
-    public GetOwnerForUpdateQueryResponse(Owner owner,
+    public GetOwnerForUpdateQueryResponse(OwnerUpdateQueryResponse owner,
         List<ListModel> personTypes,
         List<ListModel> identificationTypes)
     {
-        Owner = new(owner);
+        Owner = owner;
         PersonTypes = personTypes;
         IdentificationTypes = identificationTypes;
     }
@@ -27,6 +27,7 @@ public class OwnerUpdateQueryResponse
 {
     public OwnerUpdateQueryResponse(Owner owner)
     {
+        Id = owner.Id;
         Name = owner.Name;
         Surname = owner.Surname;
         CompanyName = owner.CompanyName;

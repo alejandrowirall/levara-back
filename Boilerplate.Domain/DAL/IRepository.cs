@@ -9,6 +9,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     IQueryable<TEntity> GetAll();
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<IEnumerable<T>> ToListAsync<T>(IQueryable<T> query);
+    Task<T?> FirstOrDefaultAsync<T>(IQueryable<T> query);
     Task<PagedList<T>> ToListPagedAsync<T>(IQueryable<T> query, int pageNumber, int pageSize);
     Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> filter, int pageNumber, int pageSize);
     Task AddAsync(TEntity entity);

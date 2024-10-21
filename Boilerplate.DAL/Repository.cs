@@ -1,4 +1,4 @@
-﻿using Boilerplate.Data;
+﻿
 using Boilerplate.Domain.DAL;
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Contexts;
@@ -9,14 +9,13 @@ namespace Boilerplate.DAL;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
-    private readonly ApplicationDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
-    private readonly IUserContext _userContext;
+    protected readonly IUserContext _userContext;
 
-    public Repository(ApplicationDbContext context, IUserContext userContext)
+    public Repository(UnitOfWork unitOfWork, 
+        IUserContext userContext)
     {
-        _context = context;
-        _dbSet = _context.Set<TEntity>();
+        _dbSet = unitOfWork.Context.Set<TEntity>();
         _userContext = userContext;
     }
 
@@ -35,6 +34,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         return await query.ToListAsync();
     }
 
+    public async Task<T?> FirstOrDefaultAsync<T>(IQueryable<T> query)
+    {
+        return await query.FirstOrDefaultAsync();
+    }
 
     public async Task<PagedList<T>> ToListPagedAsync<T>(IQueryable<T> query, int pageNumber, int pageSize)
     {

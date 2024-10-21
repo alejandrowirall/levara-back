@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Domain.DAL;
+using Boilerplate.Domain.DAL.Repositories;
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
@@ -8,9 +9,12 @@ namespace Boilerplate.Application.Owers.Create;
 public class GetOwerForUpdateQueryHandler : ICommandHandler<CreateOwerCommand, CreateOwerCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public GetOwerForUpdateQueryHandler(IUnitOfWork unitOfWork) 
+    private readonly IOwnerRepository _ownerRepository;
+    public GetOwerForUpdateQueryHandler(IUnitOfWork unitOfWork,
+        IOwnerRepository ownerRepository) 
     {
         _unitOfWork = unitOfWork;
+        _ownerRepository = ownerRepository;
     }
     public async Task<OperationResult<CreateOwerCommandResponse>> Handle(CreateOwerCommand command)
     {
@@ -35,14 +39,12 @@ public class GetOwerForUpdateQueryHandler : ICommandHandler<CreateOwerCommand, C
             }
         };
 
-        IRepository<Owner> ownerRepository =  _unitOfWork.Repository<Owner>();
-
-        if (await ownerRepository.AnyAsync(o => o.IdentificationType == owner.IdentificationType && o.Identification == owner.Identification))
+        if (await _ownerRepository.AnyAsync(o => o.IdentificationType == owner.IdentificationType && o.Identification == owner.Identification))
             return OperationResult<CreateOwerCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-            await ownerRepository.AddAsync(owner);
+            await _ownerRepository.AddAsync(owner);
         });
 
         var response = new CreateOwerCommandResponse

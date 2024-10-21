@@ -1,5 +1,4 @@
-﻿
-using Boilerplate.Shared.Domain.Models;
+﻿using Boilerplate.Shared.Domain.Models;
 
 namespace Boilerplate.Application.Owers.GetForCreate;
 
@@ -11,7 +10,6 @@ public class GetOwnerForCreateQueryResponse
         PersonTypes = personTypes;
         IdentificationTypes = identificationTypes;
     }
-
     public List<ListModel> PersonTypes { get; }
 
     public List<ListModel> IdentificationTypes { get; }

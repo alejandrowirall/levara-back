@@ -44,7 +44,7 @@ namespace Boilerplate.Application.Owers.Create
         public string? Street { get; set; }
 
         [Required]
-        [Length(1, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int? Number { get; set; }
 
         public string? AdditionalLine { get; set; }

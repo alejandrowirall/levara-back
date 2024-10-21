@@ -5,6 +5,7 @@ using Boilerplate.Domain.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Boilerplate.DAL.Extensions;
 
@@ -47,8 +48,38 @@ public static class DALExtensions
     private static IServiceCollection AddDALServices(this IServiceCollection services)
     {
         services.AddScoped<IDatabaseConfiguration, DatabaseConfiguration>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<UnitOfWork>(provider => (UnitOfWork)provider.GetRequiredService<IUnitOfWork>());
+
+        services.AddRepositories();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+        var assembly = Assembly.GetExecutingAssembly();
+
+        var repositoryTypes = assembly.GetTypes()
+        .Where(t => t.IsClass && !t.IsAbstract &&
+                    t.BaseType != null &&
+                    t.BaseType.IsGenericType &&
+                    t.BaseType.GetGenericTypeDefinition() == typeof(Repository<>));
+
+        foreach (var repositoryType in repositoryTypes)
+        {
+            var interfaces = repositoryType.GetInterfaces()
+                .Where(i => !i.IsGenericType)
+                .ToList();
+
+            foreach (var interfaceType in interfaces)
+            {
+                services.AddScoped(interfaceType, repositoryType);
+            }
+        }
 
         return services;
     }
