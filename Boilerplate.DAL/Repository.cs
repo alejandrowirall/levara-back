@@ -84,7 +84,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public void Delete(TEntity entity)
     {
-        _dbSet.Remove(entity);
+        entity.LastEditedDate = DateTime.UtcNow;
+        entity.LastEditorId = _userContext.Id;
+        entity.Deleted = true;
+
+        _dbSet.Update(entity);
     }
 
     public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null)
