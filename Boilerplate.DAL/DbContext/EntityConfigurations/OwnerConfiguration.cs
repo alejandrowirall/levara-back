@@ -23,8 +23,7 @@ namespace Boilerplate.DAL.DbContext.EntityConfigurations
 
             builder.HasOne<ApplicationUser>()
                    .WithMany()
-                   .HasForeignKey(o => o.ApplicationUserId)
-                   .IsRequired();
+                   .HasForeignKey(o => o.ApplicationUserId);
 
             builder.HasOne(o => o.Address)
                    .WithMany()

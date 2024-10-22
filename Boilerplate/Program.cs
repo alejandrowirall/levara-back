@@ -1,4 +1,5 @@
 using Boilerplate.Infrastructure;
+using Boilerplate.WebApi.Infrastructure.Middlewares;
 
 const string AllowAnyOrigin = "_allowAnyOrigin";
 
@@ -42,6 +43,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors(AllowAnyOrigin);
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
