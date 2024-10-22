@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Application.Owers.Create;
+using Boilerplate.Application.Owers.Delete;
 using Boilerplate.Application.Owers.GetByGrid;
 using Boilerplate.Application.Owers.GetForCreate;
 using Boilerplate.Application.Owers.GetForUpdate;
@@ -85,6 +86,21 @@ namespace Boilerplate.WebApi.Controllers
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateOwerCommand command)
+        {
+            var response = await _commandBus.Dispatch(command);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete([FromRoute] DeleteOwerCommand command)
         {
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
