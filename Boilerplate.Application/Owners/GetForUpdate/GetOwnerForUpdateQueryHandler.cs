@@ -6,7 +6,7 @@ using Boilerplate.Shared.Domain.Bus.Queries;
 using Boilerplate.Shared.Results;
 using Boilerplate.Domain.DAL.Repositories;
 
-namespace Boilerplate.Application.Owers.GetForUpdate;
+namespace Boilerplate.Application.Owners.GetForUpdate;
 
 public class GetOwnerForUpdateQueryHandler : IQueryHandler<GetOwnerForUpdateQuery, GetOwnerForUpdateQueryResponse>
 {

@@ -4,23 +4,23 @@ using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
 
-namespace Boilerplate.Application.Owers.Delete;
+namespace Boilerplate.Application.Owners.Delete;
 
-public class DeleteOwerCommandHandler : ICommandHandler<DeleteOwerCommand, DeleteOwerCommandResponse>
+public class DeleteOwnerCommandHandler : ICommandHandler<DeleteOwnerCommand, DeleteOwnerCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOwnerRepository _ownerRepository;
-    public DeleteOwerCommandHandler(IUnitOfWork unitOfWork,
+    public DeleteOwnerCommandHandler(IUnitOfWork unitOfWork,
         IOwnerRepository ownerRepository) 
     {
         _unitOfWork = unitOfWork;
         _ownerRepository = ownerRepository;
     }
-    public async Task<OperationResult<DeleteOwerCommandResponse>> Handle(DeleteOwerCommand command)
+    public async Task<OperationResult<DeleteOwnerCommandResponse>> Handle(DeleteOwnerCommand command)
     {
         Owner? owner = await _ownerRepository.GetByIdAsync(command.Id!.Value);
         if (owner == null)
-            return OperationResult<DeleteOwerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+            return OperationResult<DeleteOwnerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
@@ -29,11 +29,11 @@ public class DeleteOwerCommandHandler : ICommandHandler<DeleteOwerCommand, Delet
             return Task.CompletedTask;
         });
 
-        var response = new DeleteOwerCommandResponse
+        var response = new DeleteOwnerCommandResponse
         {
             Id = owner.Id
         };
 
-        return OperationResult<DeleteOwerCommandResponse>.SuccessResult(response);
+        return OperationResult<DeleteOwnerCommandResponse>.SuccessResult(response);
     }
 }

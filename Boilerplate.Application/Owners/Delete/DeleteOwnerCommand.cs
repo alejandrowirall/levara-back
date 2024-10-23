@@ -2,9 +2,9 @@
 using Boilerplate.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owers.Delete
+namespace Boilerplate.Application.Owners.Delete
 {
-    public class DeleteOwerCommand : Command<DeleteOwerCommandResponse>
+    public class DeleteOwnerCommand : Command<DeleteOwnerCommandResponse>
     {
         [Required]
         [Range(1, int.MaxValue)]

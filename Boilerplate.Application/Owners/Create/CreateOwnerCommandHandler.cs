@@ -4,19 +4,19 @@ using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
 
-namespace Boilerplate.Application.Owers.Create;
+namespace Boilerplate.Application.Owners.Create;
 
-public class CreateOwerCommandHandler : ICommandHandler<CreateOwerCommand, CreateOwerCommandResponse>
+public class CreateOwnerCommandHandler : ICommandHandler<CreateOwnerCommand, CreateOwnerCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOwnerRepository _ownerRepository;
-    public CreateOwerCommandHandler(IUnitOfWork unitOfWork,
+    public CreateOwnerCommandHandler(IUnitOfWork unitOfWork,
         IOwnerRepository ownerRepository) 
     {
         _unitOfWork = unitOfWork;
         _ownerRepository = ownerRepository;
     }
-    public async Task<OperationResult<CreateOwerCommandResponse>> Handle(CreateOwerCommand command)
+    public async Task<OperationResult<CreateOwnerCommandResponse>> Handle(CreateOwnerCommand command)
     {
         Owner owner = new()
         {
@@ -40,19 +40,19 @@ public class CreateOwerCommandHandler : ICommandHandler<CreateOwerCommand, Creat
         };
 
         if (await _ownerRepository.AnyAsync(o => o.IdentificationType == owner.IdentificationType && o.Identification == owner.Identification))
-            return OperationResult<CreateOwerCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
+            return OperationResult<CreateOwnerCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _ownerRepository.AddAsync(owner);
         });
 
-        var response = new CreateOwerCommandResponse
+        var response = new CreateOwnerCommandResponse
         {
             Id = owner.Id
         };
 
-        return OperationResult<CreateOwerCommandResponse>.SuccessResult(response);
+        return OperationResult<CreateOwnerCommandResponse>.SuccessResult(response);
 
     }
 }

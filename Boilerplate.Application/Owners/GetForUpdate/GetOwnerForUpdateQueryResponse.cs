@@ -3,7 +3,7 @@ using Boilerplate.Domain.Enum;
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Models;
 
-namespace Boilerplate.Application.Owers.GetForUpdate;
+namespace Boilerplate.Application.Owners.GetForUpdate;
 
 public class GetOwnerForUpdateQueryResponse
 {

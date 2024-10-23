@@ -1,9 +1,9 @@
-﻿using Boilerplate.Application.Owers.Create;
-using Boilerplate.Application.Owers.Delete;
-using Boilerplate.Application.Owers.GetByGrid;
-using Boilerplate.Application.Owers.GetForCreate;
-using Boilerplate.Application.Owers.GetForUpdate;
-using Boilerplate.Application.Owers.Update;
+﻿using Boilerplate.Application.Owners.Create;
+using Boilerplate.Application.Owners.Delete;
+using Boilerplate.Application.Owners.GetByGrid;
+using Boilerplate.Application.Owners.GetForCreate;
+using Boilerplate.Application.Owners.GetForUpdate;
+using Boilerplate.Application.Owners.Update;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Domain.Bus.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +55,7 @@ namespace Boilerplate.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateOwerCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateOwnerCommand command)
         {
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
@@ -85,7 +85,7 @@ namespace Boilerplate.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateOwerCommand command)
+        public async Task<IActionResult> Update([FromBody] UpdateOwnerCommand command)
         {
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
@@ -100,7 +100,7 @@ namespace Boilerplate.WebApi.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete([FromRoute] DeleteOwerCommand command)
+        public async Task<IActionResult> Delete([FromRoute] DeleteOwnerCommand command)
         {
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)

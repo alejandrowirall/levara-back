@@ -5,7 +5,7 @@ using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Queries;
 using Boilerplate.Shared.Results;
 
-namespace Boilerplate.Application.Owers.GetByGrid;
+namespace Boilerplate.Application.Owners.GetByGrid;
 
 public class GetOwnersByGridQueryHandler : IQueryHandler<GetOwnersByGridQuery, PagedList<GetOwnersByGridQueryResponse>>
 {

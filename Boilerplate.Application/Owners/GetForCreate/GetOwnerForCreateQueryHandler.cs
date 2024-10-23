@@ -4,7 +4,7 @@ using Boilerplate.Shared.Extensions;
 using Boilerplate.Shared.Domain.Bus.Queries;
 using Boilerplate.Shared.Results;
 
-namespace Boilerplate.Application.Owers.GetForCreate;
+namespace Boilerplate.Application.Owners.GetForCreate;
 
 public class GetOwnerForCreateQueryHandler : IQueryHandler<GetOwnerForCreateQuery, GetOwnerForCreateQueryResponse>
 {

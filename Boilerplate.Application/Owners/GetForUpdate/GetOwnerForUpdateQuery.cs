@@ -2,7 +2,7 @@
 using Boilerplate.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owers.GetForUpdate
+namespace Boilerplate.Application.Owners.GetForUpdate
 {
     public class GetOwnerForUpdateQuery : Query<GetOwnerForUpdateQueryResponse>
     {

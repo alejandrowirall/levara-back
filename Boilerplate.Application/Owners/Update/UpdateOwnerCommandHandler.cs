@@ -4,31 +4,31 @@ using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
 
-namespace Boilerplate.Application.Owers.Update;
+namespace Boilerplate.Application.Owners.Update;
 
-public class UpdateOwerCommandHandler : ICommandHandler<UpdateOwerCommand, UpdateOwerCommandResponse>
+public class UpdateOwnerCommandHandler : ICommandHandler<UpdateOwnerCommand, UpdateOwnerCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOwnerRepository _ownerRepository;
-    public UpdateOwerCommandHandler(IUnitOfWork unitOfWork,
+    public UpdateOwnerCommandHandler(IUnitOfWork unitOfWork,
         IOwnerRepository ownerRepository) 
     {
         _unitOfWork = unitOfWork;
         _ownerRepository = ownerRepository;
     }
-    public async Task<OperationResult<UpdateOwerCommandResponse>> Handle(UpdateOwerCommand command)
+    public async Task<OperationResult<UpdateOwnerCommandResponse>> Handle(UpdateOwnerCommand command)
     {
         if (await _ownerRepository.AnyAsync(o => o.Id != command.Id!.Value &&
                                                 o.IdentificationType == command.IdentificationType && 
                                                 o.Identification == command.Identification))
-            return OperationResult<UpdateOwerCommandResponse>.ErrorResult(new ErrorDetails(400, "An Owner with the same Identification already exists"));
+            return OperationResult<UpdateOwnerCommandResponse>.ErrorResult(new ErrorDetails(400, "An Owner with the same Identification already exists"));
 
         var ownerQuery = _ownerRepository.GetAllWithAddress()
                                          .Where(o => o.Id == command.Id!);
 
         Owner? owner = await _ownerRepository.FirstOrDefaultAsync(ownerQuery);
         if (owner == null)
-            return OperationResult<UpdateOwerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+            return OperationResult<UpdateOwnerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
         owner.Name = command.Name!;
         owner.Surname = command.Surname!;
@@ -45,17 +45,19 @@ public class UpdateOwerCommandHandler : ICommandHandler<UpdateOwerCommand, Updat
         owner.Address.State = command.State!;
         owner.Address.PostalCode = command.PostalCode!;
 
-        await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+        await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
             _ownerRepository.Update(owner);
+            return Task.CompletedTask;
+
         });
 
-        var response = new UpdateOwerCommandResponse
+        var response = new UpdateOwnerCommandResponse
         {
             Id = owner.Id
         };
 
-        return OperationResult<UpdateOwerCommandResponse>.SuccessResult(response);
+        return OperationResult<UpdateOwnerCommandResponse>.SuccessResult(response);
 
     }
 }

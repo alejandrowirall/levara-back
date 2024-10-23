@@ -1,6 +1,6 @@
 ﻿using Boilerplate.Shared.Domain.Models;
 
-namespace Boilerplate.Application.Owers.GetForCreate;
+namespace Boilerplate.Application.Owners.GetForCreate;
 
 public class GetOwnerForCreateQueryResponse
 {

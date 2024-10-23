@@ -2,7 +2,7 @@
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Extensions;
 
-namespace Boilerplate.Application.Owers.GetByGrid;
+namespace Boilerplate.Application.Owners.GetByGrid;
 
 public class GetOwnersByGridQueryResponse
 {

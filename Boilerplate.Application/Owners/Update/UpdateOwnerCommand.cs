@@ -3,9 +3,9 @@ using Boilerplate.Domain.Enum;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owers.Update
+namespace Boilerplate.Application.Owners.Update
 {
-    public class UpdateOwerCommand : Command<UpdateOwerCommandResponse>
+    public class UpdateOwnerCommand : Command<UpdateOwnerCommandResponse>
     {
         [Required]
         [Range(1, int.MaxValue)]

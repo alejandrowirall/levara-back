@@ -3,9 +3,9 @@ using Boilerplate.Domain.Enum;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owers.Create
+namespace Boilerplate.Application.Owners.Create
 {
-    public class CreateOwerCommand : Command<CreateOwerCommandResponse>
+    public class CreateOwnerCommand : Command<CreateOwnerCommandResponse>
     {
         [Required]
         [Length(1, 50)]
