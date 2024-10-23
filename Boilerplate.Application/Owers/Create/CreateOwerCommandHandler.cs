@@ -6,11 +6,11 @@ using Boilerplate.Shared.Results;
 
 namespace Boilerplate.Application.Owers.Create;
 
-public class GetOwerForUpdateQueryHandler : ICommandHandler<CreateOwerCommand, CreateOwerCommandResponse>
+public class CreateOwerCommandHandler : ICommandHandler<CreateOwerCommand, CreateOwerCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOwnerRepository _ownerRepository;
-    public GetOwerForUpdateQueryHandler(IUnitOfWork unitOfWork,
+    public CreateOwerCommandHandler(IUnitOfWork unitOfWork,
         IOwnerRepository ownerRepository) 
     {
         _unitOfWork = unitOfWork;
