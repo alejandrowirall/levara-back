@@ -21,7 +21,7 @@ namespace Boilerplate.DAL.DbContext.EntityConfigurations
 
             builder.Property(o => o.PersonType);
 
-            builder.HasOne<ApplicationUser>()
+            builder.HasOne(o => o.ApplicationUser)
                    .WithMany()
                    .HasForeignKey(o => o.ApplicationUserId);
 

@@ -2,8 +2,8 @@
 using Boilerplate.Application.Identity.Login;
 using Boilerplate.Application.Identity.Refresh;
 using Boilerplate.Application.Identity.Register;
+using Boilerplate.Domain.Contexts;
 using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Domain.Contexts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

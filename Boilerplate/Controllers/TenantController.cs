@@ -4,14 +4,17 @@ using Boilerplate.Application.Tenants.GetByGrid;
 using Boilerplate.Application.Tenants.GetForCreate;
 using Boilerplate.Application.Tenants.GetForUpdate;
 using Boilerplate.Application.Tenants.Update;
+using Boilerplate.Domain.Authentication;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Domain.Bus.Queries;
+using Boilerplate.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Boilerplate.WebApi.Controllers
 {
     [Route("api/tenant")]
     [ApiController]
+    [AuthorizeAnyRoles(Roles.Admin, Roles.Owner)]
     public class TenantController : ControllerBase
     {
         private readonly ICommandBus _commandBus;

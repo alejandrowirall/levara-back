@@ -1,4 +1,5 @@
 ﻿
+using Boilerplate.Domain.Authentication;
 using Boilerplate.Domain.Configurations;
 using Boilerplate.Domain.ExternalServices;
 using Boilerplate.Domain.Models;
@@ -44,6 +45,10 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterC
         var result = await _userManager.CreateAsync(user, command.Password);
         if (!result.Succeeded)
             return OperationResult<RegisterCommandResponse>.ErrorResult(new ErrorDetails(400, result.ToString()));
+
+        var addRolesResult = await _userManager.AddToRolesAsync(user, new string[] { Roles.Admin });
+        if (!addRolesResult.Succeeded)
+            return OperationResult<RegisterCommandResponse>.ErrorResult(new ErrorDetails(400, addRolesResult.Errors.ToString()));
 
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

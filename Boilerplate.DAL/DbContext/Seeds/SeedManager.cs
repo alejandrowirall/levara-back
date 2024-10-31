@@ -1,0 +1,38 @@
+﻿using Boilerplate.DAL.DbContext.Seeds.EntitySeeds;
+using Microsoft.EntityFrameworkCore;
+
+namespace Boilerplate.DAL.DbContext.Seeds;
+
+public class SeedManager
+{
+    private readonly ModelBuilder modelBuilder;
+
+    public SeedManager(ModelBuilder modelBuilder)
+    {
+        this.modelBuilder = modelBuilder;
+    }
+
+    public void ExecuteSeed()
+    {
+        //For Debugging the seed
+        //if (!System.Diagnostics.Debugger.IsAttached)
+        //    System.Diagnostics.Debugger.Launch();
+
+        foreach (var seedClass in GetSeeds())
+        {
+            seedClass.modelBuilder = modelBuilder;
+
+            seedClass.Process();
+        }
+    }
+
+    private SeedBase[] GetSeeds()
+    {
+        return new SeedBase[4] {
+            new RoleSeed(),
+            new AdminSeed(),
+            new OwnerSeed(),
+            new TenantSeed()
+        };
+    }
+}

@@ -1,7 +1,7 @@
 ﻿
+using Boilerplate.Domain.Contexts;
 using Boilerplate.Domain.DAL;
 using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Boilerplate.Application.Identity;
+namespace Boilerplate.Application.Identity.Services.Jwt;
 
 public class JwtService
 {
@@ -23,7 +23,7 @@ public class JwtService
     {
         DateTime tokenExpiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_authConfiguration.ExpirationMinutes));
 
-        ICollection<string> roles = await this._userManager.GetRolesAsync(user);
+        ICollection<string> roles = await _userManager.GetRolesAsync(user);
 
         var userClaims = (await _userManager.GetClaimsAsync(user)).ToList();
 
@@ -36,8 +36,8 @@ public class JwtService
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList());
         claims.Add(new Claim(ClaimTypes.Name, user.Email));
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-        
-        return this.GenerateToken(user, claims, expiration);
+
+        return GenerateToken(user, claims, expiration);
     }
 
     private string GenerateToken(ApplicationUser user, IEnumerable<Claim> claims, DateTime? expiration = null)
@@ -49,6 +49,8 @@ public class JwtService
         {
             Subject = new ClaimsIdentity(claims),
             Expires = expiration ?? DateTime.UtcNow.AddMinutes(5),
+            Issuer = _authConfiguration.JwtIssuer,
+            Audience = _authConfiguration.JwtAudience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         // Create jwt token.
@@ -59,7 +61,7 @@ public class JwtService
 
     public ClaimsPrincipal GetPrincipalFromToken(string token, bool validateExpiration = true)
     {
-        
+
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,

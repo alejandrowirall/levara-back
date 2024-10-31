@@ -31,7 +31,9 @@ public class Tenant : Entity
 
     public int AddressId { get; set; }
 
-    public required Address Address { get; set; }
+    [Required]
+    public Address Address { get; set; }
 
-    public int? ApplicationUserId;
+    public int? ApplicationUserId { get; set; }
+    public ApplicationUser? ApplicationUser { get; set; }
 }

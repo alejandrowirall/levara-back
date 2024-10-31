@@ -1,7 +1,7 @@
-﻿using Boilerplate.Data;
+﻿
+using Boilerplate.Domain.Contexts;
 using Boilerplate.Domain.DAL.Repositories;
 using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Boilerplate.DAL.Repositories;

@@ -1,23 +1,35 @@
-﻿using Boilerplate.Domain.DAL;
+﻿using Boilerplate.Domain.Authentication;
+using Boilerplate.Domain.DAL;
 using Boilerplate.Domain.DAL.Repositories;
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Boilerplate.Application.Tenants.Create;
 
 public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, CreateTenantCommandResponse>
 {
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserStore<ApplicationUser> _userStore;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITenantRepository _tenantRepository;
-    public CreateTenantCommandHandler(IUnitOfWork unitOfWork,
+    public CreateTenantCommandHandler(UserManager<ApplicationUser> userManager,
+        IUserStore<ApplicationUser> userStore,
+        IUnitOfWork unitOfWork,
         ITenantRepository tenantRepository) 
     {
+        _userManager = userManager;
+        _userStore = userStore;
         _unitOfWork = unitOfWork;
         _tenantRepository = tenantRepository;
     }
     public async Task<OperationResult<CreateTenantCommandResponse>> Handle(CreateTenantCommand command)
     {
+        if (await _tenantRepository.AnyAsync(o => o.IdentificationType == command.IdentificationType && o.Identification == command.Identification))
+            return OperationResult<CreateTenantCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
+
         Tenant tenant = new()
         {
             Name = command.Name!,
@@ -39,12 +51,35 @@ public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, C
             }
         };
 
-        if (await _tenantRepository.AnyAsync(o => o.IdentificationType == tenant.IdentificationType && o.Identification == tenant.Identification))
-            return OperationResult<CreateTenantCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
-
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
+            ApplicationUser? user = await _userManager.FindByEmailAsync(command.Email!);
+            if (user == null)
+            {
+                var emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
+                user = new ApplicationUser();
+                user.RefreshToken = Guid.NewGuid().ToString();
+
+                await _userStore.SetUserNameAsync(user, command.Email, CancellationToken.None);
+                await emailStore.SetEmailAsync(user, command.Email, CancellationToken.None);
+
+                var result = await _userManager.CreateAsync(user, "Levara.2024");
+                if (!result.Succeeded)
+                    throw new Exception(result.ToString());
+            }
+
+            tenant.ApplicationUserId = user.Id;
+
             await _tenantRepository.AddAsync(tenant);
+
+            var addRolesResult = await _userManager.AddToRolesAsync(user, [Roles.Tenant]);
+            if (!addRolesResult.Succeeded)
+                throw new Exception(addRolesResult.Errors.ToString());
+
+            var AddClaimsResult = await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.TenantId, tenant.Id.ToString()));
+            if (!AddClaimsResult.Succeeded)
+                throw new Exception(AddClaimsResult.Errors.ToString());
+
         });
 
         var response = new CreateTenantCommandResponse

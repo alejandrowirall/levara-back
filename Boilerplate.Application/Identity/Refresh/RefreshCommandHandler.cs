@@ -1,4 +1,5 @@
-﻿using Boilerplate.Domain.Configurations;
+﻿using Boilerplate.Application.Identity.Services.Jwt;
+using Boilerplate.Domain.Configurations;
 using Boilerplate.Domain.Models;
 using Boilerplate.Shared.Domain.Bus.Commands;
 using Boilerplate.Shared.Results;
