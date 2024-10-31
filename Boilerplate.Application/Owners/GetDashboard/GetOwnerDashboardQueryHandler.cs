@@ -32,7 +32,51 @@ public class GetOwnerDashboardQueryHandler : IQueryHandler<GetOwnerDashboardQuer
         var ownerBankAccounts = await _ownerBankAccountRepository.ToListAsync(ownerBankAccountQuery);
 
 
-        GetOwnerDashboardQueryResponse response = new(properties, ownerBankAccounts);
+        List<RentPaymentNotificationGrid> rentPaymentsNotifications = new()
+        {
+            new ()
+            {
+                Property = "Property 1",
+                DueDate = DateTime.Now.AddDays(5),
+                Status = "Unpaid"
+            },
+            new ()
+            {
+                Property = "Property 2",
+                DueDate = DateTime.Now.AddDays(6),
+                Status = "Unpaid"
+            },
+             new ()
+            {
+                Property = "Property 3",
+                DueDate = DateTime.Now.AddDays(-1),
+                Status = "Paid"
+            }
+        };
+
+        List<ImportantNotificationGrid> importantNotifications = new()
+        {
+            new ()
+            {
+                Property = "Property 1",
+                Date = DateTime.Now.AddDays(-1),
+                Detail = "End date to renewal"
+            },
+            new ()
+            {
+                Property = "Property 2",
+                Date = DateTime.Now.AddDays(-2),
+                Detail = "Air conditioning repair fixed"
+            },
+             new ()
+            {
+                Property = "Property 3",
+                Date = DateTime.Now.AddDays(-3),
+                Detail = "Monthly rent overdue"
+            }
+        };
+
+        GetOwnerDashboardQueryResponse response = new(properties, ownerBankAccounts, rentPaymentsNotifications, importantNotifications);
         
         return OperationResult<GetOwnerDashboardQueryResponse>.SuccessResult(response);
 

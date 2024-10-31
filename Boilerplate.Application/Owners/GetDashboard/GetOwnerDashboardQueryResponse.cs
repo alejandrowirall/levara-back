@@ -6,15 +6,24 @@ namespace Boilerplate.Application.Owners.GetDashboard;
 public class GetOwnerDashboardQueryResponse
 {
     public GetOwnerDashboardQueryResponse(IEnumerable<PropertyCard> properties,
-        IEnumerable<OwnerBankAccountGrid> ownerBankAccounts)
+        IEnumerable<OwnerBankAccountGrid> ownerBankAccounts,
+        IEnumerable<RentPaymentNotificationGrid> rentPaymentsNotifications,
+        IEnumerable<ImportantNotificationGrid> importantNotifications)
     {
         Properties = properties;
         OwnerBankAccounts = ownerBankAccounts;
+        RentPaymentsNotifications = rentPaymentsNotifications;
+        ImportantNotifications = importantNotifications;
     }
     
     public IEnumerable<PropertyCard> Properties { get; }
 
     public IEnumerable<OwnerBankAccountGrid> OwnerBankAccounts { get; }
+
+    public IEnumerable<RentPaymentNotificationGrid> RentPaymentsNotifications { get; }
+
+    public IEnumerable<ImportantNotificationGrid> ImportantNotifications { get; }
+
 }
 
 public class PropertyCard
@@ -47,4 +56,28 @@ public class OwnerBankAccountGrid
     public int Id { get; }
 
     public string Description { get; }
+}
+
+public class RentPaymentNotificationGrid
+{
+
+    public int Id { get; set; }
+
+    public string Property { get; set; }
+
+    public DateTime DueDate { get; set; }
+
+    public string Status { get; set; }
+}
+
+public class ImportantNotificationGrid
+{
+
+    public int Id { get; set; }
+
+    public string Property { get; set; }
+
+    public DateTime Date { get; set; }
+
+    public string Detail { get; set; }
 }
