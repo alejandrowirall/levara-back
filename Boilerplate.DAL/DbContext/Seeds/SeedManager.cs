@@ -30,9 +30,9 @@ public class SeedManager
     {
         return new SeedBase[4] {
             new RoleSeed(),
-            new AdminSeed(),
             new OwnerSeed(),
-            new TenantSeed()
+            new TenantSeed(),
+            new AdminSeed(),
         };
     }
 }

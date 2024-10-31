@@ -14,7 +14,7 @@ public class AdminSeed : SeedBase
         {
             new ApplicationUser
             {
-                Id = 1000,
+                Id = 100,
                 Email = "admin@levara.com",
                 EmailConfirmed = true,
                 NormalizedEmail = "ADMIN@LEVARA.COM",
@@ -27,7 +27,13 @@ public class AdminSeed : SeedBase
             }
         };
 
+        List<IdentityUserRole<int>> userRoles = new()
+        {
+            new IdentityUserRole<int> { UserId = 100, RoleId = 1 }
+        };
+
         this.modelBuilder.Entity<ApplicationUser>().HasData(allUsersToAdd);
+        this.modelBuilder.Entity<IdentityUserRole<int>>().HasData(userRoles);
 
     }
 }
