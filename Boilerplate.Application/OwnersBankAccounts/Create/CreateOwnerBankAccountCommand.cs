@@ -18,7 +18,6 @@ namespace Boilerplate.Application.OwnersBankAccounts.Create
         [Length(1, 50)]
         public string? PlaidAccountId { get; set; }
 
-        [Required]
         [Range(1, int.MaxValue)]
         public int? OwnerId { get; set; }
 
