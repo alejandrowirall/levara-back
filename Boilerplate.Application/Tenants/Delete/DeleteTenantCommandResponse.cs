@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Tenants.Delete;
+namespace Levara.Application.Tenants.Delete;
 
 public class DeleteTenantCommandResponse
 {

@@ -1,12 +1,12 @@
 ﻿
-using Boilerplate.Domain.DAL;
-using Boilerplate.Domain.Enum;
-using Boilerplate.Shared.Extensions;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
-using Boilerplate.Domain.DAL.Repositories;
+using Levara.Domain.DAL;
+using Levara.Domain.Enum;
+using Levara.Shared.Extensions;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
+using Levara.Domain.DAL.Repositories;
 
-namespace Boilerplate.Application.Owners.GetForUpdate;
+namespace Levara.Application.Owners.GetForUpdate;
 
 public class GetOwnerForUpdateQueryHandler : IQueryHandler<GetOwnerForUpdateQuery, GetOwnerForUpdateQueryResponse>
 {

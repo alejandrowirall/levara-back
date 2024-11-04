@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Boilerplate.DAL.DbContext.Seeds.EntitySeeds;
+namespace Levara.DAL.DbContext.Seeds.EntitySeeds;
 
 public class AdminSeed : SeedBase
 {

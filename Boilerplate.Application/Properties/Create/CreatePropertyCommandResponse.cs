@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Properties.Create;
+namespace Levara.Application.Properties.Create;
 
 public class CreatePropertyCommandResponse
 {

@@ -4,7 +4,7 @@ using System.Net.Security;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Boilerplate.ExternalService.Emails.Configurations;
+namespace Levara.ExternalService.Emails.Configurations;
 
 public class SmtpConfiguration
 {

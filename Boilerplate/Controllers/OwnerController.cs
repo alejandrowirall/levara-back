@@ -1,18 +1,18 @@
-﻿using Boilerplate.Application.Owners.Create;
-using Boilerplate.Application.Owners.Delete;
-using Boilerplate.Application.Owners.GetByGrid;
-using Boilerplate.Application.Owners.GetDashboard;
-using Boilerplate.Application.Owners.GetForCreate;
-using Boilerplate.Application.Owners.GetForUpdate;
-using Boilerplate.Application.Owners.Update;
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.WebApi.Infrastructure.Attributes;
+﻿using Levara.Application.Owners.Create;
+using Levara.Application.Owners.Delete;
+using Levara.Application.Owners.GetByGrid;
+using Levara.Application.Owners.GetDashboard;
+using Levara.Application.Owners.GetForCreate;
+using Levara.Application.Owners.GetForUpdate;
+using Levara.Application.Owners.Update;
+using Levara.Domain.Authentication;
+using Levara.Domain.Contexts;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Boilerplate.WebApi.Controllers
+namespace Levara.WebApi.Controllers
 {
     [Route("api/owner")]
     [ApiController]

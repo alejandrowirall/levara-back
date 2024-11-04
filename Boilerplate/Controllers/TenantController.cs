@@ -1,16 +1,16 @@
-﻿using Boilerplate.Application.Tenants.Create;
-using Boilerplate.Application.Tenants.Delete;
-using Boilerplate.Application.Tenants.GetByGrid;
-using Boilerplate.Application.Tenants.GetForCreate;
-using Boilerplate.Application.Tenants.GetForUpdate;
-using Boilerplate.Application.Tenants.Update;
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.WebApi.Infrastructure.Attributes;
+﻿using Levara.Application.Tenants.Create;
+using Levara.Application.Tenants.Delete;
+using Levara.Application.Tenants.GetByGrid;
+using Levara.Application.Tenants.GetForCreate;
+using Levara.Application.Tenants.GetForUpdate;
+using Levara.Application.Tenants.Update;
+using Levara.Domain.Authentication;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Boilerplate.WebApi.Controllers
+namespace Levara.WebApi.Controllers
 {
     [Route("api/tenant")]
     [ApiController]

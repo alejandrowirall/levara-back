@@ -1,8 +1,8 @@
-﻿using Boilerplate.Shared.Domain.Bus.Queries;
+﻿using Levara.Shared.Domain.Bus.Queries;
 using Microsoft.Extensions.DependencyInjection;
-using Boilerplate.Shared.Results;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Shared.Infrastructure.Bus.Query;
+namespace Levara.Shared.Infrastructure.Bus.Query;
 
 public class InMemoryQueryBus: IQueryBus
 {

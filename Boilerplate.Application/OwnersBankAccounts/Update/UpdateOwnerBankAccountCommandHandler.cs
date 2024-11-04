@@ -1,12 +1,12 @@
 ﻿
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Results;
+using Levara.Domain.Contexts;
+using Levara.Domain.DAL;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.OwnersBankAccounts.Update;
+namespace Levara.Application.OwnersBankAccounts.Update;
 
 //TODO: I don't think editing is necessary. Maybe to activate or deactivate it.
 public class UpdateOwnerBankAccountCommandHandler : ICommandHandler<UpdateOwnerBankAccountCommand, UpdateOwnerBankAccountCommandResponse>

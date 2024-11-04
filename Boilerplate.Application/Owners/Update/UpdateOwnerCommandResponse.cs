@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Owners.Update;
+namespace Levara.Application.Owners.Update;
 
 public class UpdateOwnerCommandResponse
 {

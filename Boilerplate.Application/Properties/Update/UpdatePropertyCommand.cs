@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Properties.Update
+namespace Levara.Application.Properties.Update
 {
     public class UpdatePropertyCommand : Command<UpdatePropertyCommandResponse>
     {

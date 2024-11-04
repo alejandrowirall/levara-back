@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Domain.Enum;
+namespace Levara.Domain.Enum;
 
 public enum PersonType
 {

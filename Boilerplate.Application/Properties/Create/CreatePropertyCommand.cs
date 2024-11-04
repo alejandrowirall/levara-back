@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Properties.Create
+namespace Levara.Application.Properties.Create
 {
     public class CreatePropertyCommand : Command<CreatePropertyCommandResponse>
     {

@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.OwnersBankAccounts.GetByGrid
+namespace Levara.Application.OwnersBankAccounts.GetByGrid
 {
     public class GetOwnerBankAccountsByGridQuery : Query<PagedList<GetOwnerBankAccountsByGridQueryResponse>>
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Tenants.Update;
+namespace Levara.Application.Tenants.Update;
 
 public class UpdateTenantCommandResponse
 {

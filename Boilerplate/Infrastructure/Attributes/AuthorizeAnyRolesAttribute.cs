@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Boilerplate.WebApi.Infrastructure.Attributes;
+namespace Levara.WebApi.Infrastructure.Attributes;
 
 public class AuthorizeAnyRolesAttribute : AuthorizeAttribute
 {

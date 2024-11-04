@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Shared.Domain.Models;
+namespace Levara.Shared.Domain.Models;
 
 public class ListModel
 {

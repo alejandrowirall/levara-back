@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 
-namespace Boilerplate.DAL.DbContext.EntityConfigurations
+namespace Levara.DAL.DbContext.EntityConfigurations
 {
     public class OwnerConfiguration : IEntityTypeConfiguration<Owner>
     {

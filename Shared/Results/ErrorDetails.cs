@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Shared.Results;
+namespace Levara.Shared.Results;
 
 public class ErrorDetails
 {

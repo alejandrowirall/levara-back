@@ -1,13 +1,13 @@
-﻿using Boilerplate.DAL.Configuration;
-using Boilerplate.Data;
-using Boilerplate.Domain.Configurations;
-using Boilerplate.Domain.DAL;
+﻿using Levara.DAL.Configuration;
+using Levara.Data;
+using Levara.Domain.Configurations;
+using Levara.Domain.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Boilerplate.DAL.Extensions;
+namespace Levara.DAL.Extensions;
 
 public static class DALExtensions
 {

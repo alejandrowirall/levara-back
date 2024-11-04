@@ -1,7 +1,7 @@
-﻿using Boilerplate.Shared.Domain.Models;
+﻿using Levara.Shared.Domain.Models;
 using System.ComponentModel;
 
-namespace Boilerplate.Shared.Extensions;
+namespace Levara.Shared.Extensions;
 
 public static class EnumExtensions
 {

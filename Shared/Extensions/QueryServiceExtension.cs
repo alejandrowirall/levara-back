@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Bus.Queries;
 using System.Reflection;
 
-namespace Boilerplate.Shared.Extensions;
+namespace Levara.Shared.Extensions;
 
 public static class QueryServiceExtension
 {

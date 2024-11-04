@@ -1,18 +1,18 @@
 ﻿
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Configurations;
-using Boilerplate.Domain.ExternalServices;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Extensions;
-using Boilerplate.Shared.Results;
+using Levara.Domain.Authentication;
+using Levara.Domain.Configurations;
+using Levara.Domain.ExternalServices;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Extensions;
+using Levara.Shared.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace Boilerplate.Application.Identity.Register;
+namespace Levara.Application.Identity.Register;
 
 public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterCommandResponse>
 {
@@ -63,7 +63,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterC
 
         var confirmEmailUrl = QueryHelpers.AddQueryString(uriBuilder.Uri.ToString(), queryParams);
 
-        string content = Assembly.Load("Boilerplate.Application").GetResourceAsString("Boilerplate.Application.Identity.Register.ConfirmationEmail.html");
+        string content = Assembly.Load("Levara.Application").GetResourceAsString("Levara.Application.Identity.Register.ConfirmationEmail.html");
 
         content = content.Replace("{{UserName}}", user.Email)
                          .Replace("{{ConfirmationLink}}", HtmlEncoder.Default.Encode(confirmEmailUrl));

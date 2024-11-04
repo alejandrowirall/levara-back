@@ -1,6 +1,6 @@
 ﻿
 
-namespace Boilerplate.Domain.Contexts;
+namespace Levara.Domain.Contexts;
 
 public interface IUserContext
 {

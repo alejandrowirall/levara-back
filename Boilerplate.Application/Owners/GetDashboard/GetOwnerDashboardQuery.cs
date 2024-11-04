@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owners.GetDashboard
+namespace Levara.Application.Owners.GetDashboard
 {
     public class GetOwnerDashboardQuery : Query<GetOwnerDashboardQueryResponse>
     {

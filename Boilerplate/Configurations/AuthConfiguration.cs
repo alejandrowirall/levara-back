@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Domain.Configurations;
+using Levara.Domain.Configurations;
 
-namespace Boilerplate.WebApi.Configurations;
+namespace Levara.WebApi.Configurations;
 
 public class AuthConfiguration : IAuthConfiguration
 {

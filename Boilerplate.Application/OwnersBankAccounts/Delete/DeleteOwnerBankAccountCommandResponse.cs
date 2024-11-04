@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.OwnersBankAccounts.Delete;
+namespace Levara.Application.OwnersBankAccounts.Delete;
 
 public class DeleteOwnerBankAccountCommandResponse
 {

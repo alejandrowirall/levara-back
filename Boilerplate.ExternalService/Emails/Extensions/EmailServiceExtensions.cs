@@ -1,9 +1,9 @@
-﻿using Boilerplate.Domain.ExternalServices;
-using Boilerplate.ExternalService.Emails.Configurations;
+﻿using Levara.Domain.ExternalServices;
+using Levara.ExternalService.Emails.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Boilerplate.ExternalService.Emails.Extensions;
+namespace Levara.ExternalService.Emails.Extensions;
 
 public static class EmailServiceExtensions
 {

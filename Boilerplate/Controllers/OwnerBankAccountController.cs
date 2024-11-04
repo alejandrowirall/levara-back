@@ -1,17 +1,17 @@
-﻿using Boilerplate.Application.OwnersBankAccounts.Create;
-using Boilerplate.Application.OwnersBankAccounts.Delete;
-using Boilerplate.Application.OwnersBankAccounts.GetByGrid;
-using Boilerplate.Application.OwnersBankAccounts.GetForCreate;
-using Boilerplate.Application.OwnersBankAccounts.GetForUpdate;
-using Boilerplate.Application.OwnersBankAccounts.Update;
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.WebApi.Infrastructure.Attributes;
+﻿using Levara.Application.OwnersBankAccounts.Create;
+using Levara.Application.OwnersBankAccounts.Delete;
+using Levara.Application.OwnersBankAccounts.GetByGrid;
+using Levara.Application.OwnersBankAccounts.GetForCreate;
+using Levara.Application.OwnersBankAccounts.GetForUpdate;
+using Levara.Application.OwnersBankAccounts.Update;
+using Levara.Domain.Authentication;
+using Levara.Domain.Contexts;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Boilerplate.WebApi.Controllers
+namespace Levara.WebApi.Controllers
 {
     [Route("api/owner-bank-account")]
     [ApiController]

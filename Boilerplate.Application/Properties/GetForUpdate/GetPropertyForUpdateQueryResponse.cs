@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 
-namespace Boilerplate.Application.Properties.GetForUpdate;
+namespace Levara.Application.Properties.GetForUpdate;
 
 public class GetPropertyForUpdateQueryResponse
 {

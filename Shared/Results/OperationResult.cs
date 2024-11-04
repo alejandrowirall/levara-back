@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Shared.Results;
+namespace Levara.Shared.Results;
 
 public class OperationResult<T>
 {

@@ -1,7 +1,7 @@
-﻿using Boilerplate.Domain.Models;
+﻿using Levara.Domain.Models;
 using System.Linq.Expressions;
 
-namespace Boilerplate.Domain.DAL;
+namespace Levara.Domain.DAL;
 
 public interface IRepository<TEntity> where TEntity : Entity
 {

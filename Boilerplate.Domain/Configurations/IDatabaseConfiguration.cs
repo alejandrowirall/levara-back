@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Domain.Configurations;
+namespace Levara.Domain.Configurations;
 
 public interface IDatabaseConfiguration
 {

@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Shared.Results;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Shared.Domain.Bus.Commands;
+namespace Levara.Shared.Domain.Bus.Commands;
 
 public interface ICommandHandler<TCommand, TResponse> where TCommand : Command<TResponse>
 {

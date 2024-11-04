@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.OwnersBankAccounts.Update;
+namespace Levara.Application.OwnersBankAccounts.Update;
 
 public class UpdateOwnerBankAccountCommandResponse
 {

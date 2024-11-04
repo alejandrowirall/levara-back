@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.OwnersBankAccounts.Update
+namespace Levara.Application.OwnersBankAccounts.Update
 {
     public class UpdateOwnerBankAccountCommand : Command<UpdateOwnerBankAccountCommandResponse>
     {

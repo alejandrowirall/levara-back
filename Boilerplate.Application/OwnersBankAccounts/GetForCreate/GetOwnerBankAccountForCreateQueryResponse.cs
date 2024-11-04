@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.OwnersBankAccounts.GetForCreate;
+namespace Levara.Application.OwnersBankAccounts.GetForCreate;
 
 public class GetOwnerBankAccountForCreateQueryResponse
 {

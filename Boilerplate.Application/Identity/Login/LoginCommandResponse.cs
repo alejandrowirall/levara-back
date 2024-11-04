@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Identity.Login;
+namespace Levara.Application.Identity.Login;
 
 public class LoginCommandResponse
 {

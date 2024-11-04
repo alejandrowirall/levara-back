@@ -1,7 +1,7 @@
-﻿using Boilerplate.Domain.Authentication;
+﻿using Levara.Domain.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace Boilerplate.DAL.DbContext.Seeds.EntitySeeds
+namespace Levara.DAL.DbContext.Seeds.EntitySeeds
 {
     public class RoleSeed : SeedBase
     {

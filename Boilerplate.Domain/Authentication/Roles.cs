@@ -1,7 +1,7 @@
 ﻿
 using System.Reflection;
 
-namespace Boilerplate.Domain.Authentication;
+namespace Levara.Domain.Authentication;
 
 public static class Roles
 {

@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owners.GetForUpdate
+namespace Levara.Application.Owners.GetForUpdate
 {
     public class GetOwnerForUpdateQuery : Query<GetOwnerForUpdateQueryResponse>
     {

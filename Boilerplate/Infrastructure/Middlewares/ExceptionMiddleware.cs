@@ -1,7 +1,7 @@
-﻿using Boilerplate.Shared.Results;
+﻿using Levara.Shared.Results;
 using Newtonsoft.Json;
 
-namespace Boilerplate.WebApi.Infrastructure.Middlewares
+namespace Levara.WebApi.Infrastructure.Middlewares
 {
     public class ExceptionMiddleware
     {

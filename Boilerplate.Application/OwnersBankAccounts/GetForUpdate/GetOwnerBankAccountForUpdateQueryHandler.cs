@@ -1,10 +1,10 @@
-﻿using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
+﻿using Levara.Domain.Contexts;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.OwnersBankAccounts.GetForUpdate;
+namespace Levara.Application.OwnersBankAccounts.GetForUpdate;
 
 public class GetOwnerBankAccountForUpdateQueryHandler : IQueryHandler<GetOwnerBankAccountForUpdateQuery, GetOwnerBankAccountForUpdateQueryResponse>
 {

@@ -1,11 +1,11 @@
-﻿using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Results;
+﻿using Levara.Domain.Contexts;
+using Levara.Domain.DAL;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.Properties.Update;
+namespace Levara.Application.Properties.Update;
 
 public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyCommand, UpdatePropertyCommandResponse>
 {

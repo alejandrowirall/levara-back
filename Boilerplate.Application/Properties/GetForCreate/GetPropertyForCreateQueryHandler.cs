@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.Properties.GetForCreate;
+namespace Levara.Application.Properties.GetForCreate;
 
 //TODO We still don't know if we will need this service.
 public class GetPropertyForCreateQueryHandler : IQueryHandler<GetPropertyForCreateQuery, GetPropertyForCreateQueryResponse>

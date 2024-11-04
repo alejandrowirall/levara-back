@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Boilerplate.DAL.DbContext.Seeds;
+namespace Levara.DAL.DbContext.Seeds;
 
 public abstract class SeedBase
 {

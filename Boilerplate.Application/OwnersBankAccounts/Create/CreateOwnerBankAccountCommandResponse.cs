@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.OwnersBankAccounts.Create;
+namespace Levara.Application.OwnersBankAccounts.Create;
 
 public class CreateOwnerBankAccountCommandResponse
 {

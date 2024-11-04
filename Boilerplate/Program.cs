@@ -1,5 +1,5 @@
-using Boilerplate.Infrastructure;
-using Boilerplate.WebApi.Infrastructure.Middlewares;
+using Levara.Infrastructure;
+using Levara.WebApi.Infrastructure.Middlewares;
 using Microsoft.OpenApi.Models;
 
 const string AllowAnyOrigin = "_allowAnyOrigin";

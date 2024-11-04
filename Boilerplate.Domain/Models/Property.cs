@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Domain.Models;
+namespace Levara.Domain.Models;
 
 public class Property : Entity
 {

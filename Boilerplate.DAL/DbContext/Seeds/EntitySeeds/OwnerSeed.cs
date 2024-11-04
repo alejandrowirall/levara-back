@@ -1,9 +1,10 @@
-﻿using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Models;
-using Boilerplate.Domain.Enum;
+﻿using Levara.Domain.Authentication;
+using Levara.Domain.Models;
+using Levara.Domain.Enum;
 using Microsoft.AspNetCore.Identity;
 
-namespace Boilerplate.DAL.DbContext.Seeds.EntitySeeds;
+
+namespace Levara.DAL.DbContext.Seeds.EntitySeeds;
 
 public class OwnerSeed : SeedBase
 {

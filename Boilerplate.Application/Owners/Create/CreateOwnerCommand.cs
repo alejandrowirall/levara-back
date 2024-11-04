@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Enum;
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Domain.Enum;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owners.Create
+namespace Levara.Application.Owners.Create
 {
     public class CreateOwnerCommand : Command<CreateOwnerCommandResponse>
     {

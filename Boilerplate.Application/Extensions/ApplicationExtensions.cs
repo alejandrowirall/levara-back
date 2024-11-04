@@ -1,9 +1,9 @@
-﻿using Boilerplate.Application.Identity.Services.Jwt;
-using Boilerplate.Shared.Extensions;
+﻿using Levara.Application.Identity.Services.Jwt;
+using Levara.Shared.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Boilerplate.Application.Extensions;
+namespace Levara.Application.Extensions;
 
 public static class ApplicationExtensions
 {

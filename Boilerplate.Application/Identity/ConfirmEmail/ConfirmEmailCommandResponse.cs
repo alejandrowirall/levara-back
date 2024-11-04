@@ -1,6 +1,6 @@
 ﻿
 
-namespace Boilerplate.Application.Identity.ConfirmEmail;
+namespace Levara.Application.Identity.ConfirmEmail;
 
 public class ConfirmEmailCommandResponse
 {

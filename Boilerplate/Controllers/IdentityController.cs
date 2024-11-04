@@ -1,13 +1,13 @@
-﻿using Boilerplate.Application.Identity.ConfirmEmail;
-using Boilerplate.Application.Identity.Login;
-using Boilerplate.Application.Identity.Refresh;
-using Boilerplate.Application.Identity.Register;
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Shared.Domain.Bus.Commands;
+﻿using Levara.Application.Identity.ConfirmEmail;
+using Levara.Application.Identity.Login;
+using Levara.Application.Identity.Refresh;
+using Levara.Application.Identity.Register;
+using Levara.Domain.Contexts;
+using Levara.Shared.Domain.Bus.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Boilerplate.Controllers
+namespace Levara.Controllers
 {
     [Authorize]
     [Route("api/identity")]

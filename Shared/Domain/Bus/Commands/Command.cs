@@ -1,6 +1,6 @@
 ﻿
 
-namespace Boilerplate.Shared.Domain.Bus.Commands;
+namespace Levara.Shared.Domain.Bus.Commands;
 
 public abstract class Command<TResponse>
 {

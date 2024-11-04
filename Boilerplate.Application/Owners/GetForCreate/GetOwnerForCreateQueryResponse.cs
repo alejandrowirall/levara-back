@@ -1,6 +1,6 @@
-﻿using Boilerplate.Shared.Domain.Models;
+﻿using Levara.Shared.Domain.Models;
 
-namespace Boilerplate.Application.Owners.GetForCreate;
+namespace Levara.Application.Owners.GetForCreate;
 
 public class GetOwnerForCreateQueryResponse
 {

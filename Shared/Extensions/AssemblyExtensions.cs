@@ -1,7 +1,7 @@
 ﻿
 using System.Reflection;
 
-namespace Boilerplate.Shared.Extensions;
+namespace Levara.Shared.Extensions;
 
 public static class AssemblyExtensions
 {

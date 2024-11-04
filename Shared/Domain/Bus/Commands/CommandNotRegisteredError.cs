@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Shared.Domain.Bus.Commands;
+namespace Levara.Shared.Domain.Bus.Commands;
 
 public class CommandNotRegisteredError<TResponse> : Exception
 {

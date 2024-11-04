@@ -1,23 +1,23 @@
 ﻿
-using Boilerplate.DAL.Extensions;
-using Boilerplate.Data;
-using Boilerplate.Domain.Configurations;
-using Boilerplate.Domain.Models;
-using Boilerplate.Application.Extensions;
-using Boilerplate.ExternalService.Emails.Extensions;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Infrastructure.Bus.Commands;
-using Boilerplate.Shared.Infrastructure.Bus.Query;
-using Boilerplate.WebApi.Configurations;
-using Boilerplate.WebApi.Infrastructure.Security;
+using Levara.DAL.Extensions;
+using Levara.Data;
+using Levara.Domain.Configurations;
+using Levara.Domain.Models;
+using Levara.Application.Extensions;
+using Levara.ExternalService.Emails.Extensions;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Infrastructure.Bus.Commands;
+using Levara.Shared.Infrastructure.Bus.Query;
+using Levara.WebApi.Configurations;
+using Levara.WebApi.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Boilerplate.Domain.Contexts;
+using Levara.Domain.Contexts;
 
-namespace Boilerplate.Infrastructure;
+namespace Levara.Infrastructure;
 public static class ServiceInjection
 {
     public static IServiceCollection AddServices(this IServiceCollection services,

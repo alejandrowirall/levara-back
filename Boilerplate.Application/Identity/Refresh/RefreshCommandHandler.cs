@@ -1,11 +1,11 @@
-﻿using Boilerplate.Application.Identity.Services.Jwt;
-using Boilerplate.Domain.Configurations;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Results;
+﻿using Levara.Application.Identity.Services.Jwt;
+using Levara.Domain.Configurations;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Results;
 using Microsoft.AspNetCore.Identity;
 
-namespace Boilerplate.Application.Identity.Refresh;
+namespace Levara.Application.Identity.Refresh;
 
 public class RefreshCommandHandler : ICommandHandler<RefreshCommand, RefreshCommandResponse>
 {

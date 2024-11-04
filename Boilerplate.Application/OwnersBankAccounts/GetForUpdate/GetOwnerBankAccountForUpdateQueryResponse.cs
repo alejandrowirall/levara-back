@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 
-namespace Boilerplate.Application.OwnersBankAccounts.GetForUpdate;
+namespace Levara.Application.OwnersBankAccounts.GetForUpdate;
 
 public class GetOwnerBankAccountForUpdateQueryResponse
 {

@@ -1,8 +1,8 @@
 ﻿
 
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 
-namespace Boilerplate.Application.Identity.Login;
+namespace Levara.Application.Identity.Login;
 
 public class LoginCommand : Command<LoginCommandResponse>
 {

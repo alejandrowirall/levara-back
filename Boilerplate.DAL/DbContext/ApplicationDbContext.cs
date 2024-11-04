@@ -1,12 +1,12 @@
-﻿using Boilerplate.DAL.DbContext.EntityConfigurations;
-using Boilerplate.DAL.DbContext.Seeds;
-using Boilerplate.Domain.Models;
+﻿using Levara.DAL.DbContext.EntityConfigurations;
+using Levara.DAL.DbContext.Seeds;
+using Levara.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace Boilerplate.Data;
+namespace Levara.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
 {

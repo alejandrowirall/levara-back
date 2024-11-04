@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Identity.Refresh;
+namespace Levara.Application.Identity.Refresh;
 
 public class RefreshCommandResponse
 {

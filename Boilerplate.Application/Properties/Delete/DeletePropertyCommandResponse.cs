@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Properties.Delete;
+namespace Levara.Application.Properties.Delete;
 
 public class DeletePropertyCommandResponse
 {

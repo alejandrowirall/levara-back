@@ -1,5 +1,5 @@
-﻿using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Models;
+﻿using Levara.Domain.Authentication;
+using Levara.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.DAL.DbContext.Seeds.EntitySeeds
+namespace Levara.DAL.DbContext.Seeds.EntitySeeds
 {
     public class UserSeed : SeedBase
     {

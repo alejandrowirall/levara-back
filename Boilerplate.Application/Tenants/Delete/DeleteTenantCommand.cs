@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Tenants.Delete
+namespace Levara.Application.Tenants.Delete
 {
     public class DeleteTenantCommand : Command<DeleteTenantCommandResponse>
     {

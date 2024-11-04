@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Bus.Queries;
 
-namespace Boilerplate.Application.OwnersBankAccounts.GetForCreate
+namespace Levara.Application.OwnersBankAccounts.GetForCreate
 {
     public class GetOwnerBankAccountForCreateQuery : Query<GetOwnerBankAccountForCreateQueryResponse>
     {

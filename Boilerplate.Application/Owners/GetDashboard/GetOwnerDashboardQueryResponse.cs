@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 
-namespace Boilerplate.Application.Owners.GetDashboard;
+namespace Levara.Application.Owners.GetDashboard;
 
 public class GetOwnerDashboardQueryResponse
 {

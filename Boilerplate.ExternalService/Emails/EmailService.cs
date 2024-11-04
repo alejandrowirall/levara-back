@@ -2,11 +2,11 @@
 using FluentEmail.Core;
 using FluentEmail.Core.Models;
 using System.Diagnostics;
-using Boilerplate.ExternalService.Emails.Configurations;
+using Levara.ExternalService.Emails.Configurations;
 using Microsoft.Extensions.Configuration;
-using Boilerplate.Domain.ExternalServices;
+using Levara.Domain.ExternalServices;
 
-namespace Boilerplate.ExternalService.Emails;
+namespace Levara.ExternalService.Emails;
 
 public class EmailService : IEmailService
 {

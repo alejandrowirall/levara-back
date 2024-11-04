@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Owners.Create;
+namespace Levara.Application.Owners.Create;
 
 public class CreateOwnerCommandResponse
 {

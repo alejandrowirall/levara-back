@@ -1,9 +1,9 @@
 ﻿
 
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Identity.Register;
+namespace Levara.Application.Identity.Register;
 
 public class RegisterCommand : Command<RegisterCommandResponse>
 {

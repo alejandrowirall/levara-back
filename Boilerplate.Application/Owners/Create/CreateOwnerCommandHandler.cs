@@ -1,14 +1,14 @@
 ﻿
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.DAL;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Results;
+using Levara.Domain.Authentication;
+using Levara.Domain.DAL;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Results;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace Boilerplate.Application.Owners.Create;
+namespace Levara.Application.Owners.Create;
 
 public class CreateOwnerCommandHandler : ICommandHandler<CreateOwnerCommand, CreateOwnerCommandResponse>
 {

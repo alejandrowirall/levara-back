@@ -1,8 +1,8 @@
 ﻿
 
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 
-namespace Boilerplate.Application.Identity.Refresh;
+namespace Levara.Application.Identity.Refresh;
 
 public class RefreshCommand : Command<RefreshCommandResponse>
 {

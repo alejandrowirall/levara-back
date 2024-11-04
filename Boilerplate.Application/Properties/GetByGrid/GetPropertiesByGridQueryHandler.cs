@@ -1,10 +1,10 @@
 ﻿
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.Properties.GetByGrid;
+namespace Levara.Application.Properties.GetByGrid;
 
 public class GetPropertiesByGridQueryHandler : IQueryHandler<GetPropertiesByGridQuery, PagedList<GetPropertiesByGridQueryResponse>>
 {

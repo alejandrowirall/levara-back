@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Owners.Delete;
+namespace Levara.Application.Owners.Delete;
 
 public class DeleteOwnerCommandResponse
 {

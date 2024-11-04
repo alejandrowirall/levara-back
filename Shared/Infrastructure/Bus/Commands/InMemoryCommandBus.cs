@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Results;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Shared.Infrastructure.Bus.Commands;
+namespace Levara.Shared.Infrastructure.Bus.Commands;
 
 public class InMemoryCommandBus : ICommandBus
 {

@@ -1,7 +1,7 @@
-﻿using Boilerplate.DAL.DbContext.Seeds.EntitySeeds;
+﻿using Levara.DAL.DbContext.Seeds.EntitySeeds;
 using Microsoft.EntityFrameworkCore;
 
-namespace Boilerplate.DAL.DbContext.Seeds;
+namespace Levara.DAL.DbContext.Seeds;
 
 public class SeedManager
 {

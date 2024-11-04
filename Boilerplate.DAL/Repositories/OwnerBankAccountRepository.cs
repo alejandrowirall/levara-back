@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
+using Levara.Domain.Contexts;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
 
-namespace Boilerplate.DAL.Repositories;
+namespace Levara.DAL.Repositories;
 
 public class OwnerBankAccountRepository : Repository<OwnerBankAccount>, IOwnerBankAccountRepository
 {

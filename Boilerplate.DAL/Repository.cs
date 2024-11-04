@@ -1,11 +1,11 @@
 ﻿
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL;
-using Boilerplate.Domain.Models;
+using Levara.Domain.Contexts;
+using Levara.Domain.DAL;
+using Levara.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Boilerplate.DAL;
+namespace Levara.DAL;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {

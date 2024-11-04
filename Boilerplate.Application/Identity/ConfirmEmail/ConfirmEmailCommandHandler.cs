@@ -1,13 +1,13 @@
-﻿using Boilerplate.Domain.Configurations;
-using Boilerplate.Domain.ExternalServices;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Results;
+﻿using Levara.Domain.Configurations;
+using Levara.Domain.ExternalServices;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 
-namespace Boilerplate.Application.Identity.ConfirmEmail;
+namespace Levara.Application.Identity.ConfirmEmail;
 
 public class ConfirmEmailCommandHandler : ICommandHandler<ConfirmEmailCommand, ConfirmEmailCommandResponse>
 {

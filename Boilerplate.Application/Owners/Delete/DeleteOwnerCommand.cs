@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owners.Delete
+namespace Levara.Application.Owners.Delete
 {
     public class DeleteOwnerCommand : Command<DeleteOwnerCommandResponse>
     {

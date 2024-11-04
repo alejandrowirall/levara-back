@@ -1,10 +1,10 @@
 ﻿
-using Boilerplate.Domain.Enum;
-using Boilerplate.Shared.Extensions;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
+using Levara.Domain.Enum;
+using Levara.Shared.Extensions;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.Owners.GetForCreate;
+namespace Levara.Application.Owners.GetForCreate;
 
 public class GetOwnerForCreateQueryHandler : IQueryHandler<GetOwnerForCreateQuery, GetOwnerForCreateQueryResponse>
 {

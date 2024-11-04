@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Tenants.Create;
+namespace Levara.Application.Tenants.Create;
 
 public class CreateTenantCommandResponse
 {

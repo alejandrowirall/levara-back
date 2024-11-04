@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Extensions;
+using Levara.Domain.Models;
+using Levara.Shared.Extensions;
 
-namespace Boilerplate.Application.Owners.GetByGrid;
+namespace Levara.Application.Owners.GetByGrid;
 
 public class GetOwnersByGridQueryResponse
 {

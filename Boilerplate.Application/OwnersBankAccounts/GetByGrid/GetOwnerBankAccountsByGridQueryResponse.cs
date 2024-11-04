@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 
-namespace Boilerplate.Application.OwnersBankAccounts.GetByGrid;
+namespace Levara.Application.OwnersBankAccounts.GetByGrid;
 
 public class GetOwnerBankAccountsByGridQueryResponse
 {

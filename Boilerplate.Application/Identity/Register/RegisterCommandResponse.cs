@@ -1,6 +1,6 @@
 ﻿
 
-namespace Boilerplate.Application.Identity.Register;
+namespace Levara.Application.Identity.Register;
 
 public class RegisterCommandResponse
 {

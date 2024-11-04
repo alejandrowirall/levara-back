@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Enum;
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Models;
+using Levara.Domain.Enum;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Models;
 
-namespace Boilerplate.Application.Owners.GetForUpdate;
+namespace Levara.Application.Owners.GetForUpdate;
 
 public class GetOwnerForUpdateQueryResponse
 {

@@ -1,12 +1,12 @@
-﻿using Boilerplate.Domain.Configurations;
-using Boilerplate.Domain.Models;
+﻿using Levara.Domain.Configurations;
+using Levara.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Boilerplate.Application.Identity.Services.Jwt;
+namespace Levara.Application.Identity.Services.Jwt;
 
 public class JwtService
 {

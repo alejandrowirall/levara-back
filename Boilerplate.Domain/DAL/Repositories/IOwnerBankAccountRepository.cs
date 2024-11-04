@@ -1,6 +1,6 @@
-﻿using Boilerplate.Domain.Models;
+﻿using Levara.Domain.Models;
 
-namespace Boilerplate.Domain.DAL.Repositories;
+namespace Levara.Domain.DAL.Repositories;
 
 public interface IOwnerBankAccountRepository : IRepository<OwnerBankAccount>
 {

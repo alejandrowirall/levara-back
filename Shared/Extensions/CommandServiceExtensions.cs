@@ -1,8 +1,8 @@
-﻿using Boilerplate.Shared.Domain.Bus.Commands;
+﻿using Levara.Shared.Domain.Bus.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Boilerplate.Shared.Extensions;
+namespace Levara.Shared.Extensions;
 
 public static class CommandServiceExtensions
 {

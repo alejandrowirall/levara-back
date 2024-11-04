@@ -3,7 +3,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 
-namespace Boilerplate.Configurations
+namespace Levara.Configurations
 {
     public class SmtpConfiguration
     {

@@ -1,8 +1,8 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.OwnersBankAccounts.GetForUpdate
+namespace Levara.Application.OwnersBankAccounts.GetForUpdate
 {
     public class GetOwnerBankAccountForUpdateQuery : Query<GetOwnerBankAccountForUpdateQueryResponse>
     {

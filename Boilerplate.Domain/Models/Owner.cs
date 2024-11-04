@@ -1,7 +1,7 @@
-﻿using Boilerplate.Domain.Enum;
+﻿using Levara.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Domain.Models;
+namespace Levara.Domain.Models;
 
 public class Owner : Entity
 {

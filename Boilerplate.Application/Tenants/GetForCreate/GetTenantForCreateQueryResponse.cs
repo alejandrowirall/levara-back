@@ -1,6 +1,6 @@
-﻿using Boilerplate.Shared.Domain.Models;
+﻿using Levara.Shared.Domain.Models;
 
-namespace Boilerplate.Application.Tenants.GetForCreate;
+namespace Levara.Application.Tenants.GetForCreate;
 
 public class GetTenantForCreateQueryResponse
 {

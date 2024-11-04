@@ -1,4 +1,4 @@
-﻿namespace Boilerplate.Domain.DAL;
+﻿namespace Levara.Domain.DAL;
 
 public interface IUnitOfWork : IDisposable
 {

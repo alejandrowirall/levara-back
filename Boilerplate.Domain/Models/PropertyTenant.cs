@@ -1,6 +1,6 @@
 ﻿
 
-namespace Boilerplate.Domain.Models;
+namespace Levara.Domain.Models;
 
 public class PropertyTenant : Entity
 {

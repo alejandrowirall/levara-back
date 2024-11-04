@@ -1,10 +1,10 @@
 ﻿
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Domain.Models;
+using Levara.Domain.Contexts;
+using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Boilerplate.DAL.Repositories;
+namespace Levara.DAL.Repositories;
 
 public class PropertyRepository : Repository<Property>, IPropertyRepository
 {

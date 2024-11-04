@@ -1,17 +1,17 @@
-﻿using Boilerplate.Application.Properties.Create;
-using Boilerplate.Application.Properties.Delete;
-using Boilerplate.Application.Properties.GetByGrid;
-using Boilerplate.Application.Properties.GetForCreate;
-using Boilerplate.Application.Properties.GetForUpdate;
-using Boilerplate.Application.Properties.Update;
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Contexts;
-using Boilerplate.Shared.Domain.Bus.Commands;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.WebApi.Infrastructure.Attributes;
+﻿using Levara.Application.Properties.Create;
+using Levara.Application.Properties.Delete;
+using Levara.Application.Properties.GetByGrid;
+using Levara.Application.Properties.GetForCreate;
+using Levara.Application.Properties.GetForUpdate;
+using Levara.Application.Properties.Update;
+using Levara.Domain.Authentication;
+using Levara.Domain.Contexts;
+using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Boilerplate.WebApi.Controllers
+namespace Levara.WebApi.Controllers
 {
     [Route("api/property")]
     [ApiController]

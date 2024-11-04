@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Models;
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Properties.GetByGrid
+namespace Levara.Application.Properties.GetByGrid
 {
     public class GetPropertiesByGridQuery : Query<PagedList<GetPropertiesByGridQueryResponse>>
     {

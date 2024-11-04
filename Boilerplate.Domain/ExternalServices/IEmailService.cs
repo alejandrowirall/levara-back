@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Domain.ExternalServices;
+namespace Levara.Domain.ExternalServices;
 
 public interface IEmailService
 {

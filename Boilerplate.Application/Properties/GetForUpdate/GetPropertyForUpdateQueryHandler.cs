@@ -1,9 +1,9 @@
-﻿using Boilerplate.Domain.Contexts;
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
+﻿using Levara.Domain.Contexts;
+using Levara.Domain.DAL.Repositories;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.Properties.GetForUpdate;
+namespace Levara.Application.Properties.GetForUpdate;
 
 public class GetPropertyForUpdateQueryHandler : IQueryHandler<GetPropertyForUpdateQuery, GetPropertyForUpdateQueryResponse>
 {

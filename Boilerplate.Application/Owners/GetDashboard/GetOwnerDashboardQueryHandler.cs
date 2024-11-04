@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.DAL.Repositories;
-using Boilerplate.Shared.Domain.Bus.Queries;
-using Boilerplate.Shared.Results;
+using Levara.Domain.DAL.Repositories;
+using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Results;
 
-namespace Boilerplate.Application.Owners.GetDashboard;
+namespace Levara.Application.Owners.GetDashboard;
 
 public class GetOwnerDashboardQueryHandler : IQueryHandler<GetOwnerDashboardQuery, GetOwnerDashboardQueryResponse>
 {

@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Bus.Queries;
 
-namespace Boilerplate.Application.Tenants.GetForCreate
+namespace Levara.Application.Tenants.GetForCreate
 {
     public class GetTenantForCreateQuery : Query<GetTenantForCreateQueryResponse>
     {

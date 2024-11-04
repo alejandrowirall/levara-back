@@ -1,7 +1,7 @@
 ﻿
-using Boilerplate.Domain.Models;
+using Levara.Domain.Models;
 
-namespace Boilerplate.Application.Properties.GetByGrid;
+namespace Levara.Application.Properties.GetByGrid;
 
 public class GetPropertiesByGridQueryResponse
 {

@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Enum;
-using Boilerplate.Shared.Domain.Bus.Commands;
+using Levara.Domain.Enum;
+using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Owners.Update
+namespace Levara.Application.Owners.Update
 {
     public class UpdateOwnerCommand : Command<UpdateOwnerCommandResponse>
     {

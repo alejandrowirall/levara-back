@@ -1,9 +1,9 @@
 ﻿
-using Boilerplate.Domain.Authentication;
-using Boilerplate.Domain.Contexts;
+using Levara.Domain.Authentication;
+using Levara.Domain.Contexts;
 using System.Security.Claims;
 
-namespace Boilerplate.WebApi.Infrastructure.Security;
+namespace Levara.WebApi.Infrastructure.Security;
 
 public class WebUserContext : IUserContext
 {

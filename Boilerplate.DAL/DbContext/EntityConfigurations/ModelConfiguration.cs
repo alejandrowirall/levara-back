@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Boilerplate.DAL.DbContext.EntityConfigurations;
+namespace Levara.DAL.DbContext.EntityConfigurations;
 
 public static class ModelConfiguration
 {

@@ -1,7 +1,7 @@
-﻿using Boilerplate.Domain.Configurations;
+﻿using Levara.Domain.Configurations;
 using Microsoft.Extensions.Configuration;
 
-namespace Boilerplate.DAL.Configuration;
+namespace Levara.DAL.Configuration;
 
 internal class DatabaseConfiguration : IDatabaseConfiguration
 {

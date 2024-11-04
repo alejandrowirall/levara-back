@@ -1,5 +1,5 @@
 ﻿
-namespace Boilerplate.Application.Properties.Update;
+namespace Levara.Application.Properties.Update;
 
 public class UpdatePropertyCommandResponse
 {
