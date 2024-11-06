@@ -22,6 +22,7 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
         Property property = new()
         {
             OwnerId = command.OwnerId!.Value,
+            Price=command.Price!.Value,
             Address = new()
             {
                 Street = command.Street!,
@@ -29,7 +30,7 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
                 AdditionalLine = command.AdditionalLine,
                 City = command.City!,
                 State = command.State!,
-                PostalCode = command.PostalCode!
+                PostalCode = command.PostalCode!,
             },
         };
 

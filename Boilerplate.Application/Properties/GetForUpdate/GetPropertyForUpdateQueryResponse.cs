@@ -41,4 +41,6 @@ public class PropertyUpdateQueryResponse
 
     public string PostalCode { get; }
 
+    public decimal? Price { get; set; }
+
 }

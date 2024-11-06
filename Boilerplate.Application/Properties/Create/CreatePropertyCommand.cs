@@ -31,5 +31,8 @@ namespace Boilerplate.Application.Properties.Create
         [Length(1, 20)]
         public string? PostalCode { get; set; }
 
+        [Length(1, 50)]
+        public decimal? Price { get; set; }
+
     }
 }

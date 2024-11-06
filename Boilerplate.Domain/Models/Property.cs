@@ -17,4 +17,6 @@ public class Property : Entity
 
     [Required]
     public Owner Owner { get; set; }
+
+    public decimal? Price { get; set; }
 }
