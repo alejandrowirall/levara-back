@@ -1,5 +1,5 @@
 ﻿using Levara.DAL.Configuration;
-using Levara.Data;
+using Levara.DAL.DbContext;
 using Levara.Domain.Configurations;
 using Levara.Domain.DAL;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 ﻿
 using Levara.DAL.Extensions;
-using Levara.Data;
+using Levara.DAL.DbContext;
 using Levara.Domain.Configurations;
 using Levara.Domain.Models;
 using Levara.Application.Extensions;

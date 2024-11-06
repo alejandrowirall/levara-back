@@ -1,4 +1,4 @@
-﻿using Levara.Data;
+﻿using Levara.DAL.DbContext;
 using Levara.Domain.DAL;
 using Levara.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;

@@ -38,6 +38,7 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
         property.Address.City = command.City!;
         property.Address.State = command.State!;
         property.Address.PostalCode = command.PostalCode!;
+        property.Price = command.Price!;
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {

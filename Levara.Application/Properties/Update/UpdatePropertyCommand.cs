@@ -32,5 +32,8 @@ namespace Levara.Application.Properties.Update
         [Length(1, 20)]
         public string? PostalCode { get; set; }
 
+        [Range(0, double.MaxValue)]
+        public decimal? Price { get; set; }
+
     }
 }
