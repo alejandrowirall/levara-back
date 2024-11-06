@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.WebApi", "Boilerplate\Levara.WebApi.csproj", "{423D2F09-EAD6-4522-8820-A45DAEC89B7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.WebApi", "Levara.WebApi\Levara.WebApi.csproj", "{423D2F09-EAD6-4522-8820-A45DAEC89B7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.DAL", "Boilerplate.DAL\Levara.DAL.csproj", "{6A01AA59-77EB-4F11-8FBB-13DAFE52AA5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.DAL", "Levara.DAL\Levara.DAL.csproj", "{6A01AA59-77EB-4F11-8FBB-13DAFE52AA5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.Shared", "Shared\Levara.Shared.csproj", "{37A37037-4F42-4842-AE9A-D3DCBCCED0D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.Shared", "Levara.Shared\Levara.Shared.csproj", "{37A37037-4F42-4842-AE9A-D3DCBCCED0D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.Domain", "Boilerplate.Domain\Levara.Domain.csproj", "{1F37B6E2-45FD-49B4-A8E9-1058EF58DB29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.Domain", "Levara.Domain\Levara.Domain.csproj", "{1F37B6E2-45FD-49B4-A8E9-1058EF58DB29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.Application", "Boilerplate.Application\Levara.Application.csproj", "{3739BD8E-DF03-43DB-A997-1CC66ACBC130}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.Application", "Levara.Application\Levara.Application.csproj", "{3739BD8E-DF03-43DB-A997-1CC66ACBC130}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.ExternalService", "Boilerplate.ExternalService\Levara.ExternalService.csproj", "{6E7C626B-7968-4C74-8A12-7F365E7F71A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levara.ExternalService", "Levara.ExternalService\Levara.ExternalService.csproj", "{6E7C626B-7968-4C74-8A12-7F365E7F71A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

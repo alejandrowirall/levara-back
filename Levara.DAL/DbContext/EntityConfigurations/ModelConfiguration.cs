@@ -5,7 +5,7 @@ namespace Levara.DAL.DbContext.EntityConfigurations;
 
 public static class ModelConfiguration
 {
-    private static readonly Assembly modelAssembly = Assembly.Load("Boilerplate.DAL");
+    private static readonly Assembly modelAssembly = Assembly.GetExecutingAssembly();
 
     public static void ApplyModelAssemblyEntityConfigurations(this ModelBuilder modelBuilder)
     {

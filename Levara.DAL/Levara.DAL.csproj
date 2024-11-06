@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Boilerplate.Domain\Levara.Domain.csproj" />
-    <ProjectReference Include="..\Shared\Levara.Shared.csproj" />
+    <ProjectReference Include="..\Levara.Domain\Levara.Domain.csproj" />
+    <ProjectReference Include="..\Levara.Shared\Levara.Shared.csproj" />
   </ItemGroup>
 
 </Project>

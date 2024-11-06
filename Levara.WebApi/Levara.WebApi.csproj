@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Boilerplate.Application\Levara.Application.csproj" />
-    <ProjectReference Include="..\Boilerplate.DAL\Levara.DAL.csproj" />
-    <ProjectReference Include="..\Boilerplate.ExternalService\Levara.ExternalService.csproj" />
-    <ProjectReference Include="..\Shared\Levara.Shared.csproj" />
+    <ProjectReference Include="..\Levara.Application\Levara.Application.csproj" />
+    <ProjectReference Include="..\Levara.DAL\Levara.DAL.csproj" />
+    <ProjectReference Include="..\Levara.ExternalService\Levara.ExternalService.csproj" />
+    <ProjectReference Include="..\Levara.Shared\Levara.Shared.csproj" />
   </ItemGroup>
 
 </Project>
