@@ -15,7 +15,7 @@ namespace Boilerplate.WebApi.Controllers
 {
     [Route("api/property")]
     [ApiController]
-    //[AuthorizeAnyRoles(Roles.Admin, Roles.Owner)]
+    [AuthorizeAnyRoles(Roles.Admin, Roles.Owner)]
     public class PropertyController : ControllerBase
     {
         private readonly ICommandBus _commandBus;
