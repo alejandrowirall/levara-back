@@ -10,6 +10,10 @@ public class AdminSeed : SeedBase
     {
         var userHasher = new PasswordHasher<ApplicationUser>();
 
+        const string SecurityStampAdmin = "eca8a667-056e-4622-9ff6-88cd57ca4b44";
+        const string ConcurrencyStampAdmin = "2b3ef318-1fd4-498b-b344-f5d676770237";
+        const string RefreshTokenAdmin = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6";
+
         List<ApplicationUser> allUsersToAdd = new()
         {
             new ApplicationUser
@@ -20,10 +24,10 @@ public class AdminSeed : SeedBase
                 NormalizedEmail = "ADMIN@LEVARA.COM",
                 NormalizedUserName = "ADMIN@LEVARA.COM",
                 PasswordHash = userHasher.HashPassword(null, "Levara.2024"),
-                SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                SecurityStamp = SecurityStampAdmin,
+                ConcurrencyStamp = ConcurrencyStampAdmin,
                 UserName = "admin@levara.com",
-                RefreshToken = Guid.NewGuid().ToString(),
+                RefreshToken = RefreshTokenAdmin,
             }
         };
 

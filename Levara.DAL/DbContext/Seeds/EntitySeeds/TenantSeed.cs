@@ -11,6 +11,12 @@ public class TenantSeed : SeedBase
     {
         var userHasher = new PasswordHasher<ApplicationUser>();
 
+        const string SecurityStampTenant = "eca8a667-056e-4622-9ff6-88cd57ca4b44";
+        const string ConcurrencyStampTenant = "2b3ef318-1fd4-498b-b344-f5d676770237";
+        const string RefreshTokenTenant = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6";
+
+        DateTime datatimeApp = new DateTime(2024, 1, 1).Date;
+
         List<ApplicationUser> allUsersToAdd = new();
         List<IdentityUserRole<int>> userRoles = new();
         List<IdentityUserClaim<int>> userClaims = new();
@@ -29,10 +35,10 @@ public class TenantSeed : SeedBase
                     NormalizedEmail = $"TENANT{i}@LEVARA.COM",
                     NormalizedUserName = $"TENANT{i}@LEVARA.COM",
                     PasswordHash = userHasher.HashPassword(null, "Levara.2024"),
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    SecurityStamp = SecurityStampTenant,
+                    ConcurrencyStamp = ConcurrencyStampTenant,
                     UserName = $"tenant{i}@levara.com",
-                    RefreshToken = Guid.NewGuid().ToString(),
+                    RefreshToken = RefreshTokenTenant,
                 };
 
             allUsersToAdd.Add(user);
@@ -48,8 +54,10 @@ public class TenantSeed : SeedBase
                 City = "New York",
                 State = "New York",
                 PostalCode = "10029",
-                CreatedDate = DateTime.UtcNow,
-                LastEditedDate = DateTime.UtcNow,
+                CreatorId = 1,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
             };
 
             allAddresssToAdd.Add(address);
@@ -65,10 +73,12 @@ public class TenantSeed : SeedBase
                 PersonType = PersonType.Individual,
                 MobilePhone = "+14844760170",
                 Email = $"tenant{i}@levara.com",
-                CreatedDate = DateTime.UtcNow,
-                LastEditedDate = DateTime.UtcNow,
                 AddressId = address.Id,
                 ApplicationUserId = user.Id,
+                CreatorId = 1,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
             };
 
             allTenantsToAdd.Add(tenant);
