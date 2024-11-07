@@ -29,7 +29,7 @@ public static class ServiceInjection
 
         services.AddApplicationService();
 
-        services.AddDALSqlServerDatabase(configuration);
+        services.AddDALPostgreSQLDatabase(configuration);
         services.AddEmailService(configuration);
 
         services.AddScoped<ICommandBus, InMemoryCommandBus>();

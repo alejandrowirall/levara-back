@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,19 +18,19 @@ namespace Levara.DAL.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    AdditionalLine = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true),
-                    LastEditorId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Street = table.Column<string>(type: "text", nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false),
+                    AdditionalLine = table.Column<string>(type: "text", nullable: true),
+                    City = table.Column<string>(type: "text", nullable: false),
+                    State = table.Column<string>(type: "text", nullable: false),
+                    PostalCode = table.Column<string>(type: "text", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,11 +41,11 @@ namespace Levara.DAL.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,23 +56,23 @@ namespace Levara.DAL.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RefreshToken = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,11 +83,11 @@ namespace Levara.DAL.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,11 +104,11 @@ namespace Levara.DAL.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -124,10 +125,10 @@ namespace Levara.DAL.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,8 +145,8 @@ namespace Levara.DAL.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,10 +169,10 @@ namespace Levara.DAL.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,23 +189,23 @@ namespace Levara.DAL.Migrations
                 name: "Owners",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Identification = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdentificationType = table.Column<int>(type: "int", nullable: false),
-                    PersonType = table.Column<int>(type: "int", nullable: false),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<int>(type: "int", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true),
-                    LastEditorId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Surname = table.Column<string>(type: "text", nullable: false),
+                    CompanyName = table.Column<string>(type: "text", nullable: false),
+                    Identification = table.Column<string>(type: "text", nullable: false),
+                    IdentificationType = table.Column<int>(type: "integer", nullable: false),
+                    PersonType = table.Column<int>(type: "integer", nullable: false),
+                    MobilePhone = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    AddressId = table.Column<int>(type: "integer", nullable: false),
+                    ApplicationUserId = table.Column<int>(type: "integer", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -226,23 +227,23 @@ namespace Levara.DAL.Migrations
                 name: "Tenants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Identification = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdentificationType = table.Column<int>(type: "int", nullable: false),
-                    PersonType = table.Column<int>(type: "int", nullable: false),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<int>(type: "int", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true),
-                    LastEditorId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Surname = table.Column<string>(type: "text", nullable: false),
+                    CompanyName = table.Column<string>(type: "text", nullable: false),
+                    Identification = table.Column<string>(type: "text", nullable: false),
+                    IdentificationType = table.Column<int>(type: "integer", nullable: false),
+                    PersonType = table.Column<int>(type: "integer", nullable: false),
+                    MobilePhone = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    AddressId = table.Column<int>(type: "integer", nullable: false),
+                    ApplicationUserId = table.Column<int>(type: "integer", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,17 +265,17 @@ namespace Levara.DAL.Migrations
                 name: "OwnerBankAccounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountNumberMasked = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlaidAccountId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true),
-                    LastEditorId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BankName = table.Column<string>(type: "text", nullable: false),
+                    AccountNumberMasked = table.Column<string>(type: "text", nullable: false),
+                    PlaidAccountId = table.Column<string>(type: "text", nullable: false),
+                    OwnerId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -291,17 +292,17 @@ namespace Levara.DAL.Migrations
                 name: "Properties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true),
-                    LastEditorId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Number = table.Column<int>(type: "integer", nullable: false),
+                    AddressId = table.Column<int>(type: "integer", nullable: false),
+                    OwnerId = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -323,20 +324,20 @@ namespace Levara.DAL.Migrations
                 name: "Leases",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    TenantId = table.Column<int>(type: "int", nullable: false),
-                    PropertyId = table.Column<int>(type: "int", nullable: false),
-                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Frequency = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true),
-                    LastEditorId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OwnerId = table.Column<int>(type: "integer", nullable: false),
+                    TenantId = table.Column<int>(type: "integer", nullable: false),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    DateFrom = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Frequency = table.Column<int>(type: "integer", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -500,27 +501,27 @@ namespace Levara.DAL.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner1@levara.com", true, false, null, "OWNER1@LEVARA.COM", "OWNER1@LEVARA.COM", "AQAAAAIAAYagAAAAENvFYqOkAzWsRSKuxUy4NApIyZnT49UDW+JPKgvPMhJz9eVNqm2Niz5zONQK6DOaNQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner1@levara.com" },
-                    { 2, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner2@levara.com", true, false, null, "OWNER2@LEVARA.COM", "OWNER2@LEVARA.COM", "AQAAAAIAAYagAAAAEOaEEXFcpze2TM5K2tKcEz3Z+BCjdoCbx9QsmBxcNWtyLXQ1Lo8ulnH+5GR5wc8JpQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner2@levara.com" },
-                    { 3, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner3@levara.com", true, false, null, "OWNER3@LEVARA.COM", "OWNER3@LEVARA.COM", "AQAAAAIAAYagAAAAEAO0vgJyU7CaGolTckplf+V7CCIjrdTA2sWDBhaFnlegFrjRwohUQrtvDKqvOF7HpQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner3@levara.com" },
-                    { 4, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner4@levara.com", true, false, null, "OWNER4@LEVARA.COM", "OWNER4@LEVARA.COM", "AQAAAAIAAYagAAAAEC7jkOYN7tmNhkTcVyz3hJiVB7XHUANDhjaBHCNzgIfezASB3jNqoqWFpzJ9OBNYTQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner4@levara.com" },
-                    { 5, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner5@levara.com", true, false, null, "OWNER5@LEVARA.COM", "OWNER5@LEVARA.COM", "AQAAAAIAAYagAAAAENaapTqKnXAxIpQWmt8qDkdVQK4Etn5JJQ5mgHSaCInh00S4fLrCaYnWc2+kAuDN0g==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner5@levara.com" },
-                    { 6, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner6@levara.com", true, false, null, "OWNER6@LEVARA.COM", "OWNER6@LEVARA.COM", "AQAAAAIAAYagAAAAEHNGGaHea7D3gllq+Y5ZK5oN2WqzItJnR+IERyKpOH+PA53WGIPea09FxBO3MctBVw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner6@levara.com" },
-                    { 7, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner7@levara.com", true, false, null, "OWNER7@LEVARA.COM", "OWNER7@LEVARA.COM", "AQAAAAIAAYagAAAAEHfOyOHlDDbay5uECNPwYyfX3XnPvlJmqiKbfE7PdiJ3eo5Vo9RdeeCf+7VLWt9k4w==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner7@levara.com" },
-                    { 8, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner8@levara.com", true, false, null, "OWNER8@LEVARA.COM", "OWNER8@LEVARA.COM", "AQAAAAIAAYagAAAAEKma1un/ZGBE5oXzlIrLsMN1Q0D8AI5NFw+Ak9yTxNnjJV6lSUkohCTboLfAkd4oyw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner8@levara.com" },
-                    { 9, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner9@levara.com", true, false, null, "OWNER9@LEVARA.COM", "OWNER9@LEVARA.COM", "AQAAAAIAAYagAAAAEFCUUcf8z0DT3Xpnuy+wJiTR/hfIOhHP2vQukADZtihOZW6Ho1GkbKkTlvg66q1FRw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner9@levara.com" },
-                    { 10, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner10@levara.com", true, false, null, "OWNER10@LEVARA.COM", "OWNER10@LEVARA.COM", "AQAAAAIAAYagAAAAEL3QfzndiyZxjZVCYoHKaxj++0wEwBiSwZevgPNDKVhDvadEA+F869Yp2RezakN3Fw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner10@levara.com" },
-                    { 51, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant1@levara.com", true, false, null, "TENANT1@LEVARA.COM", "TENANT1@LEVARA.COM", "AQAAAAIAAYagAAAAECCwdeMX5rw/a6wWu5Vjihmy7fGLqIlzba6yegTDfnX1FpVm0qnuH5mBOPsZVkTYIg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant1@levara.com" },
-                    { 52, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant2@levara.com", true, false, null, "TENANT2@LEVARA.COM", "TENANT2@LEVARA.COM", "AQAAAAIAAYagAAAAEDC0e/ISx2GDZixbQq254YWB5paahVXokKjjVz0etzz8FTzpgAFZtVf+D82BAgjEXQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant2@levara.com" },
-                    { 53, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant3@levara.com", true, false, null, "TENANT3@LEVARA.COM", "TENANT3@LEVARA.COM", "AQAAAAIAAYagAAAAEFHOuagFN0Kyk42kl0PB/GqvLgESOexL3TpOvryEHOzG1SHYhs9T02l9HZVkYdyzBg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant3@levara.com" },
-                    { 54, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant4@levara.com", true, false, null, "TENANT4@LEVARA.COM", "TENANT4@LEVARA.COM", "AQAAAAIAAYagAAAAEIJtXIFyQzvR4XT5xB9085DKDELSVLMu4CNM6+G+ooAGV4ckk//B4xYr7jRt2gCPJg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant4@levara.com" },
-                    { 55, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant5@levara.com", true, false, null, "TENANT5@LEVARA.COM", "TENANT5@LEVARA.COM", "AQAAAAIAAYagAAAAEL1WFXxRlBAz9XOjm65M8g05cTfvVQY1RfseUCdbfvyeq9j72V+D/nm4XmLd41tGKw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant5@levara.com" },
-                    { 56, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant6@levara.com", true, false, null, "TENANT6@LEVARA.COM", "TENANT6@LEVARA.COM", "AQAAAAIAAYagAAAAECf8y4cFfc8l9BUqbp+aFsfnWPTw3cCF5qZVW4UthGL2FwYj6eJwNup9uuooApf5BQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant6@levara.com" },
-                    { 57, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant7@levara.com", true, false, null, "TENANT7@LEVARA.COM", "TENANT7@LEVARA.COM", "AQAAAAIAAYagAAAAECxQnsvoVnfnK2gO82y7HlsN9wanCUN75PQtV+ZwQefeCc9OFjc639u42xW5ECHeFA==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant7@levara.com" },
-                    { 58, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant8@levara.com", true, false, null, "TENANT8@LEVARA.COM", "TENANT8@LEVARA.COM", "AQAAAAIAAYagAAAAEOpSIA+dsH5GCs4gmjsgiQ5Pp11CeHBTaNN0s0HBoDxIAjahzLusE8G9sSoBxajk9Q==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant8@levara.com" },
-                    { 59, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant9@levara.com", true, false, null, "TENANT9@LEVARA.COM", "TENANT9@LEVARA.COM", "AQAAAAIAAYagAAAAEK25Jjvk5EtrvJ1WXB1MjYK2w101I4pD6oz6ekve6muGC5dAn4/rmXwpHbURtNTUew==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant9@levara.com" },
-                    { 60, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant10@levara.com", true, false, null, "TENANT10@LEVARA.COM", "TENANT10@LEVARA.COM", "AQAAAAIAAYagAAAAEPGuyB2xYUnRFQlK98WY65+XV/zr3oihBgstBq+p78qnNiikTEgt1Sbn1We0+rKSXg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant10@levara.com" },
-                    { 100, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "admin@levara.com", true, false, null, "ADMIN@LEVARA.COM", "ADMIN@LEVARA.COM", "AQAAAAIAAYagAAAAEJAJKevfrCQo3yDkZrw5rFDlnphl1txwe1wSoDlhY8YGF3vCezy+O431CKe1R90/1A==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "admin@levara.com" }
+                    { 1, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner1@levara.com", true, false, null, "OWNER1@LEVARA.COM", "OWNER1@LEVARA.COM", "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner1@levara.com" },
+                    { 2, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner2@levara.com", true, false, null, "OWNER2@LEVARA.COM", "OWNER2@LEVARA.COM", "AQAAAAIAAYagAAAAEJvRB3/vRJdD3t2eThwQMuyK1a7wQqfWTZOGP8/V6HTnXPpv4wU3sFW3FgJIpWXX0g==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner2@levara.com" },
+                    { 3, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner3@levara.com", true, false, null, "OWNER3@LEVARA.COM", "OWNER3@LEVARA.COM", "AQAAAAIAAYagAAAAEBnjKiuWyDjsgwg/8T/sgH5z9yPd6xQorOFAYFBZmu/E25pQT7W9gH/CrSnbP9vxCg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner3@levara.com" },
+                    { 4, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner4@levara.com", true, false, null, "OWNER4@LEVARA.COM", "OWNER4@LEVARA.COM", "AQAAAAIAAYagAAAAEN64BXKlraj4nAYsoHnOxgiucG4C1SuOoFFOp4pxmbJ244Wq6ST2/0QTgSgtp/B0ZA==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner4@levara.com" },
+                    { 5, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner5@levara.com", true, false, null, "OWNER5@LEVARA.COM", "OWNER5@LEVARA.COM", "AQAAAAIAAYagAAAAENqnZCYyb7yRbC3uc+gztw3n7hB+Axlg6KNZa0dr8M1jHGuB6FPMBJGWZ/IUnG5D0Q==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner5@levara.com" },
+                    { 6, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner6@levara.com", true, false, null, "OWNER6@LEVARA.COM", "OWNER6@LEVARA.COM", "AQAAAAIAAYagAAAAED3i+h6UMBu4hqn7e1rIw7WUBb+ojdVQZS/cCoaxou8q8O/kYyWjPpKl8YHCCzOJFA==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner6@levara.com" },
+                    { 7, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner7@levara.com", true, false, null, "OWNER7@LEVARA.COM", "OWNER7@LEVARA.COM", "AQAAAAIAAYagAAAAEA3FPvvsXqzlDp6nckFhNrhLQR26jG2Rqmvxg/BOeOPZtaCRXl76TcNlCNdXWb0Vig==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner7@levara.com" },
+                    { 8, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner8@levara.com", true, false, null, "OWNER8@LEVARA.COM", "OWNER8@LEVARA.COM", "AQAAAAIAAYagAAAAEL5dUQbLpCjYZOpbnpUwRKARrkXoBzCLtOv757wkwrDC98TcQZhkWb8sTfvsGSvV7g==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner8@levara.com" },
+                    { 9, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner9@levara.com", true, false, null, "OWNER9@LEVARA.COM", "OWNER9@LEVARA.COM", "AQAAAAIAAYagAAAAEE6HgcnIMPlxSuix2ARnYF3hy2qgFiver2LLAIxBgiXkrvAosycVUgZICEh14WWnrw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner9@levara.com" },
+                    { 10, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "owner10@levara.com", true, false, null, "OWNER10@LEVARA.COM", "OWNER10@LEVARA.COM", "AQAAAAIAAYagAAAAEGjifEQgK4N0CUAjmO2YHGTmYlaw+X/ovuyHk51LY0utS+ppVrTiUI5p013i9Vh4ow==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "owner10@levara.com" },
+                    { 51, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant1@levara.com", true, false, null, "TENANT1@LEVARA.COM", "TENANT1@LEVARA.COM", "AQAAAAIAAYagAAAAEFBdtud17MFEUrGiFPeExeE+zIT5zOJxSQhjpkRSx12CXXgS+yu2xDqxlyb0HtgEnA==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant1@levara.com" },
+                    { 52, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant2@levara.com", true, false, null, "TENANT2@LEVARA.COM", "TENANT2@LEVARA.COM", "AQAAAAIAAYagAAAAEHuzesFBv8blz53Y0GYzkNZZ9ueCspliFsapy03w6XRSpka85tN902bB606D3Atd3A==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant2@levara.com" },
+                    { 53, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant3@levara.com", true, false, null, "TENANT3@LEVARA.COM", "TENANT3@LEVARA.COM", "AQAAAAIAAYagAAAAEPqCeevwBeK3aimZSGDuLxZBYsZrkiDbfOf/nPjhUhfbgWYpK17lU/xGijdO1IVu9Q==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant3@levara.com" },
+                    { 54, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant4@levara.com", true, false, null, "TENANT4@LEVARA.COM", "TENANT4@LEVARA.COM", "AQAAAAIAAYagAAAAEHrsZRY4CvKWwVv1kMvXADAK9rsHrMIoCLlRF9oGqf4jVBf/wgeuWXm5zJQVJU7o7Q==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant4@levara.com" },
+                    { 55, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant5@levara.com", true, false, null, "TENANT5@LEVARA.COM", "TENANT5@LEVARA.COM", "AQAAAAIAAYagAAAAEOl3N2DcXoV2bI4xZ4FQ4xsq2Hmzil8S+akxpRqma497MGDSH9L7KHnwVWcwxsAmpg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant5@levara.com" },
+                    { 56, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant6@levara.com", true, false, null, "TENANT6@LEVARA.COM", "TENANT6@LEVARA.COM", "AQAAAAIAAYagAAAAEN/JWWrXZPd0oncDZSSs1CsunYlqT4sc6CP2URhqWghsG9+jjbv4AZj3TZ1zWNAeCg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant6@levara.com" },
+                    { 57, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant7@levara.com", true, false, null, "TENANT7@LEVARA.COM", "TENANT7@LEVARA.COM", "AQAAAAIAAYagAAAAEJpUHNoC1yl6V/agi1KEyK76eAfy58Np/ObNs/EYUXYaOvwNjw1RCAmgpESlPAVMdg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant7@levara.com" },
+                    { 58, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant8@levara.com", true, false, null, "TENANT8@LEVARA.COM", "TENANT8@LEVARA.COM", "AQAAAAIAAYagAAAAEMOhSDlEQxkcY2hNGyRHvLCeCdEIjP0Yj+CO5F/EVzEpg6I559D21cHtmLON6PP5Vg==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant8@levara.com" },
+                    { 59, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant9@levara.com", true, false, null, "TENANT9@LEVARA.COM", "TENANT9@LEVARA.COM", "AQAAAAIAAYagAAAAEF3HGtE6g1xPrJt0/r1NnXgXkwUEYWvgfnhezLGizYYYBqkeD6z+dpBtxTAF72AMDw==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant9@levara.com" },
+                    { 60, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "tenant10@levara.com", true, false, null, "TENANT10@LEVARA.COM", "TENANT10@LEVARA.COM", "AQAAAAIAAYagAAAAEHX558urcHzmgyciIfe+b9v5flCKmh4b90a+JhQic+1ZyGG7jKXszblta132c9yWhQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant10@levara.com" },
+                    { 100, 0, "2b3ef318-1fd4-498b-b344-f5d676770237", "admin@levara.com", true, false, null, "ADMIN@LEVARA.COM", "ADMIN@LEVARA.COM", "AQAAAAIAAYagAAAAEJM0dj5oijkQSfzvkIPtNPOZcULc+IgcVOySAo60cDzs0jJy7JoCM9ikk1KjdpPONQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "admin@levara.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -762,8 +763,7 @@ namespace Levara.DAL.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -789,8 +789,7 @@ namespace Levara.DAL.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Leases_OwnerId",

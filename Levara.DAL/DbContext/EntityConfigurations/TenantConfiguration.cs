@@ -29,6 +29,12 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                    .WithMany()
                    .HasForeignKey(o => o.AddressId);
 
+            builder.Property(o => o.CreatedDate)
+                   .HasColumnType("timestamp without time zone");
+
+            builder.Property(o => o.LastEditedDate)
+                    .HasColumnType("timestamp without time zone");
+
             builder.ToTable("Tenants")
                    .HasQueryFilter(c => !c.Deleted);
         }

@@ -3,16 +3,16 @@ using System;
 using Levara.DAL.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Levara.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241107004218_Initial")]
+    [Migration("20241107191724_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,54 +21,54 @@ namespace Levara.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Levara.Domain.Models.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdditionalLine")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Number")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -1761,60 +1761,60 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -1823,8 +1823,7 @@ namespace Levara.DAL.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
 
@@ -1839,7 +1838,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER1@LEVARA.COM",
                             NormalizedUserName = "OWNER1@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENvFYqOkAzWsRSKuxUy4NApIyZnT49UDW+JPKgvPMhJz9eVNqm2Niz5zONQK6DOaNQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1856,7 +1855,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER2@LEVARA.COM",
                             NormalizedUserName = "OWNER2@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOaEEXFcpze2TM5K2tKcEz3Z+BCjdoCbx9QsmBxcNWtyLXQ1Lo8ulnH+5GR5wc8JpQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJvRB3/vRJdD3t2eThwQMuyK1a7wQqfWTZOGP8/V6HTnXPpv4wU3sFW3FgJIpWXX0g==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1873,7 +1872,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER3@LEVARA.COM",
                             NormalizedUserName = "OWNER3@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAO0vgJyU7CaGolTckplf+V7CCIjrdTA2sWDBhaFnlegFrjRwohUQrtvDKqvOF7HpQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBnjKiuWyDjsgwg/8T/sgH5z9yPd6xQorOFAYFBZmu/E25pQT7W9gH/CrSnbP9vxCg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1890,7 +1889,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER4@LEVARA.COM",
                             NormalizedUserName = "OWNER4@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC7jkOYN7tmNhkTcVyz3hJiVB7XHUANDhjaBHCNzgIfezASB3jNqoqWFpzJ9OBNYTQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN64BXKlraj4nAYsoHnOxgiucG4C1SuOoFFOp4pxmbJ244Wq6ST2/0QTgSgtp/B0ZA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1907,7 +1906,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER5@LEVARA.COM",
                             NormalizedUserName = "OWNER5@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENaapTqKnXAxIpQWmt8qDkdVQK4Etn5JJQ5mgHSaCInh00S4fLrCaYnWc2+kAuDN0g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENqnZCYyb7yRbC3uc+gztw3n7hB+Axlg6KNZa0dr8M1jHGuB6FPMBJGWZ/IUnG5D0Q==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1924,7 +1923,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER6@LEVARA.COM",
                             NormalizedUserName = "OWNER6@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHNGGaHea7D3gllq+Y5ZK5oN2WqzItJnR+IERyKpOH+PA53WGIPea09FxBO3MctBVw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED3i+h6UMBu4hqn7e1rIw7WUBb+ojdVQZS/cCoaxou8q8O/kYyWjPpKl8YHCCzOJFA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1941,7 +1940,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER7@LEVARA.COM",
                             NormalizedUserName = "OWNER7@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHfOyOHlDDbay5uECNPwYyfX3XnPvlJmqiKbfE7PdiJ3eo5Vo9RdeeCf+7VLWt9k4w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA3FPvvsXqzlDp6nckFhNrhLQR26jG2Rqmvxg/BOeOPZtaCRXl76TcNlCNdXWb0Vig==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1958,7 +1957,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER8@LEVARA.COM",
                             NormalizedUserName = "OWNER8@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKma1un/ZGBE5oXzlIrLsMN1Q0D8AI5NFw+Ak9yTxNnjJV6lSUkohCTboLfAkd4oyw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL5dUQbLpCjYZOpbnpUwRKARrkXoBzCLtOv757wkwrDC98TcQZhkWb8sTfvsGSvV7g==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1975,7 +1974,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER9@LEVARA.COM",
                             NormalizedUserName = "OWNER9@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFCUUcf8z0DT3Xpnuy+wJiTR/hfIOhHP2vQukADZtihOZW6Ho1GkbKkTlvg66q1FRw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE6HgcnIMPlxSuix2ARnYF3hy2qgFiver2LLAIxBgiXkrvAosycVUgZICEh14WWnrw==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -1992,7 +1991,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER10@LEVARA.COM",
                             NormalizedUserName = "OWNER10@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL3QfzndiyZxjZVCYoHKaxj++0wEwBiSwZevgPNDKVhDvadEA+F869Yp2RezakN3Fw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGjifEQgK4N0CUAjmO2YHGTmYlaw+X/ovuyHk51LY0utS+ppVrTiUI5p013i9Vh4ow==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2009,7 +2008,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT1@LEVARA.COM",
                             NormalizedUserName = "TENANT1@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECCwdeMX5rw/a6wWu5Vjihmy7fGLqIlzba6yegTDfnX1FpVm0qnuH5mBOPsZVkTYIg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFBdtud17MFEUrGiFPeExeE+zIT5zOJxSQhjpkRSx12CXXgS+yu2xDqxlyb0HtgEnA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2026,7 +2025,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT2@LEVARA.COM",
                             NormalizedUserName = "TENANT2@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDC0e/ISx2GDZixbQq254YWB5paahVXokKjjVz0etzz8FTzpgAFZtVf+D82BAgjEXQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHuzesFBv8blz53Y0GYzkNZZ9ueCspliFsapy03w6XRSpka85tN902bB606D3Atd3A==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2043,7 +2042,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT3@LEVARA.COM",
                             NormalizedUserName = "TENANT3@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFHOuagFN0Kyk42kl0PB/GqvLgESOexL3TpOvryEHOzG1SHYhs9T02l9HZVkYdyzBg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPqCeevwBeK3aimZSGDuLxZBYsZrkiDbfOf/nPjhUhfbgWYpK17lU/xGijdO1IVu9Q==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2060,7 +2059,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT4@LEVARA.COM",
                             NormalizedUserName = "TENANT4@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIJtXIFyQzvR4XT5xB9085DKDELSVLMu4CNM6+G+ooAGV4ckk//B4xYr7jRt2gCPJg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHrsZRY4CvKWwVv1kMvXADAK9rsHrMIoCLlRF9oGqf4jVBf/wgeuWXm5zJQVJU7o7Q==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2077,7 +2076,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT5@LEVARA.COM",
                             NormalizedUserName = "TENANT5@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL1WFXxRlBAz9XOjm65M8g05cTfvVQY1RfseUCdbfvyeq9j72V+D/nm4XmLd41tGKw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOl3N2DcXoV2bI4xZ4FQ4xsq2Hmzil8S+akxpRqma497MGDSH9L7KHnwVWcwxsAmpg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2094,7 +2093,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT6@LEVARA.COM",
                             NormalizedUserName = "TENANT6@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECf8y4cFfc8l9BUqbp+aFsfnWPTw3cCF5qZVW4UthGL2FwYj6eJwNup9uuooApf5BQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN/JWWrXZPd0oncDZSSs1CsunYlqT4sc6CP2URhqWghsG9+jjbv4AZj3TZ1zWNAeCg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2111,7 +2110,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT7@LEVARA.COM",
                             NormalizedUserName = "TENANT7@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECxQnsvoVnfnK2gO82y7HlsN9wanCUN75PQtV+ZwQefeCc9OFjc639u42xW5ECHeFA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJpUHNoC1yl6V/agi1KEyK76eAfy58Np/ObNs/EYUXYaOvwNjw1RCAmgpESlPAVMdg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2128,7 +2127,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT8@LEVARA.COM",
                             NormalizedUserName = "TENANT8@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOpSIA+dsH5GCs4gmjsgiQ5Pp11CeHBTaNN0s0HBoDxIAjahzLusE8G9sSoBxajk9Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMOhSDlEQxkcY2hNGyRHvLCeCdEIjP0Yj+CO5F/EVzEpg6I559D21cHtmLON6PP5Vg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2145,7 +2144,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT9@LEVARA.COM",
                             NormalizedUserName = "TENANT9@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK25Jjvk5EtrvJ1WXB1MjYK2w101I4pD6oz6ekve6muGC5dAn4/rmXwpHbURtNTUew==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF3HGtE6g1xPrJt0/r1NnXgXkwUEYWvgfnhezLGizYYYBqkeD6z+dpBtxTAF72AMDw==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2162,7 +2161,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TENANT10@LEVARA.COM",
                             NormalizedUserName = "TENANT10@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPGuyB2xYUnRFQlK98WY65+XV/zr3oihBgstBq+p78qnNiikTEgt1Sbn1We0+rKSXg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHX558urcHzmgyciIfe+b9v5flCKmh4b90a+JhQic+1ZyGG7jKXszblta132c9yWhQ==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2179,7 +2178,7 @@ namespace Levara.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LEVARA.COM",
                             NormalizedUserName = "ADMIN@LEVARA.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJAJKevfrCQo3yDkZrw5rFDlnphl1txwe1wSoDlhY8YGF3vCezy+O431CKe1R90/1A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJM0dj5oijkQSfzvkIPtNPOZcULc+IgcVOySAo60cDzs0jJy7JoCM9ikk1KjdpPONQ==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6",
                             SecurityStamp = "eca8a667-056e-4622-9ff6-88cd57ca4b44",
@@ -2192,46 +2191,46 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("DateFrom")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateTo")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<int>("Frequency")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PropertyId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TenantId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2410,60 +2409,60 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Identification")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("IdentificationType")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("MobilePhone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("PersonType")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -2670,39 +2669,39 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountNumberMasked")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("BankName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PlaidAccountId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -2847,37 +2846,37 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Number")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal?>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.HasKey("Id");
 
@@ -4194,60 +4193,60 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Identification")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("IdentificationType")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("MobilePhone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("PersonType")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -4454,28 +4453,27 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
 
@@ -4504,18 +4502,18 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -4528,18 +4526,18 @@ namespace Levara.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -4693,16 +4691,16 @@ namespace Levara.DAL.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -4714,10 +4712,10 @@ namespace Levara.DAL.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -4836,16 +4834,16 @@ namespace Levara.DAL.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
