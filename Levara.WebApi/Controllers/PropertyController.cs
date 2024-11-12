@@ -88,7 +88,7 @@ namespace Levara.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("Update")]
+        [HttpGet("Update/{Id}")]
         public async Task<IActionResult> Update([FromQuery] GetPropertyForUpdateQuery query)
         {
             var response = await _queryBus.Ask(query);
