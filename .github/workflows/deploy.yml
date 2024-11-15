@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0' # Cambia según la versión de .NET Core que uses
+        dotnet-version: '8.0' # Cambia según tu versión de .NET Core
 
     # Restaurar dependencias
     - name: Restore dependencies
@@ -38,16 +38,16 @@ jobs:
         cd output
         zip -r ../Levara.WebApi.zip .
 
-    # Desplegar en AWS Lambda
+    # Desplegar a AWS Lambda
     - name: Deploy to AWS Lambda
       uses: docker://amazon/aws-cli:2.13.7
-     with:
+      with:
         entrypoint: /bin/sh
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: us-east-1 # Cambia según tu región
-        run: |
-          lambda update-function-code \
-            --function-name LevaraFuntions \
-            --zip-file fileb://Levara.WebApi.zip
+      run: |
+        aws lambda update-function-code \
+          --function-name LevaraFuntions \
+          --zip-file fileb://Levara.WebApi.zip
