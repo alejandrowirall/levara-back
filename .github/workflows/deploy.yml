@@ -40,12 +40,14 @@ jobs:
 
     # Desplegar en AWS Lambda
     - name: Deploy to AWS Lambda
-      uses: aws-actions/aws-cli-action@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region: us-east-1 # Cambia a tu región de AWS
-        command: |
+      uses: docker://amazon/aws-cli:2.13.7
+     with:
+        entrypoint: /bin/sh
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1 # Cambia según tu región
+        run: |
           lambda update-function-code \
             --function-name LevaraFuntions \
             --zip-file fileb://Levara.WebApi.zip
