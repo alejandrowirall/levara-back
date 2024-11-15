@@ -1,0 +1,51 @@
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout del código
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Configurar .NET Core
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0' # Cambia según la versión de .NET Core que uses
+
+    # Restaurar dependencias
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Construir el proyecto
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    # Publicar el proyecto
+    - name: Publish
+      run: dotnet publish -c Release -o output
+
+    # Empaquetar para AWS Lambda
+    - name: Package for AWS Lambda
+      run: |
+        cd output
+        zip -r ../Levara.WebApi.zip .
+
+    # Desplegar en AWS Lambda
+    - name: Deploy to AWS Lambda
+      uses: aws-actions/aws-cli-action@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: us-east-1 # Cambia a tu región de AWS
+        command: |
+          lambda update-function-code \
+            --function-name LevaraFuntions \
+            --zip-file fileb://Levara.WebApi.zip
