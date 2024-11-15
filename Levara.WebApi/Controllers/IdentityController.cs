@@ -39,6 +39,8 @@ namespace Levara.Controllers
             return Ok(response);
         }
 
+
+
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand)
