@@ -66,9 +66,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public async Task AddAsync(TEntity entity)
     {
-        entity.CreatedDate = DateTime.UtcNow;
+        entity.CreatedDate = DateTime.Now;
         entity.CreatorId = _userContext.Id;
-        entity.LastEditedDate = DateTime.UtcNow;
+        entity.LastEditedDate = DateTime.Now;
         entity.LastEditorId = _userContext.Id;
 
         await _dbSet.AddAsync(entity);
@@ -76,7 +76,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public void Update(TEntity entity)
     {
-        entity.LastEditedDate = DateTime.UtcNow;
+        entity.LastEditedDate = DateTime.Now;
         entity.LastEditorId = _userContext.Id;
 
         _dbSet.Update(entity);
@@ -84,7 +84,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public void Delete(TEntity entity)
     {
-        entity.LastEditedDate = DateTime.UtcNow;
+        entity.LastEditedDate = DateTime.Now;
         entity.LastEditorId = _userContext.Id;
         entity.Deleted = true;
 

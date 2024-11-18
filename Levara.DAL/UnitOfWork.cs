@@ -39,11 +39,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             await transaction.RollbackAsync();
 
-            throw;
+            throw ex;
         }
     }
 
