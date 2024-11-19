@@ -18,12 +18,6 @@ namespace Levara.DAL.DbContext.EntityConfigurations
             builder.Property(o => o.Street);
             builder.Property(o => o.PostalCode);
 
-            builder.Property(o => o.CreatedDate)
-                   .HasColumnType("timestamp without time zone");
-
-            builder.Property(o => o.LastEditedDate)
-                    .HasColumnType("timestamp without time zone");
-
             builder.ToTable("Addresses")
                    .HasQueryFilter(c => !c.Deleted);
         }

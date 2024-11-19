@@ -60,6 +60,13 @@ public class OwnerBankAccountGrid
 
 public class RentPaymentNotificationGrid
 {
+    public RentPaymentNotificationGrid(RentPaymentNotification rentPaymentNotification)
+    {
+        Id = rentPaymentNotification.Id;
+        Property = rentPaymentNotification.Property;
+        DueDate = rentPaymentNotification.DueDate;
+        Status = rentPaymentNotification.Status;
+    }
 
     public int Id { get; set; }
 
@@ -72,6 +79,13 @@ public class RentPaymentNotificationGrid
 
 public class ImportantNotificationGrid
 {
+    public ImportantNotificationGrid(PropertyNotification propertyNotification)
+    {
+        Id = propertyNotification.Id;
+        Property = propertyNotification.Property;
+        Date = propertyNotification.Date;
+        Detail = propertyNotification.Detail;
+    }
 
     public int Id { get; set; }
 

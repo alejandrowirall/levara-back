@@ -12,17 +12,9 @@ namespace Levara.DAL.DbContext.EntityConfigurations
             builder.Property(o => o.Id)
                    .ValueGeneratedOnAdd();
 
-           
-
             builder.HasOne(o => o.Owner)
                    .WithMany()
                    .HasForeignKey(o => o.OwnerId);
-
-            builder.Property(o => o.CreatedDate)
-                   .HasColumnType("timestamp without time zone");
-
-            builder.Property(o => o.LastEditedDate)
-                    .HasColumnType("timestamp without time zone");
 
             builder.ToTable("OwnerBankAccounts")
                    .HasQueryFilter(c => !c.Deleted);

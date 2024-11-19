@@ -13,10 +13,13 @@ public class OwnerSeed : SeedBase
         var userHasher = new PasswordHasher<ApplicationUser>();
 
         const string SecurityStampOwner = "eca8a667-056e-4622-9ff6-88cd57ca4b44";
-        const string ConcurrencyStampOwner = "2b3ef318-1fd4-498b-b344-f5d676770237";
+        const string ConcurrencyStampOwner = "c231efea-6e8c-40e5-ae33-f15bc5cfb2a0";
         const string RefreshTokenOwner = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6";
 
-        DateTime datatimeApp = new DateTime(2024,1,1).Date;
+        //HashPassword of Levara.2024
+        const string HashPassword = "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==";
+
+        DateTime datatimeApp = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         List<ApplicationUser> allUsersToAdd = new();
         List<IdentityUserRole<int>> userRoles = new();
@@ -24,7 +27,10 @@ public class OwnerSeed : SeedBase
         List<Address> allAddresssToAdd = new();
         List<Owner> allOwnersToAdd = new();
         List<OwnerBankAccount> allOwnersBankAccounts = new();
-        
+
+        List<PropertyNotification> propertyNotifications = new();
+        List<RentPaymentNotification> rentPaymentNotifications = new();
+
 
         for (int i = 1; i < 11; i++)
         {
@@ -36,7 +42,7 @@ public class OwnerSeed : SeedBase
                     EmailConfirmed = true,
                     NormalizedEmail = $"OWNER{i}@LEVARA.COM",
                     NormalizedUserName = $"OWNER{i}@LEVARA.COM",
-                    PasswordHash = userHasher.HashPassword(null, "Levara.2024"),
+                    PasswordHash = HashPassword,
                     SecurityStamp = SecurityStampOwner,
                     ConcurrencyStamp = ConcurrencyStampOwner,
                     UserName = $"owner{i}@levara.com",
@@ -149,6 +155,30 @@ public class OwnerSeed : SeedBase
                 };
 
                 allproperties.Add(property);
+
+                PropertyNotification propertyNotification = new()
+                {
+                    Id = propertyNotifications.Count + rentPaymentNotifications.Count + 1,
+                    Property = $"Property {property.Number}",
+                    Date = datatimeApp.AddDays(-i),
+                    Detail = i % 2 == 0 ? "End date to renewal" : "General maintenance scheduled",
+                    ReceiverId = owner.ApplicationUserId!.Value,
+                    CreatedDate = datatimeApp,
+                    Type = NotificationType.Property
+                };
+                propertyNotifications.Add(propertyNotification);
+
+                RentPaymentNotification rentPaymentNotification = new()
+                {
+                    Id = propertyNotifications.Count + rentPaymentNotifications.Count + 1,
+                    Property = $"Property {property.Number}",
+                    DueDate = datatimeApp.AddMonths(-i),
+                    Status = i % 2 == 0 ? "Overdue" : "Paid",
+                    ReceiverId = owner.ApplicationUserId!.Value,
+                    CreatedDate = datatimeApp,
+                    Type = NotificationType.RentPayment
+                };
+                rentPaymentNotifications.Add(rentPaymentNotification);
             }
         }
 
@@ -163,6 +193,9 @@ public class OwnerSeed : SeedBase
 
         this.modelBuilder.Entity<IdentityUserClaim<int>>().HasData(userClaims);
         
-        this.modelBuilder.Entity<Property>().HasData(allproperties);      
+        this.modelBuilder.Entity<Property>().HasData(allproperties);
+
+        this.modelBuilder.Entity<PropertyNotification>().HasData(propertyNotifications);
+        this.modelBuilder.Entity<RentPaymentNotification>().HasData(rentPaymentNotifications);
     }
 }

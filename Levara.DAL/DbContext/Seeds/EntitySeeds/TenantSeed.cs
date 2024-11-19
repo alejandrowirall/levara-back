@@ -12,10 +12,13 @@ public class TenantSeed : SeedBase
         var userHasher = new PasswordHasher<ApplicationUser>();
 
         const string SecurityStampTenant = "eca8a667-056e-4622-9ff6-88cd57ca4b44";
-        const string ConcurrencyStampTenant = "2b3ef318-1fd4-498b-b344-f5d676770237";
+        const string ConcurrencyStampTenant = "c231efea-6e8c-40e5-ae33-f15bc5cfb2a0";
         const string RefreshTokenTenant = "e030be4a-c6ed-46a5-9e86-4ad6db062ed6";
 
-        DateTime datatimeApp = new DateTime(2024, 1, 1).Date;
+        //HashPassword of Levara.2024
+        const string HashPassword = "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==";
+
+        DateTime datatimeApp = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         List<ApplicationUser> allUsersToAdd = new();
         List<IdentityUserRole<int>> userRoles = new();
@@ -34,7 +37,7 @@ public class TenantSeed : SeedBase
                     EmailConfirmed = true,
                     NormalizedEmail = $"TENANT{i}@LEVARA.COM",
                     NormalizedUserName = $"TENANT{i}@LEVARA.COM",
-                    PasswordHash = userHasher.HashPassword(null, "Levara.2024"),
+                    PasswordHash = HashPassword,
                     SecurityStamp = SecurityStampTenant,
                     ConcurrencyStamp = ConcurrencyStampTenant,
                     UserName = $"tenant{i}@levara.com",

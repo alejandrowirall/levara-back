@@ -5,6 +5,7 @@ using Levara.Domain.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using System.Reflection;
 
 namespace Levara.DAL.Extensions;
@@ -39,8 +40,12 @@ public static class DALExtensions
 
         services.AddDALServices();
 
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(new DatabaseConfiguration(configuration).ConnectionString);
+        dataSourceBuilder.UseJsonNet();
+        var dataSource = dataSourceBuilder.Build();
+
         services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(new DatabaseConfiguration(configuration).ConnectionString));
+                options.UseNpgsql(dataSource));
 
         return services;
     }

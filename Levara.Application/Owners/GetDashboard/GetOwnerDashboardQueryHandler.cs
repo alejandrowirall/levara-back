@@ -7,74 +7,59 @@ namespace Levara.Application.Owners.GetDashboard;
 
 public class GetOwnerDashboardQueryHandler : IQueryHandler<GetOwnerDashboardQuery, GetOwnerDashboardQueryResponse>
 {
+    private readonly IOwnerRepository _ownerRepository;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
     private readonly IPropertyRepository _propertyRepository;
-    public GetOwnerDashboardQueryHandler(IOwnerBankAccountRepository ownerBankAccountRepository,
-        IPropertyRepository propertyRepository) 
+    private readonly IPropertyNotificationRepository _propertyNotificationRepository;
+    private readonly IRentPaymentNotificationRepository _rentPaymentNotificationRepository;
+    public GetOwnerDashboardQueryHandler(IOwnerRepository ownerRepository,
+        IOwnerBankAccountRepository ownerBankAccountRepository,
+        IPropertyRepository propertyRepository,
+        IPropertyNotificationRepository propertyNotificationRepository,
+        IRentPaymentNotificationRepository rentPaymentNotificationRepository) 
     {
+        _ownerRepository = ownerRepository;
         _ownerBankAccountRepository = ownerBankAccountRepository;
         _propertyRepository = propertyRepository;
+        _propertyNotificationRepository = propertyNotificationRepository;
+        _rentPaymentNotificationRepository = rentPaymentNotificationRepository;
     }
     public async Task<OperationResult<GetOwnerDashboardQueryResponse>> Handle(GetOwnerDashboardQuery query)
     {
+        var owner = await _ownerRepository.GetByIdAsync(query.Id!.Value);
+        if (owner == null)
+            return OperationResult<GetOwnerDashboardQueryResponse>.ErrorResult(new ErrorDetails(404, "Owner not found."));
+
         var propertyQuery = _propertyRepository.GetAllWithAddress()
-                                               .Where(p => p.OwnerId == query.Id!.Value)
+                                               .Where(p => p.OwnerId == owner.Id)
                                                .OrderBy(p => p.Number)
                                                .Select(p => new PropertyCard(p));
 
         var properties = await _propertyRepository.ToListAsync(propertyQuery);
 
-        var ownerBankAccountQuery =  _ownerBankAccountRepository.GetAll()
-                                                                .Where(oba => oba.OwnerId == query.Id!.Value)
-                                                                .OrderByDescending(oba => oba.Id)
-                                                                .Select(oba => new OwnerBankAccountGrid(oba));
+        var ownerBankAccountQuery = _ownerBankAccountRepository.GetAll()
+                                                               .Where(oba => oba.OwnerId == query.Id!.Value)
+                                                               .OrderByDescending(oba => oba.Id)
+                                                               .Select(oba => new OwnerBankAccountGrid(oba));
 
         var ownerBankAccounts = await _ownerBankAccountRepository.ToListAsync(ownerBankAccountQuery);
 
+        var importantNotificationQuery = _propertyNotificationRepository.GetAll()
+                                                                        .Where(pn => pn.ReceiverId == owner.ApplicationUserId)
+                                                                        .OrderByDescending(pn => pn.Id)
+                                                                        .Take(10)
+                                                                        .Select(pn => new ImportantNotificationGrid(pn));
 
-        List<RentPaymentNotificationGrid> rentPaymentsNotifications = new()
-        {
-            new ()
-            {
-                Property = "Property 1",
-                DueDate = DateTime.Now.AddDays(5),
-                Status = "Unpaid"
-            },
-            new ()
-            {
-                Property = "Property 2",
-                DueDate = DateTime.Now.AddDays(6),
-                Status = "Unpaid"
-            },
-             new ()
-            {
-                Property = "Property 3",
-                DueDate = DateTime.Now.AddDays(-1),
-                Status = "Paid"
-            }
-        };
+        var importantNotifications = await _propertyNotificationRepository.ToListAsync(importantNotificationQuery);
 
-        List<ImportantNotificationGrid> importantNotifications = new()
-        {
-            new ()
-            {
-                Property = "Property 1",
-                Date = DateTime.Now.AddDays(-1),
-                Detail = "End date to renewal"
-            },
-            new ()
-            {
-                Property = "Property 2",
-                Date = DateTime.Now.AddDays(-2),
-                Detail = "Air conditioning repair fixed"
-            },
-             new ()
-            {
-                Property = "Property 3",
-                Date = DateTime.Now.AddDays(-3),
-                Detail = "Monthly rent overdue"
-            }
-        };
+        var rentPaymentNotificationQuery = _rentPaymentNotificationRepository.GetAll()
+                                                                        .Where(rpn => rpn.ReceiverId == owner.ApplicationUserId)
+                                                                        .OrderByDescending(rpn => rpn.Id)
+                                                                        .Take(10)
+                                                                        .Select(rpn => new RentPaymentNotificationGrid(rpn));
+
+        var rentPaymentsNotifications = await _rentPaymentNotificationRepository.ToListAsync(rentPaymentNotificationQuery);
+
 
         GetOwnerDashboardQueryResponse response = new(properties, ownerBankAccounts, rentPaymentsNotifications, importantNotifications);
         
