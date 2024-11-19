@@ -21,8 +21,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer()
-    ;
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Levara WebApi", Version = "v1" });

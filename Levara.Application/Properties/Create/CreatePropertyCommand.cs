@@ -31,7 +31,7 @@ namespace Levara.Application.Properties.Create
         [Length(1, 20)]
         public string? PostalCode { get; set; }
 
-        [Length(1, 50)]
+        [Range(0, double.MaxValue)]
         public decimal? Price { get; set; }
 
     }
