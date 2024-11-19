@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241119215602_Initial")]
+    [Migration("20241119231851_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -2432,6 +2432,10 @@ namespace Levara.DAL.Migrations
 
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ReadAt")
                         .HasColumnType("timestamp with time zone");
@@ -4909,9 +4913,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4919,9 +4926,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 3,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4929,9 +4939,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 5,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4939,9 +4952,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 7,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4949,9 +4965,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 9,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4959,9 +4978,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 11,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4969,9 +4991,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 13,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4979,9 +5004,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 15,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4989,9 +5017,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 17,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -4999,9 +5030,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 19,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 2
                         },
@@ -5009,9 +5043,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 21,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5019,9 +5056,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 23,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5029,9 +5069,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 25,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5039,9 +5082,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 27,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5049,9 +5095,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 29,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5059,9 +5108,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 31,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5069,9 +5121,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 33,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5079,9 +5134,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 35,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5089,9 +5147,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 37,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5099,9 +5160,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 39,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 2
                         },
@@ -5109,9 +5173,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 41,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5119,9 +5186,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 43,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5129,9 +5199,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 45,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5139,9 +5212,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 47,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5149,9 +5225,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 49,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5159,9 +5238,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 51,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5169,9 +5251,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 53,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5179,9 +5264,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 55,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5189,9 +5277,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 57,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5199,9 +5290,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 59,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 2
                         },
@@ -5209,9 +5303,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 61,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5219,9 +5316,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 63,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5229,9 +5329,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 65,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5239,9 +5342,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 67,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5249,9 +5355,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 69,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5259,9 +5368,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 71,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5269,9 +5381,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 73,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5279,9 +5394,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 75,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5289,9 +5407,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 77,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5299,9 +5420,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 79,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 2
                         },
@@ -5309,9 +5433,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 81,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5319,9 +5446,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 83,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5329,9 +5459,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 85,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5339,9 +5472,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 87,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5349,9 +5485,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 89,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5359,9 +5498,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 91,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5369,9 +5511,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 93,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5379,9 +5524,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 95,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5389,9 +5537,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 97,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5399,9 +5550,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 99,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 2
                         },
@@ -5409,9 +5563,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 101,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5419,9 +5576,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 103,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5429,9 +5589,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 105,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5439,9 +5602,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 107,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5449,9 +5615,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 109,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5459,9 +5628,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 111,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5469,9 +5641,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 113,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5479,9 +5654,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 115,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5489,9 +5667,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 117,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5499,9 +5680,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 119,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 2
                         },
@@ -5509,9 +5693,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 121,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5519,9 +5706,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 123,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5529,9 +5719,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 125,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5539,9 +5732,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 127,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5549,9 +5745,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 129,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5559,9 +5758,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 131,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5569,9 +5771,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 133,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5579,9 +5784,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 135,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5589,9 +5797,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 137,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5599,9 +5810,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 139,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 2
                         },
@@ -5609,9 +5823,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 141,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5619,9 +5836,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 143,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5629,9 +5849,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 145,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5639,9 +5862,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 147,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5649,9 +5875,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 149,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5659,9 +5888,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 151,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5669,9 +5901,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 153,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5679,9 +5914,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 155,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5689,9 +5927,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 157,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5699,9 +5940,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 159,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 2
                         },
@@ -5709,9 +5953,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 161,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5719,9 +5966,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 163,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5729,9 +5979,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 165,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5739,9 +5992,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 167,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5749,9 +6005,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 169,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5759,9 +6018,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 171,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5769,9 +6031,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 173,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5779,9 +6044,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 175,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5789,9 +6057,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 177,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5799,9 +6070,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 179,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 2
                         },
@@ -5809,9 +6083,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 181,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["Date"] = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5819,9 +6096,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 183,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["Date"] = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5829,9 +6109,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 185,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["Date"] = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5839,9 +6122,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 187,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["Date"] = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5849,9 +6135,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 189,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["Date"] = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5859,9 +6148,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 191,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["Date"] = new DateTime(2023, 12, 26, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5869,9 +6161,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 193,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["Date"] = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5879,9 +6174,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 195,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["Date"] = new DateTime(2023, 12, 24, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5889,9 +6187,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 197,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["Date"] = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "General maintenance scheduled" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         },
@@ -5899,9 +6200,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 199,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["Date"] = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Utc), ["Detail"] = "End date to renewal" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 2
                         });
@@ -5918,9 +6222,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 2,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5928,9 +6235,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 4,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5938,9 +6248,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 6,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5948,9 +6261,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 8,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5958,9 +6274,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 10,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5968,9 +6287,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 12,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5978,9 +6300,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 14,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5988,9 +6313,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 16,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -5998,9 +6326,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 18,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -6008,9 +6339,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 20,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 1,
                             Type = 1
                         },
@@ -6018,9 +6352,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 22,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6028,9 +6365,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 24,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6038,9 +6378,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 26,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6048,9 +6391,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 28,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6058,9 +6404,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 30,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6068,9 +6417,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 32,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6078,9 +6430,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 34,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6088,9 +6443,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 36,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6098,9 +6456,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 38,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6108,9 +6469,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 40,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 2,
                             Type = 1
                         },
@@ -6118,9 +6482,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 42,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6128,9 +6495,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 44,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6138,9 +6508,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 46,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6148,9 +6521,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 48,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6158,9 +6534,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 50,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6168,9 +6547,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 52,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6178,9 +6560,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 54,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6188,9 +6573,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 56,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6198,9 +6586,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 58,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6208,9 +6599,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 60,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 3,
                             Type = 1
                         },
@@ -6218,9 +6612,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 62,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6228,9 +6625,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 64,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6238,9 +6638,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 66,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6248,9 +6651,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 68,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6258,9 +6664,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 70,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6268,9 +6677,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 72,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6278,9 +6690,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 74,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6288,9 +6703,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 76,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6298,9 +6716,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 78,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6308,9 +6729,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 80,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 4,
                             Type = 1
                         },
@@ -6318,9 +6742,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 82,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6328,9 +6755,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 84,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6338,9 +6768,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 86,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6348,9 +6781,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 88,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6358,9 +6794,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 90,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6368,9 +6807,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 92,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6378,9 +6820,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 94,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6388,9 +6833,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 96,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6398,9 +6846,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 98,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6408,9 +6859,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 100,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 5,
                             Type = 1
                         },
@@ -6418,9 +6872,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 102,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6428,9 +6885,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 104,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6438,9 +6898,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 106,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6448,9 +6911,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 108,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6458,9 +6924,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 110,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6468,9 +6937,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 112,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6478,9 +6950,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 114,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6488,9 +6963,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 116,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6498,9 +6976,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 118,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6508,9 +6989,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 120,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 6,
                             Type = 1
                         },
@@ -6518,9 +7002,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 122,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6528,9 +7015,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 124,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6538,9 +7028,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 126,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6548,9 +7041,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 128,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6558,9 +7054,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 130,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6568,9 +7067,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 132,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6578,9 +7080,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 134,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6588,9 +7093,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 136,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6598,9 +7106,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 138,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6608,9 +7119,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 140,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 7,
                             Type = 1
                         },
@@ -6618,9 +7132,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 142,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6628,9 +7145,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 144,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6638,9 +7158,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 146,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6648,9 +7171,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 148,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6658,9 +7184,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 150,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6668,9 +7197,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 152,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6678,9 +7210,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 154,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6688,9 +7223,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 156,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6698,9 +7236,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 158,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6708,9 +7249,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 160,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 8,
                             Type = 1
                         },
@@ -6718,9 +7262,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 162,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6728,9 +7275,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 164,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6738,9 +7288,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 166,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6748,9 +7301,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 168,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6758,9 +7314,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 170,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6768,9 +7327,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 172,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6778,9 +7340,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 174,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6788,9 +7353,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 176,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6798,9 +7366,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 178,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6808,9 +7379,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 180,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 9,
                             Type = 1
                         },
@@ -6818,9 +7392,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 182,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 1", ["DueDate"] = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6828,9 +7405,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 184,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 2", ["DueDate"] = new DateTime(2023, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6838,9 +7418,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 186,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 3", ["DueDate"] = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6848,9 +7431,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 188,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 4", ["DueDate"] = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6858,9 +7444,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 190,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 5", ["DueDate"] = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6868,9 +7457,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 192,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 6", ["DueDate"] = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6878,9 +7470,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 194,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 7", ["DueDate"] = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6888,9 +7483,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 196,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 8", ["DueDate"] = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6898,9 +7496,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 198,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 9", ["DueDate"] = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Paid" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         },
@@ -6908,9 +7509,12 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 200,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Data = new Dictionary<string, object> { ["Property"] = "Property 10", ["DueDate"] = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), ["Status"] = "Overdue" },
                             Deleted = false,
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Link = "/owner",
                             ReceiverId = 10,
                             Type = 1
                         });

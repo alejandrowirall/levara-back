@@ -11,6 +11,10 @@ public abstract class Notification : Entity
     }
     public NotificationType Type { get; set; }
 
+    [Required]
+    [Length(1, 2048)]
+    public string Link { get; set; }
+
     public int ReceiverId { get; set; }
 
     [Required]

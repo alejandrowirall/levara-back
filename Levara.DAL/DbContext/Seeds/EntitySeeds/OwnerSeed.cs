@@ -163,7 +163,11 @@ public class OwnerSeed : SeedBase
                     Date = datatimeApp.AddDays(-i),
                     Detail = i % 2 == 0 ? "End date to renewal" : "General maintenance scheduled",
                     ReceiverId = owner.ApplicationUserId!.Value,
+                    Link = "/owner",
+                    CreatorId = 1,
                     CreatedDate = datatimeApp,
+                    LastEditorId = 1,
+                    LastEditedDate = datatimeApp,
                     Type = NotificationType.Property
                 };
                 propertyNotifications.Add(propertyNotification);
@@ -175,7 +179,11 @@ public class OwnerSeed : SeedBase
                     DueDate = datatimeApp.AddMonths(-i),
                     Status = i % 2 == 0 ? "Overdue" : "Paid",
                     ReceiverId = owner.ApplicationUserId!.Value,
+                    Link = "/owner",
+                    CreatorId = 1,
                     CreatedDate = datatimeApp,
+                    LastEditorId = 1,
+                    LastEditedDate = datatimeApp,
                     Type = NotificationType.RentPayment
                 };
                 rentPaymentNotifications.Add(rentPaymentNotification);
