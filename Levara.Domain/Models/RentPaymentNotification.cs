@@ -32,7 +32,8 @@ public class RentPaymentNotification : Notification
         {
             Title = "Rent Payment Due",
             Content = $"Rent payment for {Property} is due on {DueDate.ToShortDateString()}. Status: {Status}.",
-            CreatedDate = CreatedDate
+            CreatedDate = CreatedDate,
+            Link = Link
         };
     }
 }

@@ -33,7 +33,8 @@ public class PropertyNotification : Notification
         {
             Title = $"Important Notification for {Property}",
             Content = $"{Detail} - Date: {Date.ToShortDateString()}",
-            CreatedDate = CreatedDate
+            CreatedDate = CreatedDate,
+            Link = Link
         };
     }
 }
