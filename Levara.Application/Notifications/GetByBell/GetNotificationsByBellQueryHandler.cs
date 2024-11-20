@@ -1,5 +1,6 @@
 ﻿
 using Levara.Application.Notifications.GetByBell;
+using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Queries;
@@ -10,9 +11,12 @@ namespace Levara.Application.Leases.GetByGrid;
 public class GetNotificationsByBellQueryHandler : IQueryHandler<GetNotificationsByBellQuery, CursorPagedList<GetNotificationsByBellQueryResponse>>
 {
     private readonly INotificationRepository _notificationRepository;
-    public GetNotificationsByBellQueryHandler(INotificationRepository notificationRepository) 
+    private readonly IUnitOfWork _unitOfWork;
+    public GetNotificationsByBellQueryHandler(INotificationRepository notificationRepository,
+        IUnitOfWork unitOfWork) 
     {
         _notificationRepository = notificationRepository;
+        _unitOfWork = unitOfWork;
     }
     public async Task<OperationResult<CursorPagedList<GetNotificationsByBellQueryResponse>>> Handle(GetNotificationsByBellQuery query)
     {
@@ -22,9 +26,25 @@ public class GetNotificationsByBellQueryHandler : IQueryHandler<GetNotifications
 
         CursorPagedList<Notification> cursorPagedList = await _notificationRepository.ToListCursorAsync(notificationQuery, query.PageSize!.Value, query.Cursor);
 
-        var notifications = cursorPagedList.Items.Select(item => new GetNotificationsByBellQueryResponse(item.GetDisplayInfo()));
+        var unreadNotifications = cursorPagedList.Items.Where(n => n.ReadAt == null);
+        if (unreadNotifications.Any())
+        {
+            await _unitOfWork.ExecuteAsTransactionAsync(() =>
+            {
+                var currentDate = DateTime.UtcNow;
+                foreach (var notification in unreadNotifications)
+                {
+                    notification.ReadAt = currentDate;
+                    _notificationRepository.Update(notification);
+                }
 
-        CursorPagedList<GetNotificationsByBellQueryResponse> response = new(notifications, cursorPagedList.NextCursor);
+                return Task.CompletedTask;
+            });
+        }
+
+        var displayNotifications = cursorPagedList.Items.Select(item => new GetNotificationsByBellQueryResponse(item.GetDisplayInfo()));
+
+        CursorPagedList<GetNotificationsByBellQueryResponse> response = new(displayNotifications, cursorPagedList.NextCursor);
 
         return OperationResult<CursorPagedList<GetNotificationsByBellQueryResponse>>.SuccessResult(response);
 
