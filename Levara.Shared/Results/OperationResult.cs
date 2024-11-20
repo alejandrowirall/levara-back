@@ -1,4 +1,6 @@
 ﻿
+using System.Text.Json.Serialization;
+
 namespace Levara.Shared.Results;
 
 public class OperationResult<T>
@@ -7,6 +9,7 @@ public class OperationResult<T>
     public T? Result { get; private set; }
     public ErrorDetails? Error { get; private set; }
 
+    [JsonConstructor]
     private OperationResult(bool success, T? result, ErrorDetails? error)
     {
         Success = success;

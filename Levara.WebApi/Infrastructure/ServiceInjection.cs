@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Levara.Domain.Contexts;
+using Microsoft.Extensions.Configuration;
+using Levara.Shared.Domain.Models;
 
 namespace Levara.Infrastructure;
 public static class ServiceInjection
@@ -35,7 +37,8 @@ public static class ServiceInjection
         services.AddScoped<ICommandBus, InMemoryCommandBus>();
         services.AddScoped<IQueryBus, InMemoryQueryBus>();
         services.AddScoped<IUserContext, WebUserContext>();
-        
+        services.Configure<RemoteServicesConfig>(configuration.GetSection("PlaidSettings"));
+
 
 
         return services;
