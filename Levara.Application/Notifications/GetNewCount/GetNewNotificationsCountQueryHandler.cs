@@ -19,11 +19,11 @@ public class GetNewNotificationsCountQueryHandler : IQueryHandler<GetNewNotifica
 
         int newNotificationsCount = await _notificationRepository.CountAsync(n =>
                 n.ReceiverId == query.ReceiverId!.Value &&
-                n.ReadAt == null &&
+                n.ShownAt == null &&
                 n.Id > (
                     _notificationRepository.GetAll()
-                        .Where(x => x.ReceiverId == query.ReceiverId!.Value && x.ReadAt != null)
-                        .OrderByDescending(x => x.ReadAt)
+                        .Where(x => x.ReceiverId == query.ReceiverId!.Value && x.ShownAt != null)
+                        .OrderByDescending(x => x.ShownAt)
                         .Select(x => x.Id)
                         .FirstOrDefault()
                 )

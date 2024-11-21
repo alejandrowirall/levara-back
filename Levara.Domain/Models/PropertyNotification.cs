@@ -34,7 +34,8 @@ public class PropertyNotification : Notification
             Title = $"Important Notification for {Property}",
             Content = $"{Detail} - Date: {Date.ToShortDateString()}",
             CreatedDate = CreatedDate,
-            Link = Link
+            Link = Link,
+            Clicked = ClickedAt.HasValue,
         };
     }
 }

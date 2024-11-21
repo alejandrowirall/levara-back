@@ -19,8 +19,8 @@ public abstract class Notification : Entity
 
     [Required]
     public ApplicationUser Receiver { get; set; }
-    public DateTime? ReadAt { get; set; }
-
+    public DateTime? ClickedAt { get; set; }
+    public DateTime? ShownAt { get; set; }
     public Dictionary<string, object> Data { get; set; } = new();
     public abstract DisplayNotificationInfo GetDisplayInfo();
 }

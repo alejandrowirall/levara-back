@@ -26,7 +26,7 @@ public class GetNotificationsByBellQueryHandler : IQueryHandler<GetNotifications
 
         CursorPagedList<Notification> cursorPagedList = await _notificationRepository.ToListCursorAsync(notificationQuery, query.PageSize!.Value, query.Cursor);
 
-        var unreadNotifications = cursorPagedList.Items.Where(n => n.ReadAt == null);
+        var unreadNotifications = cursorPagedList.Items.Where(n => n.ShownAt == null);
         if (unreadNotifications.Any())
         {
             await _unitOfWork.ExecuteAsTransactionAsync(() =>
@@ -34,7 +34,7 @@ public class GetNotificationsByBellQueryHandler : IQueryHandler<GetNotifications
                 var currentDate = DateTime.UtcNow;
                 foreach (var notification in unreadNotifications)
                 {
-                    notification.ReadAt = currentDate;
+                    notification.ShownAt = currentDate;
                     _notificationRepository.Update(notification);
                 }
 
