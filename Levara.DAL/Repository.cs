@@ -61,7 +61,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
         var result = await query.Take(pageSize).ToListAsync();
 
-        int? nextCursor = result.Count == pageSize ? result.Last().Id : null;
+        int? nextCursor = null;
+        if (result.Count == pageSize && await query.AnyAsync(entity => entity.Id < result.Last().Id))
+            nextCursor = result.Last().Id;
 
         return new CursorPagedList<TEntity>(result, nextCursor);
     }
@@ -82,9 +84,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public async Task AddAsync(TEntity entity)
     {
-        entity.CreatedDate = DateTime.Now;
+        entity.CreatedDate = DateTime.UtcNow;
         entity.CreatorId = _userContext.Id;
-        entity.LastEditedDate = DateTime.Now;
+        entity.LastEditedDate = DateTime.UtcNow;
         entity.LastEditorId = _userContext.Id;
 
         await _dbSet.AddAsync(entity);
@@ -92,7 +94,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public void Update(TEntity entity)
     {
-        entity.LastEditedDate = DateTime.Now;
+        entity.LastEditedDate = DateTime.UtcNow;
         entity.LastEditorId = _userContext.Id;
 
         _dbSet.Update(entity);
@@ -100,7 +102,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public void Delete(TEntity entity)
     {
-        entity.LastEditedDate = DateTime.Now;
+        entity.LastEditedDate = DateTime.UtcNow;
         entity.LastEditorId = _userContext.Id;
         entity.Deleted = true;
 

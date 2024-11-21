@@ -31,6 +31,7 @@ public class GetNotificationsByBellQueryHandler : IQueryHandler<GetNotifications
         {
             await _unitOfWork.ExecuteAsTransactionAsync(() =>
             {
+                // TODO: Do with Bulk Update
                 var currentDate = DateTime.UtcNow;
                 foreach (var notification in unreadNotifications)
                 {
