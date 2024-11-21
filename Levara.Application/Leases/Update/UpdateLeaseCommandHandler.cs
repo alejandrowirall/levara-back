@@ -36,8 +36,8 @@ public class UpdateLeaseCommandHandler : ICommandHandler<UpdateLeaseCommand, Upd
         lease.OwnerId = command.OwnerId!;
         lease.PropertyId = command.PropertyId!;
         lease.TenantId = command.TenantId!;
-        lease.DateFrom = command.DateFrom!;
-        lease.DateTo = command.DateTo!;
+        lease.DateFrom = command.DateFrom!.ToUniversalTime();
+        lease.DateTo = command.DateTo!.ToUniversalTime();
         lease.Amount = command.Price!;
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>

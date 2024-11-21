@@ -24,8 +24,9 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
             OwnerId = command.OwnerId!.Value,
             PropertyId = command.PropertyId!.Value,
             TenantId = command.TenantId!.Value,
-            DateFrom= command.DateFrom,
-            DateTo= command.DateTo,
+            DateFrom= command.DateFrom.ToUniversalTime(),
+            DateTo= command.DateTo.ToUniversalTime(),
+
             Amount =command.Price!.Value,
             
         };
