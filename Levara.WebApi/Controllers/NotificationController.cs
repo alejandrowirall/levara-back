@@ -1,4 +1,5 @@
 ﻿using Levara.Application.Notifications.GetByBell;
+using Levara.Application.Notifications.GetNewCount;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Queries;
@@ -31,6 +32,25 @@ public class NotificationController : ControllerBase
             ReceiverId = _userContext.Id!,
             Cursor = cursor,
             PageSize = pageSize
+        });
+        if (!response.Success)
+        {
+            return new ObjectResult(response)
+            {
+                StatusCode = response.Error!.StatusCode
+            };
+        }
+
+        return Ok(response);
+    }
+
+    [HttpGet("news")]
+    public async Task<IActionResult> GetNewCount()
+    {
+
+        var response = await _queryBus.Ask(new GetNewNotificationsCountQuery
+        {
+            ReceiverId = _userContext.Id!,
         });
         if (!response.Success)
         {
