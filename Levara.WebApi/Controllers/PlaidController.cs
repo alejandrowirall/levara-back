@@ -6,6 +6,7 @@ using Levara.Application.Owners.GetForCreate;
 using Levara.Application.Owners.GetForUpdate;
 using Levara.Application.Owners.Update;
 using Levara.Application.Plaid.GetLinkToken;
+using Levara.Application.Plaid.GetPublicToken;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Commands;
@@ -35,6 +36,21 @@ namespace Levara.WebApi.Controllers
 
         [HttpGet("GetLinkToken")]
         public async Task<IActionResult> GetLinkToken([FromQuery] GetLinkTokenQuery query)
+        {
+            var response = await _queryBus.Ask(query);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetPublicToken")]
+        public async Task<IActionResult> GetPublicToken([FromQuery] GetPublicTokenQuery query)
         {
             var response = await _queryBus.Ask(query);
             if (!response.Success)
