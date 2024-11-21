@@ -24,12 +24,6 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                    .HasForeignKey(o => o.OwnerId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            builder.Property(o => o.CreatedDate)
-                   .HasColumnType("timestamp without time zone");
-
-            builder.Property(o => o.LastEditedDate)
-                    .HasColumnType("timestamp without time zone");
-
             builder.ToTable("Properties")
                    .HasQueryFilter(c => !c.Deleted);
         }

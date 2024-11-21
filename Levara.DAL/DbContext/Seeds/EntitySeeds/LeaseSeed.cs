@@ -10,7 +10,7 @@ public class LeaseSeed : SeedBase
     {
         var userHasher = new PasswordHasher<ApplicationUser>();
 
-        DateTime datatimeApp = new DateTime(2024, 1, 1).Date;
+        DateTime datatimeApp = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         List<Lease> leasesToAdd = new List<Lease>();
         for (int i = 1; i < 11; i++)
@@ -21,8 +21,8 @@ public class LeaseSeed : SeedBase
                 OwnerId = i,
                 TenantId = i,
                 PropertyId = i,
-                DateFrom = new DateTime(2024, 1, i).Date,
-                DateTo = new DateTime(2024, 12, i).Date,
+                DateFrom = new DateTime(2024, 1, i, 0, 0, 0, DateTimeKind.Utc),
+                DateTo = new DateTime(2024, 12, i, 0, 0, 0, DateTimeKind.Utc),
                 Frequency = FrequencyType.Monthly,
                 Amount = 1000 + 100 * i,
                 CreatorId = 1,

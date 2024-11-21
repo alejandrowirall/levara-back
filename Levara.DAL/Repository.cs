@@ -50,6 +50,22 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         return new PagedList<T>(result, count, pageNumber, pageSize);
     }
 
+    public async Task<CursorPagedList<TEntity>> ToListCursorAsync(IQueryable<TEntity> query, int pageSize, int? cursor = null)
+    {
+        if (cursor.HasValue)
+        {
+            query = query.Where(entity => entity.Id < cursor.Value);
+        }
+
+        query = query.OrderByDescending(entity => entity.Id);
+
+        var result = await query.Take(pageSize).ToListAsync();
+
+        int? nextCursor = result.Count == pageSize ? result.Last().Id : null;
+
+        return new CursorPagedList<TEntity>(result, nextCursor);
+    }
+
     public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
