@@ -36,15 +36,21 @@ public static class LevaraSerilogExtensions
                .MinimumLevel.Is(minimumLevel)
                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", minimumLevel == LogEventLevel.Warning ? LogEventLevel.Information : minimumLevel)
                .MinimumLevel.Override("Levara.WebApi.Infrastructure.Middlewares", minimumLevel == LogEventLevel.Warning ? LogEventLevel.Information : minimumLevel)
-               .WriteTo.Async(a => a
-                           .PostgreSQL(
+               //.WriteTo.Async(a => a
+               //            .PostgreSQL(
+               //                connectionString: configuration["DatabaseConfiguration:ConnectionString"].ToString(),
+               //                tableName: "Logs",
+               //                columnOptions: columnWriters,
+               //                needAutoCreateTable: true,
+               //                batchSizeLimit: 500,
+               //                period: TimeSpan.FromSeconds(5)
+               //            ))
+               .WriteTo.PostgreSQL(
                                connectionString: configuration["DatabaseConfiguration:ConnectionString"].ToString(),
                                tableName: "Logs",
                                columnOptions: columnWriters,
-                               needAutoCreateTable: true,
-                               batchSizeLimit: 500,
-                               period: TimeSpan.FromSeconds(5)
-                           ))
+                               needAutoCreateTable: true
+                           )
                .CreateLogger();
 
         return services;
