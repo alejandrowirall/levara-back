@@ -36,10 +36,10 @@ public static class ServiceInjection
 
         services.AddScoped<ICommandBus, InMemoryCommandBus>();
         services.AddScoped<IQueryBus, InMemoryQueryBus>();
-        services.AddScoped<IUserContext, WebUserContext>();
+        
         services.Configure<RemoteServicesConfig>(configuration.GetSection("PlaidSettings"));
 
-
+        services.AddInfrastructureSecurity();
 
         return services;
     }
@@ -92,6 +92,13 @@ public static class ServiceInjection
                 }
             };
         });
-        
+
+    }
+
+    private static void AddInfrastructureSecurity(this IServiceCollection services)
+    {
+        services.AddScoped<IUserContext, WebUserContext>();
+        services.AddScoped<ContextIdentifier>();
+        services.AddScoped<IContextIdentifier, WebContextIdentifier>();
     }
 }
