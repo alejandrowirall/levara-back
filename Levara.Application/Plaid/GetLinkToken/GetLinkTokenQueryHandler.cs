@@ -42,7 +42,7 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
             {
                 client_user_id =query.ClientId
             },
-            products = new[] { "auth" }
+            products = new[] { "auth", "transactions" }
         };
         try
         {

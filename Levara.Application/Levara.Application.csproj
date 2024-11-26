@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Levara.Domain\Levara.Domain.csproj" />
     <ProjectReference Include="..\Levara.Domain\Levara.Domain.csproj" />
+    <ProjectReference Include="..\Levara.ExternalService\Levara.ExternalService.csproj" />
     <ProjectReference Include="..\Levara.Shared\Levara.Shared.csproj" />
   </ItemGroup>
 
