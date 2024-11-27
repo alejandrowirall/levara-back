@@ -15,7 +15,7 @@ namespace Levara.Application.OwnersBankAccounts.Create
         public string? AccountNumber { get; set; }
 
         [Required]
-        [Length(1, 50)]
+        [Length(1, 200)]
         public string? PlaidAccountId { get; set; }
 
         [Range(1, int.MaxValue)]
