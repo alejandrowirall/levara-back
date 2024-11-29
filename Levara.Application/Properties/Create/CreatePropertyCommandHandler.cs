@@ -23,6 +23,16 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
         {
             OwnerId = command.OwnerId!.Value,
             Price=command.Price!.Value,
+            RoomsQuantity=command.RoomsQuantity.Value,
+            BathroomQuantity = command.BathroomQuantity.Value,
+            AreaQuantity = command.AreaQuantity.Value,
+            HasPool = command.HasPool.Value,
+            HasBalcony = command.HasBalcony.Value,
+            HasGarage = command.HasGarage.Value,
+            DetailDepositAndAdittionalInfo = command.DetailDepositAndAdittionalInfo,
+            PetsPoliticAndRate = command.PetsPoliticAndRate,
+            TenantRequirements = command.TenantRequirements,
+            AvaliableFrom = command.AvaliableFrom.Value,
             Address = new()
             {
                 Street = command.Street!,

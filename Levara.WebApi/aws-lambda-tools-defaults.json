@@ -10,7 +10,7 @@
     "function-handler"     : "Levara.WebApi",
     "function-memory-size" : 512,
     "function-role"        : "arn:aws:iam::682033477085:role/service-role/LevaraFuntions-role-thy2jylp",
-    "function-timeout"     : 15,
+    "function-timeout"     : 60,
     "function-runtime"     : "dotnet8",
     "function-architecture" : "x86_64",
     "function-subnets"      : "",

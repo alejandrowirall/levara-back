@@ -2905,6 +2905,15 @@ namespace Levara.DAL.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal?>("AreaQuantity")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("AvaliableFrom")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("BathroomQuantity")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -2912,6 +2921,18 @@ namespace Levara.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("DetailDepositAndAdittionalInfo")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("HasBalcony")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("HasGarage")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("HasPool")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastEditedDate")
@@ -2926,9 +2947,18 @@ namespace Levara.DAL.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PetsPoliticAndRate")
+                        .HasColumnType("text");
+
                     b.Property<decimal?>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
+
+                    b.Property<int?>("RoomsQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TenantRequirements")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

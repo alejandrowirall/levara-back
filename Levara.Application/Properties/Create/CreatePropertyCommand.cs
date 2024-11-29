@@ -34,5 +34,27 @@ namespace Levara.Application.Properties.Create
         [Range(0, double.MaxValue)]
         public decimal? Price { get; set; }
 
+        [Range(0, 100)]
+        public int? RoomsQuantity { get; set; }
+        [Range(0, 100)]
+        public int? BathroomQuantity { get; set; }
+        
+        [Range(0, double.MaxValue)]
+        public decimal? AreaQuantity { get; set; }
+
+        public bool? HasPool { get; set; }
+
+        public bool? HasBalcony { get; set; }
+        public bool? HasGarage { get; set; }
+        [Length(1, 800)]
+        public string? DetailDepositAndAdittionalInfo {  get; set; }
+        [Length(1, 800)]
+        public string? PetsPoliticAndRate  { get; set; }
+        [Length(1, 800)]
+        public string? TenantRequirements { get; set; }
+
+        public DateTime? AvaliableFrom { get; set; }
+
+
     }
 }

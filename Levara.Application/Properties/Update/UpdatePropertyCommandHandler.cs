@@ -39,7 +39,16 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
         property.Address.State = command.State!;
         property.Address.PostalCode = command.PostalCode!;
         property.Price = command.Price!;
-
+        property.RoomsQuantity = command.RoomsQuantity.Value;
+        property.BathroomQuantity = command.BathroomQuantity.Value;
+        property.AreaQuantity = command.AreaQuantity.Value;
+        property.HasPool = command.HasPool.Value;
+        property.HasBalcony = command.HasBalcony.Value;
+        property.HasGarage = command.HasGarage.Value;
+        property.DetailDepositAndAdittionalInfo = command.DetailDepositAndAdittionalInfo;
+        property.PetsPoliticAndRate = command.PetsPoliticAndRate;
+        property.TenantRequirements = command.TenantRequirements;
+        property.AvaliableFrom = command.AvaliableFrom.Value;
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
             _propertyRepository.Update(property);
