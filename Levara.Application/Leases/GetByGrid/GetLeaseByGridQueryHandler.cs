@@ -19,7 +19,9 @@ public class GetLeaseByGridQueryHandler : IQueryHandler<GetLeaseByGridQuery, Pag
         var leaseQuery = _leaseRepository.GetAllLeases()
                                                .Where(l => l.OwnerId == query.OwnerId!.Value)
                                                .OrderByDescending(p => p.CreatedDate)
-                                               .Select(l => new GetLeaseByGridQueryResponse(l));
+                                               //.Select(l => new GetLeaseByGridQueryResponse(l));
+                                               .Select(l => new GetLeaseByGridQueryResponse(l)
+                                               );
 
         var response = await _leaseRepository.ToListPagedAsync(leaseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 
