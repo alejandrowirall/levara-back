@@ -34,4 +34,6 @@ public class Lease : Entity
     [Required]
     public decimal Amount { get; set; }
 
+    public LeaseStatus? StatusLease {  get; set; }
+
 }

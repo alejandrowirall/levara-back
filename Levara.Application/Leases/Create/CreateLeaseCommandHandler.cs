@@ -1,6 +1,7 @@
 ﻿
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Results;
@@ -28,7 +29,8 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
             DateTo= command.DateTo.ToUniversalTime(),
 
             Amount =command.Price!.Value,
-            
+            StatusLease= LeaseStatus.UploadDocumentation
+
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>

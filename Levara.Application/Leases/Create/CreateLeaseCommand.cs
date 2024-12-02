@@ -22,6 +22,6 @@ public class CreateLeaseCommand : Command<CreateLeaseCommandResponse>
     public DateTime DateTo { get; set; }
     public decimal? Price { get; set; }
 
-    
+    public LeaseStatus LeaseStatus { get; set; }
 
 }

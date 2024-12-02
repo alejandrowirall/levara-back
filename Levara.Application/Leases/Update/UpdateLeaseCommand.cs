@@ -25,5 +25,5 @@ public class UpdateLeaseCommand : Command<UpdateLeaseCommandResponse>
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
     public decimal Price { get; set; }
-
+    public LeaseStatus LeaseStatus { get; set; }
 }

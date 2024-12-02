@@ -21,6 +21,7 @@ public class GetLeaseByGridQueryResponse
         OwnerName = $"{lease.Owner.Name} {lease.Owner.Surname}";
         OwnerMail = lease.Owner.Email;
         OwnerPhone = lease.Owner.MobilePhone;
+        Status=lease.StatusLease;
     }
     public int Id { get; }
 
@@ -40,4 +41,5 @@ public class GetLeaseByGridQueryResponse
     public string OwnerMail { get; set; }
     public string OwnerPhone { get; set; }
 
+    public LeaseStatus? Status { get; set; }
 }
