@@ -32,7 +32,7 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
             DetailDepositAndAdittionalInfo = command.DetailDepositAndAdittionalInfo,
             PetsPoliticAndRate = command.PetsPoliticAndRate,
             TenantRequirements = command.TenantRequirements,
-            AvaliableFrom = command.AvaliableFrom.Value,
+            AvaliableFrom = command.AvaliableFromDate.Value,
             Address = new()
             {
                 Street = command.Street!,

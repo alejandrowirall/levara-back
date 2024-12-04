@@ -1,6 +1,7 @@
 ﻿
 using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Levara.Application.Properties.Create
 {
@@ -53,8 +54,22 @@ namespace Levara.Application.Properties.Create
         [Length(1, 800)]
         public string? TenantRequirements { get; set; }
 
-        public DateTime? AvaliableFrom { get; set; }
+        public string AvaliableFrom { get; set; }
 
+        public DateTime? AvaliableFromDate
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(AvaliableFrom))
+                    return null;
 
+                if (DateTime.TryParseExact(AvaliableFrom, "yyyy/dd/MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
+                {
+                    return parsedDate;
+                }
+
+                return null; // O lanzar una excepción 
+            }
+        }
     }
 }
