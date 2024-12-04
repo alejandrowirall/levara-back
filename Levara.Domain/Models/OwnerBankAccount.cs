@@ -18,4 +18,6 @@ public class OwnerBankAccount : Entity
 
     [Required]
     public Owner Owner { get; set; }
+
+    public string? LastSyncId { get; set; }
 }

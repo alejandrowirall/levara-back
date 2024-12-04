@@ -13,7 +13,6 @@ builder.Services.AddLevaraSerilog(builder.Configuration);
 try
 {
 
-    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     builder.Services.AddCors(options =>
     {
         options.AddPolicy(AllowAnyOrigin,

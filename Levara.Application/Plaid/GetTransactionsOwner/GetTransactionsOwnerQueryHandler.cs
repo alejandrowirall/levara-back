@@ -25,8 +25,8 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
     private readonly string _apikey;
     private readonly string _secret;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
-
-    public GetTransactionsOwnerQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, IOwnerBankAccountRepository ownerBankAccountRepository) 
+    private readonly IPlaidRepository _plaidRepository;
+    public GetTransactionsOwnerQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, IOwnerBankAccountRepository ownerBankAccountRepository, IPlaidRepository plaidRepository) 
     {
         _unitOfWork = unitOfWork;
         _httpClient = new HttpClient();
@@ -34,7 +34,7 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
         _apikey = config.Value.ApiKey;
         _secret = config.Value.Secret;
         _ownerBankAccountRepository = ownerBankAccountRepository;
-
+        _plaidRepository = plaidRepository;
     }
     public async Task<OperationResult<GetTransactionsOwnerQueryResponse>> Handle(GetTransactionsOwnerQuery query)
     {
@@ -63,7 +63,7 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
                 secret = _secret,
                 access_token = account_Token.PlaidAccountId,
                 count=500,
-                cursor= ""
+                cursor= account_Token.LastSyncId
             };
 
             try
@@ -86,8 +86,9 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
                     };
 
                     var result = JsonConvert.DeserializeObject<PlaidTransactions>(resultContent, settings);
+                    
                     allTransactions.AddRange(result.Added);
-
+                    account_Token.LastSyncId = result.NextCursor;
                     // Incrementa el offset para la siguiente iteración
                     offset += maxCount;
 
@@ -110,7 +111,19 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
                 throw new Exception($"An error occurred while fetching transactions: {ex.Message}", ex);
             }
         }
+        var plaidTransactions = allTransactions.Select(transaction => new PlaidTransaction
+        {
+            TransactionId = transaction.TransactionId, // Asumiendo que existe un campo equivalente en ExternalService.Plaid.Added
+            Date = DateTime.Parse(transaction.Date),                  // Mapea al campo de tipo DateTime
+            Description = transaction.Name,    // Mapea la descripción
+            Amount = transaction.Amount,              // Mapea el monto
+            Status = Domain.Enum.PlaidTransactionStatus.NeedReview    // Traduce el estado (requiere método adicional)
+        }).ToList();
 
+        foreach (var transaction in plaidTransactions) {
+           await _plaidRepository.AddAsync(transaction);
+        }
+        _ownerBankAccountRepository.Update(account_Token);
         var responseFunction = new GetTransactionsOwnerQueryResponse(allTransactions.Count);
        
         return OperationResult<GetTransactionsOwnerQueryResponse>.SuccessResult(responseFunction);
