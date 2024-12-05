@@ -5,12 +5,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Levara.Application.Plaid.GetTransactionsOwner
+namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid
 {
-    public class GetTransactionsOwnerQueryResponse
+    public class GetTransactionsOwnerQueryFromPlaidResponse
     {
         [JsonConstructor]
-        public GetTransactionsOwnerQueryResponse(int total_Transactions)
+        public GetTransactionsOwnerQueryFromPlaidResponse(int total_Transactions)
         {
             Total_Transactions = total_Transactions;
 

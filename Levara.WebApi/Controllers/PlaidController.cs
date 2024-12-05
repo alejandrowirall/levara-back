@@ -7,7 +7,7 @@ using Levara.Application.Owners.GetForUpdate;
 using Levara.Application.Owners.Update;
 using Levara.Application.Plaid.GetLinkToken;
 using Levara.Application.Plaid.GetPublicToken;
-using Levara.Application.Plaid.GetTransactionsOwner;
+using Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Commands;
@@ -66,8 +66,8 @@ namespace Levara.WebApi.Controllers
         }
 
 
-        [HttpGet("GetTransactionsOwner")]
-        public async Task<IActionResult> GetTransactionsOwner([FromQuery] GetTransactionsOwnerQuery query)
+        [HttpGet("GetTransactionsOwnerFromPlaid")]
+        public async Task<IActionResult> GetTransactionsOwnerFromPlaid([FromQuery] GetTransactionsOwnerFromPlaidQuery query)
         {
             var response = await _queryBus.Ask(query);
             if (!response.Success)
@@ -80,6 +80,8 @@ namespace Levara.WebApi.Controllers
 
             return Ok(response);
         }
+
+        
 
 
     }

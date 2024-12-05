@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Levara.Application.Plaid.GetTransactionsOwner
+namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid
 {
-    public class GetTransactionsOwnerQuery : Query<GetTransactionsOwnerQueryResponse>
+    public class GetTransactionsOwnerFromPlaidQuery : Query<GetTransactionsOwnerQueryFromPlaidResponse>
     {
         public int ownerId { get; set; }
     }

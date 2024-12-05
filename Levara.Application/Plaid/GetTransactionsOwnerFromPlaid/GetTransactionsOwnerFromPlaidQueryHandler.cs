@@ -3,7 +3,7 @@ using Levara.Application.Leases.GetForUpdate;
 using Levara.Application.Leases.Update;
 using Levara.Application.OwnersBankAccounts.GetForUpdate;
 using Levara.Application.Plaid.GetPublicToken;
-using Levara.Application.Plaid.GetTransactionsOwner;
+using Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
@@ -16,9 +16,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
-namespace Levara.Application.Plaid.GetTransactionsOwner;
+namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 
-public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwnerQuery, GetTransactionsOwnerQueryResponse>
+public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransactionsOwnerFromPlaidQuery, GetTransactionsOwnerQueryFromPlaidResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly HttpClient _httpClient;
@@ -26,7 +26,7 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
     private readonly string _secret;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
     private readonly IPlaidRepository _plaidRepository;
-    public GetTransactionsOwnerQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, IOwnerBankAccountRepository ownerBankAccountRepository, IPlaidRepository plaidRepository) 
+    public GetTransactionsOwnerFromPlaidQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, IOwnerBankAccountRepository ownerBankAccountRepository, IPlaidRepository plaidRepository) 
     {
         _unitOfWork = unitOfWork;
         _httpClient = new HttpClient();
@@ -36,7 +36,7 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
         _ownerBankAccountRepository = ownerBankAccountRepository;
         _plaidRepository = plaidRepository;
     }
-    public async Task<OperationResult<GetTransactionsOwnerQueryResponse>> Handle(GetTransactionsOwnerQuery query)
+    public async Task<OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>> Handle(GetTransactionsOwnerFromPlaidQuery query)
     {
         var bankAccountQuery = _ownerBankAccountRepository.GetAll()
                                                .Where(p => p.OwnerId == query.ownerId);
@@ -125,9 +125,9 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
            await _plaidRepository.AddAsync(transaction);
         }
         _ownerBankAccountRepository.Update(account_Token);
-        var responseFunction = new GetTransactionsOwnerQueryResponse(allTransactions.Count);
+        var responseFunction = new GetTransactionsOwnerQueryFromPlaidResponse(allTransactions.Count);
        
-        return OperationResult<GetTransactionsOwnerQueryResponse>.SuccessResult(responseFunction);
+        return OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>.SuccessResult(responseFunction);
 
 
     }
