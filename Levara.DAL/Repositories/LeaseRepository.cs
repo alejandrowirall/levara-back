@@ -16,6 +16,6 @@ public class LeaseRepository : Repository<Lease>, ILeaseRepository
 
     public IQueryable<Lease> GetAllLeases()
     {
-        return GetAll().Include(o=>o.Owner).Include(p=>p.Property).Include(a=>a.Property.Address);
+        return GetAll().Include(o=>o.Owner).Include(t=>t.Tenant).Include(p=>p.Property).Include(a=>a.Property.Address);
     }
 }

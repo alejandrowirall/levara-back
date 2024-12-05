@@ -52,9 +52,9 @@ namespace Levara.WebApi.Controllers
 
 
         [HttpGet("Create")]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromQuery] GetLeaseForCreateQuery query )
         {
-            var response = await _queryBus.Ask(new GetLeaseForCreateQuery());
+            var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
                 return new ObjectResult(response)
