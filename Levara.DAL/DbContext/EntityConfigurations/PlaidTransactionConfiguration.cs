@@ -19,7 +19,11 @@ namespace Levara.DAL.DbContext.EntityConfigurations
 
             builder.Property(e => e.Amount)
                    .HasPrecision(18, 2);
-
+            builder.HasOne(o => o.OwnerBankAccount)
+                   .WithMany()
+                   .HasForeignKey(o => o.OwnerBankAccountId)
+                   .OnDelete(DeleteBehavior.NoAction);
+            
             builder.ToTable("PlaidTransaction")
                    .HasQueryFilter(c => !c.Deleted);
         }

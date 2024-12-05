@@ -16,5 +16,8 @@ namespace Levara.Domain.Models
         public double? Amount { get; set; }
 
         public PlaidTransactionStatus Status { get; set; }
+
+        public int OwnerBankAccountId { get; set; }
+        public OwnerBankAccount OwnerBankAccount { get; set; }
     }
 }

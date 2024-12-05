@@ -117,7 +117,8 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
             Date = DateTime.Parse(transaction.Date),                  // Mapea al campo de tipo DateTime
             Description = transaction.Name,    // Mapea la descripción
             Amount = transaction.Amount,              // Mapea el monto
-            Status = Domain.Enum.PlaidTransactionStatus.NeedReview    // Traduce el estado (requiere método adicional)
+            Status = Domain.Enum.PlaidTransactionStatus.NeedReview,    // Traduce el estado (requiere método adicional)
+            OwnerBankAccountId= account_Token.Id
         }).ToList();
 
         foreach (var transaction in plaidTransactions) {
