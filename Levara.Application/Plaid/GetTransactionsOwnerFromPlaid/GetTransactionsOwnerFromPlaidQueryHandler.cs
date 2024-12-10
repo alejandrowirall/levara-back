@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 
@@ -114,16 +115,35 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
         var plaidTransactions = allTransactions.Select(transaction => new PlaidTransaction
         {
             TransactionId = transaction.TransactionId, // Asumiendo que existe un campo equivalente en ExternalService.Plaid.Added
-            Date = DateTime.Parse(transaction.Date),                  // Mapea al campo de tipo DateTime
+            Date = DateTime.Parse(transaction.Date).ToUniversalTime(),                  // Mapea al campo de tipo DateTime
             Description = transaction.Name,    // Mapea la descripción
             Amount = transaction.Amount,              // Mapea el monto
             Status = Domain.Enum.PlaidTransactionStatus.NeedReview,    // Traduce el estado (requiere método adicional)
             OwnerBankAccountId= account_Token.Id
         }).ToList();
 
-        foreach (var transaction in plaidTransactions) {
-           await _plaidRepository.AddAsync(transaction);
-        }
+        //Verificar del listado de transacciones cuales no existen
+        //el transaction if para avanzar en el proceso de creacion
+        
+        var plaidTransactionIds = plaidTransactions.Select(pt => pt.TransactionId).ToList();
+        var existingTransactionIds = _plaidRepository.GetAll()
+                               .Where(dbTransaction => plaidTransactionIds.Contains(dbTransaction.TransactionId))
+                               .Select(dbTransaction => dbTransaction.TransactionId)
+                               .ToList();
+        var newTransactions = plaidTransactions
+                        .Where(pt => !existingTransactionIds.Contains(pt.TransactionId))
+                        .ToList();
+
+        await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+        {
+            foreach(var transaction in newTransactions)
+            { 
+                await _plaidRepository.AddAsync(transaction);
+
+            }
+        });
+            
+       
         _ownerBankAccountRepository.Update(account_Token);
         var responseFunction = new GetTransactionsOwnerQueryFromPlaidResponse(allTransactions.Count);
        
