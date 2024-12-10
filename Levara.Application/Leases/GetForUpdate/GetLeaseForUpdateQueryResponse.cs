@@ -2,18 +2,21 @@
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
+using Levara.Shared.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Levara.Application.Leases.GetForUpdate;
 
 public class GetLeaseForUpdateQueryResponse
 {
-    public GetLeaseForUpdateQueryResponse(LeaseUpdateQueryResponse property)
+    public GetLeaseForUpdateQueryResponse(LeaseUpdateQueryResponse property, List<ListModel> leaseStatus)
     {
         Property = property;
+        LeaseStatus = leaseStatus;
     }
 
     public LeaseUpdateQueryResponse Property { get; }
+    public List<ListModel> LeaseStatus { get; }
 }
 
 public class LeaseUpdateQueryResponse

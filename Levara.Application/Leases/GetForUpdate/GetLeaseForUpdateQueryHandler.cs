@@ -1,6 +1,9 @@
 ﻿using Levara.Domain.Contexts;
 using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Enum;
 using Levara.Shared.Domain.Bus.Queries;
+using Levara.Shared.Domain.Models;
+using Levara.Shared.Extensions;
 using Levara.Shared.Results;
 
 namespace Levara.Application.Leases.GetForUpdate;
@@ -28,7 +31,8 @@ public class GetLeaseForUpdateQueryHandler : IQueryHandler<GetLeaseForUpdateQuer
         if (_userContext.IsOwner && property.OwnerId != _userContext.OwnerId!.Value)
             return OperationResult<GetLeaseForUpdateQueryResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this property."));
 
-        GetLeaseForUpdateQueryResponse response = new(property);
+        List<ListModel> listModels = EnumExtensions.ToListModel<LeaseStatus>();
+        GetLeaseForUpdateQueryResponse response = new(property, listModels);
         
         return OperationResult<GetLeaseForUpdateQueryResponse>.SuccessResult(response);
 
