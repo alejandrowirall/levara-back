@@ -1,34 +1,23 @@
 ﻿using Levara.Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Levara.Domain.Models
 {
     public class Transaction : Entity
     {
-        public int TransactionTypeId { get; set; }
-        public TransactionType TransactionType { get; set; }
-        public int OwnerId { get; set; }
+        public TransactionType Type { get; set; }
 
-        [Required]
-        public Owner Owner { get; set; }
+        public TransactionSubType SubType { get; set; }
+   
         public int PropertyId { get; set; }
         public Property Property { get; set; }
-        public int TenantId { get; set; }
-        public Tenant Tenant { get; set; }
-        public decimal Amount { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string Description { get; set; }
-        public TransactionStatus TransactionStatus { get; set; }
-        public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
 
-        public Transaction()
-        {
-            TransactionDetails = new HashSet<TransactionDetail>();
-        }
+        public int EntityId { get; set; }
+
+        public decimal Amount { get; set; }
+        public DateTime Date { get; set; }
+        public string Description { get; set; }
+        public decimal RunningBalance { get; set; }
+        public decimal EntityRunningBalance { get; set; }
+
     }
 }
