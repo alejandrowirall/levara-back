@@ -29,8 +29,9 @@ public class LeaseUpdateQueryResponse
         DateFrom = lease.DateFrom!;
         DateTo = lease.DateTo!;
         Price = lease.Amount!;
+        StatusLease=lease.StatusLease;
 
-        
+
     }
     [Range(1, int.MaxValue)]
     public int OwnerId { get; set; }
@@ -46,5 +47,7 @@ public class LeaseUpdateQueryResponse
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
     public decimal Price { get; set; }
+
+    public LeaseStatus? StatusLease { get; set; }
 
 }
