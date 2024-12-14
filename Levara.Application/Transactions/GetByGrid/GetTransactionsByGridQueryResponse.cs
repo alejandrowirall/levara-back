@@ -1,4 +1,5 @@
 ﻿
+using Levara.Domain.Enum;
 using Levara.Domain.Models;
 
 namespace Levara.Application.Transactions.GetByGrid;
@@ -7,16 +8,30 @@ public class GetTransactionsByGridQueryResponse
 {
     public GetTransactionsByGridQueryResponse(Transaction transaction)
     {
-        //Id = property.Id;
-        //Number = property.Number;
-        //Address = $"{property.Address.Street} {property.Address.Number}, {property.Address.City}, {property.Address.State}";
-        //Price = property.Price;
+        Id = transaction.Id;
+        Type = transaction.Type;
+        SubType = transaction.SubType;
+        PropertyId=transaction.PropertyId;
+        Property=transaction.Property;
+        Amount=transaction.Amount;
+        Date=transaction.Date;
+        Description=transaction.Description;
+        RunningBalance=transaction.RunningBalance;
+        EntityRunningBalance=transaction.EntityRunningBalance;
+        
     }
-    public int Id { get; }
 
-    public int Number { get; set; }
+    public int Id { get; set; }
+    public TransactionType Type { get; set; }
 
-    public string Address { get; set; }
+    public TransactionSubType SubType { get; set; }
 
-    public decimal? Price { get; set; }
+    public int PropertyId { get; set; }
+    public Property Property { get; set; }
+
+    public decimal Amount { get; set; }
+    public DateTime Date { get; set; }
+    public string Description { get; set; }
+    public decimal RunningBalance { get; set; }
+    public decimal EntityRunningBalance { get; set; }
 }
