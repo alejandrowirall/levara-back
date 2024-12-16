@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Levara.WebApi.Controllers
 {
-    [Route("api/property")]
+    [Route("api/lease-charge")]
     [ApiController]
     [AuthorizeAnyRoles(Roles.Admin, Roles.Owner)]
     public class LeaseChargeController : ControllerBase

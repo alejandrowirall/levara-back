@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Levara.WebApi.Controllers
 {
-    [Route("api/property")]
+    [Route("api/transaction")]
     [ApiController]
     [AuthorizeAnyRoles(Roles.Admin, Roles.Owner)]
     public class TransactionController : ControllerBase
