@@ -46,6 +46,26 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             throw ex;
         }
     }
+    public async Task<T> ExecuteAsTransactionAsync<T>(Func<Task<T>> asyncLogic)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            // Ejecuta la lógica personalizada
+            T result = await asyncLogic();
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw; // Mantén la excepción original
+        }
+    }
+
 
     protected virtual void Dispose(bool disposing)
     {

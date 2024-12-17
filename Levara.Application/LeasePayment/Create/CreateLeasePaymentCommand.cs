@@ -11,13 +11,8 @@ namespace Levara.Application.LeasesPayment.Create
     public class CreateLeasePaymentCommand : Command<CreateLeasePaymentCommandResponse>
     {
 
-        public TransactionType Type { get; set; }
-
-        public TransactionSubType SubType { get; set; }
-
         public int PropertyId { get; set; }
-        public Property Property { get; set; }
-
+        
         public int EntityId { get; set; }
 
         public decimal Amount { get; set; }
@@ -25,5 +20,8 @@ namespace Levara.Application.LeasesPayment.Create
         public string Description { get; set; }
         public decimal RunningBalance { get; set; }
         public decimal EntityRunningBalance { get; set; }
+
+        public int LeaseId {  get; set; }
+        
     }
 }
