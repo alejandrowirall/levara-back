@@ -20,4 +20,6 @@ public class Expense : Entity
 
     public Property Property { get; set; }
 
+    public ExpenseStatus Status { get; set; }
+
 }
