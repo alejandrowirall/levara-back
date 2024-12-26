@@ -32,23 +32,13 @@ public class UpdateExpenseCommandHandler : ICommandHandler<UpdateExpenseCommand,
         if (_userContext.IsOwner && expense.Property.OwnerId != _userContext.OwnerId!.Value)
             return OperationResult<UpdateExpenseCommandResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this expense."));
 
-        //property.Address.Street = command.Street!;
-        //property.Address.Number = command.StreetNumber!.Value;
-        //property.Address.AdditionalLine = command.AdditionalLine;
-        //property.Address.City = command.City!;
-        //property.Address.State = command.State!;
-        //property.Address.PostalCode = command.PostalCode!;
-        //property.Price = command.Price!;
-        //property.RoomsQuantity = command.RoomsQuantity.Value;
-        //property.BathroomQuantity = command.BathroomQuantity.Value;
-        //property.AreaQuantity = command.AreaQuantity.Value;
-        //property.HasPool = command.HasPool.Value;
-        //property.HasBalcony = command.HasBalcony.Value;
-        //property.HasGarage = command.HasGarage.Value;
-        //property.DetailDepositAndAdittionalInfo = command.DetailDepositAndAdittionalInfo;
-        //property.PetsPoliticAndRate = command.PetsPoliticAndRate;
-        //property.TenantRequirements = command.TenantRequirements;
-        //property.AvaliableFrom = command.AvaliableFromDate.Value.ToUniversalTime();
+
+        expense.PropertyId = command.PropertyId;
+        expense.Title = command.Title;
+        expense.TypeId = command.TypeId;
+        expense.Description = command.Description;
+       
+        
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
             _expenseRepository.Update(expense);
