@@ -20,13 +20,13 @@ public class UpdateTransactionOwnerCommandHandler : ICommandHandler<UpdateTransa
     {
         
         var plaidTxQuery = _plaidRepository.GetAll()
-                                         .Where(o => o.Id == command.Id!);
+                                         .Where(o => o.Id == command.PlaidId!);
 
         PlaidTransaction? plaidtx = await _plaidRepository.FirstOrDefaultAsync(plaidTxQuery);
         if (plaidtx == null)
             return OperationResult<UpdateTransactionOwnerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        plaidtx.Id = command.Id.Value;
+        plaidtx.Id = command.PlaidId.Value;
         plaidtx.Status = command.Status!;
         
         
