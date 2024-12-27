@@ -13,5 +13,7 @@
         public decimal AppliedAmount { get; set; }
 
         public int BankTransactionId { get; set; }
+
+        public BankTransaction BankTransaction { get; set; }
     }
 }

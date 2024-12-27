@@ -2185,6 +2185,72 @@ namespace Levara.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Levara.Domain.Models.BankTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double?>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LeaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OwnerBankAccountId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PlaidIdTransaction")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("RunningBalance")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaseId");
+
+                    b.HasIndex("OwnerBankAccountId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("BankTransaction");
+                });
+
             modelBuilder.Entity("Levara.Domain.Models.Lease", b =>
                 {
                     b.Property<int>("Id")
@@ -2474,7 +2540,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 3
+                            TransactionId = 2
                         },
                         new
                         {
@@ -2487,7 +2553,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 5
+                            TransactionId = 3
                         },
                         new
                         {
@@ -2500,7 +2566,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 7
+                            TransactionId = 4
                         },
                         new
                         {
@@ -2513,7 +2579,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 9
+                            TransactionId = 5
                         },
                         new
                         {
@@ -2526,7 +2592,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 11
+                            TransactionId = 6
                         },
                         new
                         {
@@ -2539,7 +2605,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 13
+                            TransactionId = 7
                         },
                         new
                         {
@@ -2552,7 +2618,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 15
+                            TransactionId = 8
                         },
                         new
                         {
@@ -2565,7 +2631,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 17
+                            TransactionId = 9
                         },
                         new
                         {
@@ -2578,7 +2644,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 19
+                            TransactionId = 10
                         },
                         new
                         {
@@ -2591,7 +2657,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 21
+                            TransactionId = 11
                         },
                         new
                         {
@@ -2604,7 +2670,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             LeaseId = 1,
                             Status = 3,
-                            TransactionId = 23
+                            TransactionId = 12
                         });
                 });
 
@@ -2644,129 +2710,6 @@ namespace Levara.DAL.Migrations
                     b.HasIndex("TransactionId");
 
                     b.ToTable("LeasePayments", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 4
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 6
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 8
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 10
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 12
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 14
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 16
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 18
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 20
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            LeaseId = 1,
-                            TransactionId = 22
-                        });
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.Maintenance", b =>
@@ -5204,16 +5147,16 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Payment of rent 1/5/2024",
+                            Description = "Charge of rent 2/2/2024",
                             EntityId = 1,
-                            EntityRunningBalance = 0m,
+                            EntityRunningBalance = -3000m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
+                            RunningBalance = -3000m,
+                            SubType = 1,
                             Type = 1
                         },
                         new
@@ -5222,15 +5165,15 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Charge of rent 2/2/2024",
+                            Description = "Charge of rent 3/3/2024",
                             EntityId = 1,
-                            EntityRunningBalance = -1500m,
+                            EntityRunningBalance = -4500m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = -1500m,
+                            RunningBalance = -4500m,
                             SubType = 1,
                             Type = 1
                         },
@@ -5240,16 +5183,16 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Payment of rent 2/5/2024",
+                            Description = "Charge of rent 4/4/2024",
                             EntityId = 1,
-                            EntityRunningBalance = 0m,
+                            EntityRunningBalance = -6000m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
+                            RunningBalance = -6000m,
+                            SubType = 1,
                             Type = 1
                         },
                         new
@@ -5258,15 +5201,15 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Charge of rent 3/3/2024",
+                            Description = "Charge of rent 5/5/2024",
                             EntityId = 1,
-                            EntityRunningBalance = -1500m,
+                            EntityRunningBalance = -7500m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = -1500m,
+                            RunningBalance = -7500m,
                             SubType = 1,
                             Type = 1
                         },
@@ -5276,16 +5219,16 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Payment of rent 3/5/2024",
+                            Description = "Charge of rent 6/6/2024",
                             EntityId = 1,
-                            EntityRunningBalance = 0m,
+                            EntityRunningBalance = -9000m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
+                            RunningBalance = -9000m,
+                            SubType = 1,
                             Type = 1
                         },
                         new
@@ -5294,15 +5237,15 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Charge of rent 4/4/2024",
+                            Description = "Charge of rent 7/7/2024",
                             EntityId = 1,
-                            EntityRunningBalance = -1500m,
+                            EntityRunningBalance = -10500m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = -1500m,
+                            RunningBalance = -10500m,
                             SubType = 1,
                             Type = 1
                         },
@@ -5312,16 +5255,16 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 4, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Payment of rent 4/5/2024",
+                            Description = "Charge of rent 8/8/2024",
                             EntityId = 1,
-                            EntityRunningBalance = 0m,
+                            EntityRunningBalance = -12000m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
+                            RunningBalance = -12000m,
+                            SubType = 1,
                             Type = 1
                         },
                         new
@@ -5330,15 +5273,15 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Charge of rent 5/5/2024",
+                            Description = "Charge of rent 9/9/2024",
                             EntityId = 1,
-                            EntityRunningBalance = -1500m,
+                            EntityRunningBalance = -13500m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = -1500m,
+                            RunningBalance = -13500m,
                             SubType = 1,
                             Type = 1
                         },
@@ -5348,16 +5291,16 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Payment of rent 5/5/2024",
+                            Description = "Charge of rent 10/10/2024",
                             EntityId = 1,
-                            EntityRunningBalance = 0m,
+                            EntityRunningBalance = -15000m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
+                            RunningBalance = -15000m,
+                            SubType = 1,
                             Type = 1
                         },
                         new
@@ -5366,15 +5309,15 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
-                            Description = "Charge of rent 6/6/2024",
+                            Description = "Charge of rent 11/11/2024",
                             EntityId = 1,
-                            EntityRunningBalance = -1500m,
+                            EntityRunningBalance = -16500m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = -1500m,
+                            RunningBalance = -16500m,
                             SubType = 1,
                             Type = 1
                         },
@@ -5384,233 +5327,17 @@ namespace Levara.DAL.Migrations
                             Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2024, 6, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Payment of rent 6/5/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = 0m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Charge of rent 7/7/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = -1500m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = -1500m,
-                            SubType = 1,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 7, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Payment of rent 7/5/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = 0m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Charge of rent 8/8/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = -1500m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = -1500m,
-                            SubType = 1,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 8, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Payment of rent 8/5/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = 0m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Charge of rent 9/9/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = -1500m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = -1500m,
-                            SubType = 1,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 9, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Payment of rent 9/5/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = 0m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Charge of rent 10/10/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = -1500m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = -1500m,
-                            SubType = 1,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 10, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Payment of rent 10/5/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = 0m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Charge of rent 11/11/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = -1500m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = -1500m,
-                            SubType = 1,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 11, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Payment of rent 11/5/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = 0m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = 0m,
-                            SubType = 2,
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Amount = 1500m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
                             Date = new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Charge of rent 12/12/2024",
                             EntityId = 1,
-                            EntityRunningBalance = -1500m,
+                            EntityRunningBalance = -18000m,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             PropertyId = 1,
-                            RunningBalance = -1500m,
+                            RunningBalance = -18000m,
                             SubType = 1,
                             Type = 1
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Amount = 450m,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Date = new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Deleted = false,
-                            Description = "Charge of maintenance 12/9/2024",
-                            EntityId = 1,
-                            EntityRunningBalance = -450m,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PropertyId = 1,
-                            RunningBalance = -1950m,
-                            SubType = 1,
-                            Type = 2
                         });
                 });
 
@@ -5652,156 +5379,13 @@ namespace Levara.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BankTransactionId");
+
                     b.HasIndex("ChargeTransactionId");
 
                     b.HasIndex("PaymentTransactionId");
 
                     b.ToTable("TransactionApplications", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 1,
-                            ChargeTransactionId = 1,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 2,
-                            ChargeTransactionId = 3,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 4
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 3,
-                            ChargeTransactionId = 5,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 6
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 4,
-                            ChargeTransactionId = 7,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 8
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 5,
-                            ChargeTransactionId = 9,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 10
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 6,
-                            ChargeTransactionId = 11,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 12
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 7,
-                            ChargeTransactionId = 13,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 14
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 8,
-                            ChargeTransactionId = 15,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 16
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 9,
-                            ChargeTransactionId = 17,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 18
-                        },
-                        new
-                        {
-                            Id = 10,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 10,
-                            ChargeTransactionId = 19,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 20
-                        },
-                        new
-                        {
-                            Id = 11,
-                            AppliedAmount = 1500m,
-                            BankTransactionId = 11,
-                            ChargeTransactionId = 21,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CreatorId = 1,
-                            Deleted = false,
-                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastEditorId = 1,
-                            PaymentTransactionId = 22
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -8823,6 +8407,31 @@ namespace Levara.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Levara.Domain.Models.BankTransaction", b =>
+                {
+                    b.HasOne("Levara.Domain.Models.Lease", "Lease")
+                        .WithMany()
+                        .HasForeignKey("LeaseId");
+
+                    b.HasOne("Levara.Domain.Models.OwnerBankAccount", "OwnerBankAccount")
+                        .WithMany()
+                        .HasForeignKey("OwnerBankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Levara.Domain.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lease");
+
+                    b.Navigation("OwnerBankAccount");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Levara.Domain.Models.Lease", b =>
                 {
                     b.HasOne("Levara.Domain.Models.Owner", "Owner")
@@ -9044,6 +8653,12 @@ namespace Levara.DAL.Migrations
 
             modelBuilder.Entity("Levara.Domain.Models.TransactionApplication", b =>
                 {
+                    b.HasOne("Levara.Domain.Models.BankTransaction", "BankTransaction")
+                        .WithMany()
+                        .HasForeignKey("BankTransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Levara.Domain.Models.Transaction", "ChargeTransaction")
                         .WithMany()
                         .HasForeignKey("ChargeTransactionId")
@@ -9055,6 +8670,8 @@ namespace Levara.DAL.Migrations
                         .HasForeignKey("PaymentTransactionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("BankTransaction");
 
                     b.Navigation("ChargeTransaction");
 

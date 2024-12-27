@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class addInitialMigration : Migration
+    public partial class AddInitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -78,6 +78,25 @@ namespace Levara.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaintenanceTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaintenanceTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -300,6 +319,7 @@ namespace Levara.DAL.Migrations
                     AccountNumberMasked = table.Column<string>(type: "text", nullable: false),
                     PlaidAccountId = table.Column<string>(type: "text", nullable: false),
                     OwnerId = table.Column<int>(type: "integer", nullable: false),
+                    LastSyncId = table.Column<string>(type: "text", nullable: true),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -360,6 +380,34 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlaidTransaction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    OwnerBankAccountId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaidTransaction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlaidTransaction_OwnerBankAccounts_OwnerBankAccountId",
+                        column: x => x.OwnerBankAccountId,
+                        principalTable: "OwnerBankAccounts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Leases",
                 columns: table => new
                 {
@@ -372,6 +420,7 @@ namespace Levara.DAL.Migrations
                     DateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Frequency = table.Column<int>(type: "integer", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    StatusLease = table.Column<int>(type: "integer", nullable: true),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -395,6 +444,270 @@ namespace Levara.DAL.Migrations
                         name: "FK_Leases_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Maintenances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    TypeId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Maintenances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Maintenances_MaintenanceTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "MaintenanceTypes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Maintenances_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    SubType = table.Column<int>(type: "integer", nullable: false),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    EntityId = table.Column<int>(type: "integer", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    RunningBalance = table.Column<decimal>(type: "numeric", nullable: false),
+                    EntityRunningBalance = table.Column<decimal>(type: "numeric", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BankTransaction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<double>(type: "double precision", nullable: true),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    LeaseId = table.Column<int>(type: "integer", nullable: true),
+                    OwnerBankAccountId = table.Column<int>(type: "integer", nullable: false),
+                    RunningBalance = table.Column<double>(type: "double precision", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    PlaidIdTransaction = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankTransaction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BankTransaction_Leases_LeaseId",
+                        column: x => x.LeaseId,
+                        principalTable: "Leases",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BankTransaction_OwnerBankAccounts_OwnerBankAccountId",
+                        column: x => x.OwnerBankAccountId,
+                        principalTable: "OwnerBankAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BankTransaction_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaseCharges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<int>(type: "integer", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaseId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaseCharges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeaseCharges_Leases_LeaseId",
+                        column: x => x.LeaseId,
+                        principalTable: "Leases",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LeaseCharges_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeasePayments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<int>(type: "integer", nullable: false),
+                    LeaseId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeasePayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeasePayments_Leases_LeaseId",
+                        column: x => x.LeaseId,
+                        principalTable: "Leases",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LeasePayments_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaintenanceCharges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<int>(type: "integer", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    MaintenanceId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaintenanceCharges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MaintenanceCharges_Maintenances_MaintenanceId",
+                        column: x => x.MaintenanceId,
+                        principalTable: "Maintenances",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_MaintenanceCharges_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaintenancePayments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<int>(type: "integer", nullable: false),
+                    MaintenanceId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaintenancePayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MaintenancePayments_Maintenances_MaintenanceId",
+                        column: x => x.MaintenanceId,
+                        principalTable: "Maintenances",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_MaintenancePayments_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionApplications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ChargeTransactionId = table.Column<int>(type: "integer", nullable: false),
+                    PaymentTransactionId = table.Column<int>(type: "integer", nullable: false),
+                    AppliedAmount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    BankTransactionId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionApplications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TransactionApplications_BankTransaction_BankTransactionId",
+                        column: x => x.BankTransactionId,
+                        principalTable: "BankTransaction",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TransactionApplications_Transactions_ChargeTransactionId",
+                        column: x => x.ChargeTransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TransactionApplications_Transactions_PaymentTransactionId",
+                        column: x => x.PaymentTransactionId,
+                        principalTable: "Transactions",
                         principalColumn: "Id");
                 });
 
@@ -861,19 +1174,19 @@ namespace Levara.DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "OwnerBankAccounts",
-                columns: new[] { "Id", "AccountNumberMasked", "BankName", "CreatedDate", "CreatorId", "Deleted", "LastEditedDate", "LastEditorId", "OwnerId", "PlaidAccountId" },
+                columns: new[] { "Id", "AccountNumberMasked", "BankName", "CreatedDate", "CreatorId", "Deleted", "LastEditedDate", "LastEditorId", "LastSyncId", "OwnerId", "PlaidAccountId" },
                 values: new object[,]
                 {
-                    { 1, "****1234", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, "account-abc123" },
-                    { 2, "****1235", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 2, "account-abc124" },
-                    { 3, "****1236", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 3, "account-abc125" },
-                    { 4, "****1237", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 4, "account-abc126" },
-                    { 5, "****1238", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 5, "account-abc127" },
-                    { 6, "****1239", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 6, "account-abc128" },
-                    { 7, "****1240", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 7, "account-abc129" },
-                    { 8, "****1241", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 8, "account-abc130" },
-                    { 9, "****1242", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 9, "account-abc131" },
-                    { 10, "****1243", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 10, "account-abc132" }
+                    { 1, "****1234", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "account-abc123" },
+                    { 2, "****1235", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 2, "account-abc124" },
+                    { 3, "****1236", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 3, "account-abc125" },
+                    { 4, "****1237", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 4, "account-abc126" },
+                    { 5, "****1238", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 5, "account-abc127" },
+                    { 6, "****1239", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 6, "account-abc128" },
+                    { 7, "****1240", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 7, "account-abc129" },
+                    { 8, "****1241", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 8, "account-abc130" },
+                    { 9, "****1242", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 9, "account-abc131" },
+                    { 10, "****1243", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 10, "account-abc132" }
                 });
 
             migrationBuilder.InsertData(
@@ -985,19 +1298,57 @@ namespace Levara.DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Leases",
-                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "DateFrom", "DateTo", "Deleted", "Frequency", "LastEditedDate", "LastEditorId", "OwnerId", "PropertyId", "TenantId" },
+                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "DateFrom", "DateTo", "Deleted", "Frequency", "LastEditedDate", "LastEditorId", "OwnerId", "PropertyId", "StatusLease", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 1100m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 1 },
-                    { 2, 1200m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 2, 2, 2 },
-                    { 3, 1300m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 3, 3, 3 },
-                    { 4, 1400m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 4, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 4, 4, 4 },
-                    { 5, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 5, 5, 5 },
-                    { 6, 1600m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 6, 6, 6 },
-                    { 7, 1700m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 7, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 7, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 7, 7, 7 },
-                    { 8, 1800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 8, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 8, 8, 8 },
-                    { 9, 1900m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 9, 9, 9 },
-                    { 10, 2000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 10, 10, 10 }
+                    { 1, 1100m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, null, 1 },
+                    { 2, 1200m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 2, 2, null, 2 },
+                    { 3, 1300m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 3, 3, null, 3 },
+                    { 4, 1400m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 4, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 4, 4, null, 4 },
+                    { 5, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 5, 5, null, 5 },
+                    { 6, 1600m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 6, 6, null, 6 },
+                    { 7, 1700m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 7, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 7, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 7, 7, null, 7 },
+                    { 8, 1800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 8, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 8, 8, null, 8 },
+                    { 9, 1900m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 9, 9, null, 9 },
+                    { 10, 2000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 10, 10, null, 10 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Transactions",
+                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "Date", "Deleted", "Description", "EntityId", "EntityRunningBalance", "LastEditedDate", "LastEditorId", "PropertyId", "RunningBalance", "SubType", "Type" },
+                values: new object[,]
+                {
+                    { 1, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 1/1/2024", 1, -1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -1500m, 1, 1 },
+                    { 2, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 2/2/2024", 1, -3000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -3000m, 1, 1 },
+                    { 3, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 3/3/2024", 1, -4500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -4500m, 1, 1 },
+                    { 4, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 4/4/2024", 1, -6000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -6000m, 1, 1 },
+                    { 5, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 5/5/2024", 1, -7500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -7500m, 1, 1 },
+                    { 6, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 6/6/2024", 1, -9000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -9000m, 1, 1 },
+                    { 7, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 7/7/2024", 1, -10500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -10500m, 1, 1 },
+                    { 8, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 8/8/2024", 1, -12000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -12000m, 1, 1 },
+                    { 9, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 9/9/2024", 1, -13500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -13500m, 1, 1 },
+                    { 10, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 10/10/2024", 1, -15000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -15000m, 1, 1 },
+                    { 11, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 11/11/2024", 1, -16500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -16500m, 1, 1 },
+                    { 12, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 12/12/2024", 1, -18000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -18000m, 1, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LeaseCharges",
+                columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "DueDate", "LastEditedDate", "LastEditorId", "LeaseId", "Status", "TransactionId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 1 },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 2 },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 3 },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 4 },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 5 },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 6 },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 7 },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 8 },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 9 },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 10 },
+                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 11 },
+                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 12 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1038,6 +1389,41 @@ namespace Levara.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_BankTransaction_LeaseId",
+                table: "BankTransaction",
+                column: "LeaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BankTransaction_OwnerBankAccountId",
+                table: "BankTransaction",
+                column: "OwnerBankAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BankTransaction_PropertyId",
+                table: "BankTransaction",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaseCharges_LeaseId",
+                table: "LeaseCharges",
+                column: "LeaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaseCharges_TransactionId",
+                table: "LeaseCharges",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeasePayments_LeaseId",
+                table: "LeasePayments",
+                column: "LeaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeasePayments_TransactionId",
+                table: "LeasePayments",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Leases_OwnerId",
                 table: "Leases",
                 column: "OwnerId");
@@ -1051,6 +1437,36 @@ namespace Levara.DAL.Migrations
                 name: "IX_Leases_TenantId",
                 table: "Leases",
                 column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaintenanceCharges_MaintenanceId",
+                table: "MaintenanceCharges",
+                column: "MaintenanceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaintenanceCharges_TransactionId",
+                table: "MaintenanceCharges",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaintenancePayments_MaintenanceId",
+                table: "MaintenancePayments",
+                column: "MaintenanceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaintenancePayments_TransactionId",
+                table: "MaintenancePayments",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Maintenances_PropertyId",
+                table: "Maintenances",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Maintenances_TypeId",
+                table: "Maintenances",
+                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_ReceiverId",
@@ -1073,6 +1489,11 @@ namespace Levara.DAL.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlaidTransaction_OwnerBankAccountId",
+                table: "PlaidTransaction",
+                column: "OwnerBankAccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Properties_AddressId",
                 table: "Properties",
                 column: "AddressId");
@@ -1091,6 +1512,26 @@ namespace Levara.DAL.Migrations
                 name: "IX_Tenants_ApplicationUserId",
                 table: "Tenants",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionApplications_BankTransactionId",
+                table: "TransactionApplications",
+                column: "BankTransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionApplications_ChargeTransactionId",
+                table: "TransactionApplications",
+                column: "ChargeTransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionApplications_PaymentTransactionId",
+                table: "TransactionApplications",
+                column: "PaymentTransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_PropertyId",
+                table: "Transactions",
+                column: "PropertyId");
         }
 
         /// <inheritdoc />
@@ -1112,16 +1553,46 @@ namespace Levara.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Leases");
+                name: "LeaseCharges");
+
+            migrationBuilder.DropTable(
+                name: "LeasePayments");
+
+            migrationBuilder.DropTable(
+                name: "MaintenanceCharges");
+
+            migrationBuilder.DropTable(
+                name: "MaintenancePayments");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
-                name: "OwnerBankAccounts");
+                name: "PlaidTransaction");
+
+            migrationBuilder.DropTable(
+                name: "TransactionApplications");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Maintenances");
+
+            migrationBuilder.DropTable(
+                name: "BankTransaction");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "MaintenanceTypes");
+
+            migrationBuilder.DropTable(
+                name: "Leases");
+
+            migrationBuilder.DropTable(
+                name: "OwnerBankAccounts");
 
             migrationBuilder.DropTable(
                 name: "Properties");

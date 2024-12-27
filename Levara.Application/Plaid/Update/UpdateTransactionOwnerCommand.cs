@@ -22,5 +22,9 @@ namespace Levara.Application.Plaid.Update
 
         public TransactionType Category { get; set; }
 
+        public int? MaintananceChargeId { get; set; }
+
+       
+
     }
 }

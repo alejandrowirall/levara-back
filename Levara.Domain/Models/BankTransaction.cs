@@ -24,6 +24,7 @@ namespace Levara.Domain.Models
         public OwnerBankAccount OwnerBankAccount { get; set; }
 
         public double? RunningBalance { get; set; }
+        public TransactionType Type { get; set; }
 
         public int PlaidIdTransaction { get; set; }
     }
