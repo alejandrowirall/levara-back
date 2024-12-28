@@ -29,9 +29,10 @@ public class ScheduleJobsCommandHandler : ICommandHandler<ScheduleJobsCommand, S
 
         var ownerBankAccountIds = await _ownerBankAccountRepository.ToListAsync(query);
 
-        List<DomainEvent> events = 
-            ownerBankAccountIds.Select(id => new BankAccountSyncJobCreated(id, Guid.NewGuid()))
-                               .ToList<DomainEvent>();
+        List<DomainEvent> events = new()
+        {
+            new DomainEventTestCreated(0, Guid.NewGuid(), DateTime.UtcNow),
+        };
         
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {

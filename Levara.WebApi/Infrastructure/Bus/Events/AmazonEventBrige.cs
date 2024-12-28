@@ -1,54 +1,52 @@
-﻿
-using Levara.Domain.DAL.Repositories;
-using Levara.Domain.Models;
+﻿using Amazon.EventBridge;
+using Amazon.EventBridge.Model;
 using Levara.Shared.Domain.Bus.Events;
 using Levara.Shared.Infrastructure.Bus.Events;
 
+namespace Levara.WebApi.Infrastructure.Bus.Events;
 
-namespace Levara.WebApi.Infrastructure.Bus.Events
+public class AmazonEventBrige : IEventBus
 {
-    public class AmazonEventBrige : IEventBus
+    private readonly IAmazonEventBridge _eventBridgeClient;
+    private const string EventBusName = "default";
+    public AmazonEventBrige(IAmazonEventBridge eventBridgeClient)
     {
-        private readonly IDomainEventPrimitiveRepository _domainEventPrimitiveRepository;
-        private List<DomainEvent> _domainEvents;
-        public AmazonEventBrige(IDomainEventPrimitiveRepository domainEventPrimitiveRepository)
+        _eventBridgeClient = eventBridgeClient;
+    }
+
+    public async Task PublishAsync(List<DomainEvent> domainEvents)
+    {
+
+        List<PutEventsRequestEntry> entries = new();
+        foreach (var domainEvent in domainEvents)
         {
-            _domainEventPrimitiveRepository = domainEventPrimitiveRepository;
-            _domainEvents = new();
-        }
-        public void Add(List<DomainEvent> events)
-        {
-            if (events == null)
-                return;
+            var serializedDomainEvent = DomainEventJsonSerializer.Serialize(domainEvent);
 
-            if (_domainEvents == null)
-                _domainEvents = new List<DomainEvent>();
-
-            _domainEvents = _domainEvents.Concat(events).ToList();
-        }
-
-        public async Task SaveAsync()
-        {
-            if (_domainEvents == null)
-                return;
-
-            List<DomainEventPrimitive> domainEventPrimitives = new();
-            foreach (var domainEvent in _domainEvents)
+            PutEventsRequestEntry entry = new()
             {
-                domainEventPrimitives.Add(new DomainEventPrimitive(domainEvent));
-            }
+                EventBusName = EventBusName,
+                Source = "levara.function",
+                DetailType = domainEvent.EventName(),
+                Detail = serializedDomainEvent,
+                Time = DateTime.UtcNow
+            };
 
-            await _domainEventPrimitiveRepository.AddAsync(domainEventPrimitives);
+            entries.Add(entry);
         }
 
-        public async Task PublishAsync(List<DomainEvent> domainEvents)
+        var eventRequest = new PutEventsRequest
         {
-            foreach (var domainEvent in domainEvents)
-            {
-                var serializedDomainEvent = DomainEventJsonSerializer.Serialize(domainEvent);
-                Console.WriteLine(serializedDomainEvent);
-            }
-            
+            Entries = entries
+        };
+
+        var response = await _eventBridgeClient.PutEventsAsync(eventRequest);
+
+        if (response.FailedEntryCount > 0)
+        {
+            throw new Exception("Failed to publish some events.");
         }
+
+        Console.WriteLine("Event published successfully!");
+
     }
 }

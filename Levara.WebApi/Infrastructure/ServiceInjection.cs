@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Amazon.EventBridge;
 
 namespace Levara.Infrastructure;
 public static class ServiceInjection
@@ -44,6 +45,8 @@ public static class ServiceInjection
         services.Configure<RemoteServicesConfig>(configuration.GetSection("PlaidSettings"));
 
         services.AddTransient<ApiKeyConfiguration>();
+
+        services.AddAWSService<IAmazonEventBridge>();
 
         services.AddInfrastructureSecurity();
 
