@@ -12,6 +12,7 @@ public static class ApplicationExtensions
         var assembly = Assembly.GetExecutingAssembly();
         services.AddQueryServices(assembly);
         services.AddCommandServices(assembly);
+        services.AddSubscriberServices(assembly);
 
         services.AddScoped<JwtService>();
 

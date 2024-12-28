@@ -44,24 +44,48 @@ try
             Scheme = "Bearer"
         });
 
+        // Esquema de seguridad para API Key
+        c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+        {
+            Description = "API Key Authorization header. Example: 'X-API-KEY: {apiKey}'",
+            Name = "X-API-KEY", // Nombre del header donde se espera la API Key
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "ApiKey"
+        });
+
         // Requiere el token para todas las operaciones
         c.AddSecurityRequirement(new OpenApiSecurityRequirement()
         {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
+                new OpenApiSecurityScheme
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme = "Bearer",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    BearerFormat = "JWT" // Esto es opcional, pero puede indicar que se espera un JWT
                 },
-                Scheme = "Bearer",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                BearerFormat = "JWT" // Esto es opcional, pero puede indicar que se espera un JWT
+                new List<string>()
             },
-            new List<string>()
-        }
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    },
+                    Scheme = "ApiKey",
+                    Name = "X-API-KEY",
+                    In = ParameterLocation.Header
+                },
+                new List<string>()
+            }
         });
     }); ;
 
@@ -82,6 +106,8 @@ try
     app.UseSwaggerUI();
 
     app.UseHttpsRedirection();
+
+    app.UseLevaraApiKey();
 
     app.UseAuthentication();
 

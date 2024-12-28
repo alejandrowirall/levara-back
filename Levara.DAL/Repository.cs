@@ -92,12 +92,36 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         await _dbSet.AddAsync(entity);
     }
 
+    public async Task AddAsync(List<TEntity> entities)
+    {
+        foreach (var entity in entities)
+        {
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.CreatorId = _userContext.Id;
+            entity.LastEditedDate = DateTime.UtcNow;
+            entity.LastEditorId = _userContext.Id;
+        }
+
+        await _dbSet.AddRangeAsync(entities);
+    }
+
     public void Update(TEntity entity)
     {
         entity.LastEditedDate = DateTime.UtcNow;
         entity.LastEditorId = _userContext.Id;
 
         _dbSet.Update(entity);
+    }
+
+    public void Update(List<TEntity> entities)
+    {
+        foreach (var entity in entities)
+        {
+            entity.LastEditedDate = DateTime.UtcNow;
+            entity.LastEditorId = _userContext.Id;
+        }
+
+        _dbSet.UpdateRange(entities);
     }
 
     public void Delete(TEntity entity)

@@ -10,4 +10,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Levara.Shared\Levara.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
