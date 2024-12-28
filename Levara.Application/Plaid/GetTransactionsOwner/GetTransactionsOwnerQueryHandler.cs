@@ -40,7 +40,7 @@ public class GetTransactionsOwnerQueryHandler : IQueryHandler<GetTransactionsOwn
 
         // Aplicar el filtro como un "IN" usando Contains
         var responseFunction = _plaidRepository.GetAll()
-                                .Where(x => bankAccountIds.Contains(x.OwnerBankAccountId))
+                                .Where(x => bankAccountIds.Contains(x.OwnerBankAccountId) && x.Status==Domain.Enum.PlaidTransactionStatus.NeedReview)
                                 .Select(l => new GetTransactionsOwnerQueryResponse(l))
                                 .ToList();
         

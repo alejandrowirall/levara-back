@@ -1,0 +1,33 @@
+﻿
+using Levara.Application.Transactions.Create;
+using Levara.Domain.Enum;
+using Levara.Domain.Models;
+using Levara.Shared.Domain.Bus.Commands;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+
+namespace Levara.Application.Maintenances.Create
+{
+    public class CreateMaintenanceCommand : Command<CreateMaintenanceCommandResponse>
+    {
+
+        public string Title { get; set; }
+
+        [Required]
+        [Length(1, 200)]
+        public string Description { get; set; }
+
+        public int TypeId { get; set; }
+        public MaintenanceType Type { get; set; }
+
+        public MaintenanceStatus Status { get; set; }
+
+        public DateTime DueDate { get; set; }
+
+        public int PropertyId { get; set; }
+
+        public Property Property { get; set; }
+
+
+    }
+}

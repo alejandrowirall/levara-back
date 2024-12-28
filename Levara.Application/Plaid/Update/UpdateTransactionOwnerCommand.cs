@@ -9,11 +9,22 @@ namespace Levara.Application.Plaid.Update
     {
         [Required]
         [Range(1, int.MaxValue)]
-        public int? Id {  get; set; }
+        public int? PlaidId {  get; set; }
         
         [Required]
         public PlaidTransactionStatus Status { get; set; }
 
-        
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int? PropertyId { get; set; }
+
+        public int? LeaseId { get; set; }
+
+        public TransactionType Category { get; set; }
+
+        public int? MaintananceChargeId { get; set; }
+
+       
+
     }
 }

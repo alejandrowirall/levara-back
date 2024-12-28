@@ -57,83 +57,83 @@ public class TransactionSeed : SeedBase
 
             leaseCharges.Add(leaseCharge);
 
-            if (i < 12)
-            {
-                Transaction paymentTransaction = new()
-                {
-                    Id = transactions.Count() + 1,
-                    Type = TransactionType.Lease,
-                    SubType = TransactionSubType.Payment,
-                    EntityId = 1,
-                    Date = new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc),
-                    Description = $"Payment of rent {new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
-                    Amount = 1500,
-                    RunningBalance = chargeTransaction!.RunningBalance + 1500,
-                    EntityRunningBalance = chargeTransaction!.RunningBalance + 1500,
-                    PropertyId = 1,
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                };
+            //if (i < 12)
+            //{
+                //    Transaction paymentTransaction = new()
+                //    {
+                //        Id = transactions.Count() + 1,
+                //        Type = TransactionType.Lease,
+                //        SubType = TransactionSubType.Payment,
+                //        EntityId = 1,
+                //        Date = new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc),
+                //        Description = $"Payment of rent {new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
+                //        Amount = 1500,
+                //        RunningBalance = chargeTransaction!.RunningBalance + 1500,
+                //        EntityRunningBalance = chargeTransaction!.RunningBalance + 1500,
+                //        PropertyId = 1,
+                //        CreatorId = 1,
+                //        CreatedDate = datatimeApp,
+                //        LastEditorId = 1,
+                //        LastEditedDate = datatimeApp,
+                //    };
 
-                transactions.Add(paymentTransaction);
+                //    transactions.Add(paymentTransaction);
 
-                LeasePayment leasePayment = new()
-                {
-                    Id = leasePayments.Count() + 1,
-                    LeaseId = 1,
-                    TransactionId = paymentTransaction.Id,
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                };
+                //    LeasePayment leasePayment = new()
+                //    {
+                //        Id = leasePayments.Count() + 1,
+                //        LeaseId = 1,
+                //        TransactionId = paymentTransaction.Id,
+                //        CreatorId = 1,
+                //        CreatedDate = datatimeApp,
+                //        LastEditorId = 1,
+                //        LastEditedDate = datatimeApp,
+                //    };
 
-                leasePayments.Add(leasePayment);
+                //    leasePayments.Add(leasePayment);
 
-                TransactionApplication transactionApplication = new()
-                {
-                    Id = transactionApplications.Count() + 1,
-                    ChargeTransactionId = chargeTransaction.Id,
-                    PaymentTransactionId = paymentTransaction.Id,
-                    AppliedAmount = paymentTransaction.Amount,
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                    BankTransactionId = transactionApplications.Count() + 1,
-                };
+                //    TransactionApplication transactionApplication = new()
+                //    {
+                //        Id = transactionApplications.Count() + 1,
+                //        ChargeTransactionId = chargeTransaction.Id,
+                //        PaymentTransactionId = paymentTransaction.Id,
+                //        AppliedAmount = paymentTransaction.Amount,
+                //        CreatorId = 1,
+                //        CreatedDate = datatimeApp,
+                //        LastEditorId = 1,
+                //        LastEditedDate = datatimeApp,
+                //        BankTransactionId = transactionApplications.Count() + 1,
+                //    };
 
-                transactionApplications.Add(transactionApplication);
-            }
+                //    transactionApplications.Add(transactionApplication);
+            //}
         }
 
         lastTransaction = transactions.OrderByDescending(t => t.Id).FirstOrDefault();
 
-        Transaction chargeMaintenanceTransaction = new()
-        {
-            Id = transactions.Count() + 1,
-            Type = TransactionType.Maintenance,
-            SubType = TransactionSubType.Charge,
-            EntityId = 1,
-            Date = new DateTime(2024, 12, 9, 0, 0, 0, DateTimeKind.Utc),
-            Description = $"Charge of maintenance {new DateTime(2024, 12, 9, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
-            Amount = 450,
-            RunningBalance = lastTransaction!.RunningBalance - 450,
-            EntityRunningBalance = -450,
-            PropertyId = 1,
-            CreatorId = 1,
-            CreatedDate = datatimeApp,
-            LastEditorId = 1,
-            LastEditedDate = datatimeApp,
-        };
+        //Transaction chargeMaintenanceTransaction = new()
+        //{
+        //    Id = transactions.Count() + 1,
+        //    Type = TransactionType.Maintenance,
+        //    SubType = TransactionSubType.Charge,
+        //    EntityId = 1,
+        //    Date = new DateTime(2024, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+        //    Description = $"Charge of maintenance {new DateTime(2024, 12, 9, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
+        //    Amount = 450,
+        //    RunningBalance = lastTransaction!.RunningBalance - 450,
+        //    EntityRunningBalance = -450,
+        //    PropertyId = 1,
+        //    CreatorId = 1,
+        //    CreatedDate = datatimeApp,
+        //    LastEditorId = 1,
+        //    LastEditedDate = datatimeApp,
+        //};
 
-        transactions.Add(chargeMaintenanceTransaction);
+        //transactions.Add(chargeMaintenanceTransaction);
 
         this.modelBuilder.Entity<Transaction>().HasData(transactions);
-        this.modelBuilder.Entity<TransactionApplication>().HasData(transactionApplications);
+        //this.modelBuilder.Entity<TransactionApplication>().HasData(transactionApplications);
         this.modelBuilder.Entity<LeaseCharge>().HasData(leaseCharges);
-        this.modelBuilder.Entity<LeasePayment>().HasData(leasePayments);
+        //this.modelBuilder.Entity<LeasePayment>().HasData(leasePayments);
     }
 }
