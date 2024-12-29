@@ -3,6 +3,7 @@ using Levara.Shared.Domain.Bus.Events;
 using Levara.Shared.Infrastructure.Bus.Events;
 using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Levara.WebApi.Controllers
 {
@@ -13,19 +14,23 @@ namespace Levara.WebApi.Controllers
     {
         private readonly DomainEventJsonDeserializer _domainEventJsonDeserializer;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DomainEventController> _logger;
         public DomainEventController(DomainEventJsonDeserializer domainEventJsonDeserializer,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            ILogger<DomainEventController> logger)
         {
             _domainEventJsonDeserializer = domainEventJsonDeserializer;
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Process(object request)
+        public async Task<IActionResult> Process([FromBody] EventRequest request)
         {
+            _logger.LogInformation($"Request string: {request}");
 
-            var domainEvent = _domainEventJsonDeserializer.Deserialize(request.ToString());
+            var domainEvent = _domainEventJsonDeserializer.Deserialize(request.Detail.GetRawText());
             var suscriberTypes = GetSubscriberTypes(domainEvent);
             foreach (var subscriberType in suscriberTypes)
             {
@@ -49,4 +54,18 @@ namespace Levara.WebApi.Controllers
 
         }
     }
+}
+
+public class EventRequest
+{
+    public string Version { get; set; }
+    public string Id { get; set; }
+    
+    //public string DetailType { get; set; }
+    public string Source { get; set; }
+    public string Account { get; set; }
+    public DateTime Time { get; set; }
+    public string Region { get; set; }
+    public List<string> Resources { get; set; }
+    public JsonElement Detail { get; set; }
 }

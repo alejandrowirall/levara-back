@@ -20,7 +20,7 @@ public class ExecuteOnDomainEventTestCreated : IDomainEventSubscriber<DomainEven
 
     public async Task On(DomainEventTestCreated domainEvent)
     {
-        var command = new ScheduleJobsCommand()
+        var command = new DomainEventTestCommand()
         {
         };
 
