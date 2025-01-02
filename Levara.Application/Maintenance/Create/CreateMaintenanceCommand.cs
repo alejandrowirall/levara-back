@@ -18,7 +18,6 @@ namespace Levara.Application.Maintenances.Create
         public string Description { get; set; }
 
         public int TypeId { get; set; }
-        public MaintenanceType Type { get; set; }
 
         public MaintenanceStatus Status { get; set; }
 
@@ -26,7 +25,6 @@ namespace Levara.Application.Maintenances.Create
 
         public int PropertyId { get; set; }
 
-        public Property Property { get; set; }
 
 
     }
