@@ -16,7 +16,7 @@ public class GetMaintenanceByGridQueryHandler : IQueryHandler<GetMaintenanceByGr
     public async Task<OperationResult<PagedList<GetMaintenanceByGridQueryResponse>>> Handle(GetMaintenanceByGridQuery query)
     {
 
-        var maintananceQuery = _maintenanceRepository.GetAll()
+        var maintananceQuery = _maintenanceRepository.GetAllWithMaintananceType()
                                                .Where(t => t.PropertyId == query.PropertyId!.Value || (t.Property.OwnerId == query.OwnerId!.Value))
                                                .OrderByDescending(p => p.CreatedDate)
                                                .Select(p => new GetMaintenanceByGridQueryResponse(p));
