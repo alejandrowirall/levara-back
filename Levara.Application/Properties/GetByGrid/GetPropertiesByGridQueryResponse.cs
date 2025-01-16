@@ -11,6 +11,7 @@ public class GetPropertiesByGridQueryResponse
         Number = property.Number;
         Address = $"{property.Address.Street} {property.Address.Number}, {property.Address.City}, {property.Address.State}";
         Price = property.Price;
+        Img = property.Img;
     }
     public int Id { get; }
 
@@ -19,4 +20,6 @@ public class GetPropertiesByGridQueryResponse
     public string Address { get; set; }
 
     public decimal? Price { get; set; }
+
+    public byte[] Img { get; set; }
 }
