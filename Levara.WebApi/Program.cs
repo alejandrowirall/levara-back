@@ -32,6 +32,8 @@ try
     builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
     builder.Services.AddSwaggerGen(c =>
     {
+        c.CustomSchemaIds(type => type.FullName);
+
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Levara WebApi", Version = "v1" });
 
         // Definir el esquema de seguridad

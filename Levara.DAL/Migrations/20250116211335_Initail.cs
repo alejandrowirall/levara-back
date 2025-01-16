@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class AddInitialMigration : Migration
+    public partial class Initail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -78,6 +78,27 @@ namespace Levara.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DomainEvents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventId = table.Column<Guid>(type: "uuid", nullable: false),
+                    EntityId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Body = table.Column<Dictionary<string, string>>(type: "jsonb", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DomainEvents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -877,6 +898,16 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "MaintenanceTypes",
+                columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "Description", "LastEditedDate", "LastEditorId", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "Plumber Service", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Plumber" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "Electrician Service", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Electrician" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "Other Service", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "OtherService" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUserClaims",
                 columns: new[] { "Id", "ClaimType", "ClaimValue", "UserId" },
                 values: new object[,]
@@ -1314,6 +1345,26 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "PlaidTransaction",
+                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "Date", "Deleted", "Description", "LastEditedDate", "LastEditorId", "OwnerBankAccountId", "Status", "TransactionId" },
+                values: new object[,]
+                {
+                    { 1, 5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 1, 13, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063015 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6BM" },
+                    { 2, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/1/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6CM" },
+                    { 3, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/2/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6DM" },
+                    { 4, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/3/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6DM" },
+                    { 5, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/4/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6EM" },
+                    { 6, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/5/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6FM" },
+                    { 7, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/6/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6GM" },
+                    { 8, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/7/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6HM" },
+                    { 9, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/8/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
+                    { 10, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/9/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
+                    { 11, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/10/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
+                    { 12, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/11/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
+                    { 13, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/12/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Transactions",
                 columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "Date", "Deleted", "Description", "EntityId", "EntityRunningBalance", "LastEditedDate", "LastEditorId", "PropertyId", "RunningBalance", "SubType", "Type" },
                 values: new object[,]
@@ -1337,18 +1388,18 @@ namespace Levara.DAL.Migrations
                 columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "DueDate", "LastEditedDate", "LastEditorId", "LeaseId", "Status", "TransactionId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 1 },
-                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 2 },
-                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 3 },
-                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 4 },
-                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 5 },
-                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 6 },
-                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 7 },
-                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 8 },
-                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 9 },
-                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 10 },
-                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 11 },
-                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, 12 }
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 1 },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 2 },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 3 },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 4 },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 5 },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 6 },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 7 },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 8 },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 9 },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 10 },
+                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 11 },
+                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 12 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1551,6 +1602,9 @@ namespace Levara.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "DomainEvents");
 
             migrationBuilder.DropTable(
                 name: "LeaseCharges");
