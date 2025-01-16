@@ -49,6 +49,7 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
         property.PetsPoliticAndRate = command.PetsPoliticAndRate;
         property.TenantRequirements = command.TenantRequirements;
         property.AvaliableFrom = command.AvaliableFromDate.Value.ToUniversalTime();
+        property.Img= command.Img!;
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
             _propertyRepository.Update(property);

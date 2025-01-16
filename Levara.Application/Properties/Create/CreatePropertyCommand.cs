@@ -56,6 +56,7 @@ namespace Levara.Application.Properties.Create
 
         public string AvaliableFrom { get; set; }
 
+        public byte[] Img { get; set; }
         public DateTime? AvaliableFromDate
         {
             get

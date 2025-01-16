@@ -39,4 +39,6 @@ public class Property : Entity
     public string? TenantRequirements { get; set; }
 
     public DateTime? AvaliableFrom { get; set; }
+
+    public byte[]? Img { get; set; }
 }

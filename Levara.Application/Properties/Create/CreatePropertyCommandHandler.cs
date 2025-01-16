@@ -33,6 +33,7 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
             PetsPoliticAndRate = command.PetsPoliticAndRate,
             TenantRequirements = command.TenantRequirements,
             AvaliableFrom = command.AvaliableFromDate.Value.ToUniversalTime(),
+            Img = command.Img,
             Address = new()
             {
                 Street = command.Street!,
