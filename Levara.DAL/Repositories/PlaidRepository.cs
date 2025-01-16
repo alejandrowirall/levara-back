@@ -1,20 +1,25 @@
 ﻿using Levara.Domain.Contexts;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace Levara.DAL.Repositories
+namespace Levara.DAL.Repositories;
+
+public class PlaidRepository : Repository<PlaidTransaction>, IPlaidRepository
 {
-    public class PlaidRepository : Repository<PlaidTransaction>, IPlaidRepository
+    public PlaidRepository(UnitOfWork unitOfWork,
+    IUserContext userContext) : base(unitOfWork, userContext)
     {
-        public PlaidRepository(UnitOfWork unitOfWork,
-        IUserContext userContext) : base(unitOfWork, userContext)
-        {
 
-        }
+    }
+
+    public IQueryable<PlaidTransaction> GetAllWithOwnerBankAccount()
+    {
+        return GetAll().Include(p => p.OwnerBankAccount);
+    }
+
+    public IQueryable<PlaidTransaction> GetAllWithOwner()
+    {
+        return GetAll().Include(p => p.OwnerBankAccount).ThenInclude(oba => oba.Owner);
     }
 }

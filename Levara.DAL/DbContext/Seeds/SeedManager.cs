@@ -28,14 +28,15 @@ public class SeedManager
 
     private SeedBase[] GetSeeds()
     {
-        return new SeedBase[7] {
+        return new SeedBase[8] {
             new RoleSeed(),
             new OwnerSeed(),
             new TenantSeed(),
             new AdminSeed(),
             new LeaseSeed(),
             new TransactionSeed(),
-            new MaintananceTypeSeed()
+            new MaintananceTypeSeed(),
+            new PlaidTransactionSeed()
         };
     }
 }

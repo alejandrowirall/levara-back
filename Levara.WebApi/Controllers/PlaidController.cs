@@ -1,10 +1,4 @@
-﻿using Levara.Application.Owners.Create;
-using Levara.Application.Owners.Delete;
-using Levara.Application.Owners.GetByGrid;
-using Levara.Application.Owners.GetDashboard;
-using Levara.Application.Owners.GetForCreate;
-using Levara.Application.Owners.GetForUpdate;
-using Levara.Application.Owners.Update;
+﻿using Levara.Application.Plaid.CreateLeasePayment;
 using Levara.Application.Plaid.GetForUpdate;
 using Levara.Application.Plaid.GetLinkToken;
 using Levara.Application.Plaid.GetPublicToken;
@@ -129,6 +123,26 @@ namespace Levara.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost("create-lease-payment")]
+        public async Task<IActionResult> CreateLeasePayment([FromBody] CreateLeasePaymentCommand command)
+        {
+            if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                command.OwnerId = _userContext.OwnerId!;
+
+            var response = await _commandBus.Dispatch(command);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
 
     }
 }
