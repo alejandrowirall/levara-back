@@ -3510,7 +3510,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6BM"
                         },
                         new
@@ -3525,7 +3525,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6CM"
                         },
                         new
@@ -3540,7 +3540,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6DM"
                         },
                         new
@@ -3555,7 +3555,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6DM"
                         },
                         new
@@ -3570,7 +3570,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6EM"
                         },
                         new
@@ -3585,7 +3585,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6FM"
                         },
                         new
@@ -3600,7 +3600,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6GM"
                         },
                         new
@@ -3615,7 +3615,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6HM"
                         },
                         new
@@ -3630,7 +3630,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM"
                         },
                         new
@@ -3645,7 +3645,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM"
                         },
                         new
@@ -3660,7 +3660,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM"
                         },
                         new
@@ -3675,7 +3675,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM"
                         },
                         new
@@ -3690,7 +3690,7 @@ namespace Levara.DAL.Migrations
                             LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
-                            Status = 1,
+                            Status = 0,
                             TransactionId = "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM"
                         });
                 });
