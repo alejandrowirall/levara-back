@@ -116,7 +116,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Date = plaidtx.Date,
-            Description = "PAGO DE Lease " + command.LeaseChargeId.ToString(),
+            Description = "Lease payment " + command.LeaseChargeId.ToString(),
             RunningBalance = lastTx.RunningBalance + command.Amount!.Value,
             EntityRunningBalance = lastTx.EntityRunningBalance + command.Amount!.Value,
             SubType = TransactionSubType.Payment,
@@ -204,7 +204,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Date = plaidtx.Date,
-            Description = "PAGO DE Lease " + command.LeaseChargeId.ToString(),
+            Description = "Lease payment" + command.LeaseChargeId.ToString(),
             RunningBalance = lastTx.RunningBalance + command.Amount!.Value,
             EntityRunningBalance = lastTx.EntityRunningBalance + command.Amount!.Value,
             SubType = TransactionSubType.Payment,
