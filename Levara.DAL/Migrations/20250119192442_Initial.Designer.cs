@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250116211335_Initail")]
-    partial class Initail
+    [Migration("20250119192442_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -3738,6 +3738,9 @@ namespace Levara.DAL.Migrations
 
                     b.Property<bool?>("HasPool")
                         .HasColumnType("boolean");
+
+                    b.Property<byte[]>("Img")
+                        .HasColumnType("bytea");
 
                     b.Property<DateTime>("LastEditedDate")
                         .HasColumnType("timestamp with time zone");

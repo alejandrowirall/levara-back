@@ -44,8 +44,8 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         if (plaidtx == null)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        if (plaidtx.Status != PlaidTransactionStatus.NeedReview)
-            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be in state {EnumExtensions.GetEnumDescription(PlaidTransactionStatus.NeedReview)}"));
+        if (plaidtx.Status != PlaidTransactionStatus.Created && plaidtx.Status != PlaidTransactionStatus.NeedReview)
+            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be in state {EnumExtensions.GetEnumDescription(PlaidTransactionStatus.Created)} or {EnumExtensions.GetEnumDescription(PlaidTransactionStatus.NeedReview)}"));
 
         if (plaidtx.Amount <= 0)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be greater than zero"));
@@ -118,6 +118,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             Date = plaidtx.Date,
             Description = "PAGO DE Lease " + command.LeaseChargeId.ToString(),
             RunningBalance = lastTx.RunningBalance + command.Amount!.Value,
+            EntityRunningBalance = lastTx.EntityRunningBalance + command.Amount!.Value,
             SubType = TransactionSubType.Payment,
             Type = TransactionType.Lease,
             PropertyId = leaseCharge.Lease.PropertyId,
@@ -205,6 +206,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             Date = plaidtx.Date,
             Description = "PAGO DE Lease " + command.LeaseChargeId.ToString(),
             RunningBalance = lastTx.RunningBalance + command.Amount!.Value,
+            EntityRunningBalance = lastTx.EntityRunningBalance + command.Amount!.Value,
             SubType = TransactionSubType.Payment,
             Type = TransactionType.Lease,
             PropertyId = leaseCharge.Lease.PropertyId,
