@@ -1,10 +1,4 @@
-﻿
-using Levara.Application.Leases.GetForUpdate;
-using Levara.Application.Leases.Update;
-using Levara.Application.OwnersBankAccounts.GetForUpdate;
-using Levara.Application.Plaid.GetPublicToken;
-using Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
-using Levara.Domain.DAL;
+﻿using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
 using Levara.ExternalService.Plaid;
@@ -13,9 +7,7 @@ using Levara.Shared.Domain.Models;
 using Levara.Shared.Results;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Transactions;
 
 namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 
@@ -118,7 +110,7 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
             Date = DateTime.Parse(transaction.Date).ToUniversalTime(),                  // Mapea al campo de tipo DateTime
             Description = transaction.Name,    // Mapea la descripción
             Amount = transaction.Amount,              // Mapea el monto
-            Status = Domain.Enum.PlaidTransactionStatus.NeedReview,    // Traduce el estado (requiere método adicional)
+            Status = Domain.Enum.PlaidTransactionStatus.Created,    // Traduce el estado (requiere método adicional)
             OwnerBankAccountId= account_Token.Id
         }).ToList();
 

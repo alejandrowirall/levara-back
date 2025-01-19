@@ -6,17 +6,17 @@ namespace Levara.Domain.Enum;
 public enum PlaidTransactionStatus
 {
     [Description("Created")]
-    Created = 1,
+    Created = 0,
 
     [Description("NeedReview")]
-    NeedReview = 2,
+    NeedReview = 1,
 
     [Description("PersonalPayment")]
-    PersonalPayment = 3,
+    PersonalPayment = 2,
 
     [Description("FeeBank")]
-    FeeBank = 4,
+    FeeBank = 3,
 
     [Description("RelevantTransaction")]
-    RelevantTransaction = 5
+    RelevantTransaction = 4
 }
