@@ -1,4 +1,6 @@
-﻿using Levara.Application.Plaid.CreateLeasePayment;
+﻿using Levara.Application.Plaid.CreateExpensePayment;
+using Levara.Application.Plaid.CreateLeasePayment;
+using Levara.Application.Plaid.CreateMaintenancePayment;
 using Levara.Application.Plaid.GetForUpdate;
 using Levara.Application.Plaid.GetLinkToken;
 using Levara.Application.Plaid.GetPublicToken;
@@ -125,6 +127,48 @@ namespace Levara.WebApi.Controllers
 
         [HttpPost("create-lease-payment")]
         public async Task<IActionResult> CreateLeasePayment([FromBody] CreateLeasePaymentCommand command)
+        {
+            if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                command.OwnerId = _userContext.OwnerId!;
+
+            var response = await _commandBus.Dispatch(command);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("create-maintenance-payment")]
+        public async Task<IActionResult> CreateMaintenancePayment([FromBody] CreateMaintenancePaymentCommand command)
+        {
+            if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                command.OwnerId = _userContext.OwnerId!;
+
+            var response = await _commandBus.Dispatch(command);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("create-expense-payment")]
+        public async Task<IActionResult> CreateExpensePayment([FromBody] CreateExpensePaymentCommand command)
         {
             if (_userContext.IsAdmin && !command.OwnerId.HasValue)
                 return BadRequest();
