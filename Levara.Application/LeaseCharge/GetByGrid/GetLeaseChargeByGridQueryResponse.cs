@@ -8,6 +8,7 @@ public class GetLeaseChargeByGridQueryResponse
 {
     public GetLeaseChargeByGridQueryResponse(LeaseCharge leaseCharge)
     {
+        Id = leaseCharge.Id;
         TransactionId = leaseCharge.TransactionId;
         Transaction = leaseCharge.Transaction;
         DueDate = leaseCharge.DueDate;
@@ -16,6 +17,7 @@ public class GetLeaseChargeByGridQueryResponse
         Status = leaseCharge.Status;
     }
 
+    public int Id { get; set; }
     public int TransactionId { get; set; }
     public Transaction Transaction { get; set; }
 

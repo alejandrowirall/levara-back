@@ -3,28 +3,19 @@ using Levara.Domain.Enum;
 using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
-namespace Levara.Application.Plaid.Update
+namespace Levara.Application.Plaid.Update;
+
+public class UpdateTransactionOwnerCommand : Command<UpdateTransactionOwnerCommandResponse>
 {
-    public class UpdateTransactionOwnerCommand : Command<UpdateTransactionOwnerCommandResponse>
-    {
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int? PlaidId {  get; set; }
-        
-        [Required]
-        public PlaidTransactionStatus Status { get; set; }
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int? Id {  get; set; }
+    
+    [Required]
+    public PlaidTransactionStatus Status { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int? PropertyId { get; set; }
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int? OwnerId { get; set; }       
 
-        public int? LeaseId { get; set; }
-
-        public TransactionType Category { get; set; }
-
-        public int? MaintananceChargeId { get; set; }
-
-       
-
-    }
 }

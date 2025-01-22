@@ -1,11 +1,7 @@
 ﻿using Levara.Domain.Enum;
 using Levara.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Levara.Shared.Extensions;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Levara.Application.Plaid.GetTransactionsOwner
 {
@@ -20,6 +16,7 @@ namespace Levara.Application.Plaid.GetTransactionsOwner
             Description = plaidtx.Description;
             Amount = plaidtx.Amount;
             Status = plaidtx.Status;
+            StatusDescription = EnumExtensions.GetEnumDescription(plaidtx.Status);
         }
         public int Id { get; set; }
         public string TransactionId { get; set; }
@@ -29,6 +26,8 @@ namespace Levara.Application.Plaid.GetTransactionsOwner
         public double? Amount { get; set; }
 
         public PlaidTransactionStatus Status { get; set; }
+
+        public string StatusDescription { get; set; }
 
     }
 }
