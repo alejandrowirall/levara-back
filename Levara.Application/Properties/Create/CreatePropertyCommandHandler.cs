@@ -32,7 +32,7 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
             DetailDepositAndAdittionalInfo = command.DetailDepositAndAdittionalInfo,
             PetsPoliticAndRate = command.PetsPoliticAndRate,
             TenantRequirements = command.TenantRequirements,
-            AvaliableFrom = command.AvaliableFromDate.Value.ToUniversalTime(),
+            AvaliableFrom = command.AvaliableFromDate?.ToUniversalTime(),
             Img = command.Img,
             Address = new()
             {
