@@ -8,23 +8,25 @@ namespace Levara.Application.ExpenseCharges.GetByGrid;
 
 public class GetExpenseChargeByGridQueryHandler : IQueryHandler<GetExpenseChargeByGridQuery, PagedList<GetExpenseChargeByGridQueryResponse>>
 {
-    private readonly ITransactionRepository _transactionRepository;
     private readonly IExpenseChargeRepository _expenseChargeRepository;
-    public GetExpenseChargeByGridQueryHandler(ITransactionRepository transactionRepository, IExpenseChargeRepository expenseChargeRepository) 
+    public GetExpenseChargeByGridQueryHandler(IExpenseChargeRepository expenseChargeRepository) 
     {
-        _transactionRepository = transactionRepository;
         _expenseChargeRepository = expenseChargeRepository;
     }
     public async Task<OperationResult<PagedList<GetExpenseChargeByGridQueryResponse>>> Handle(GetExpenseChargeByGridQuery query)
     {
 
-        var transactionQuery = _expenseChargeRepository.GetAll()
-                                               .Where(t => t.Expense.PropertyId == query.PropertyId!.Value || (t.Expense.Property.OwnerId == query.OwnerId!.Value))
-                                               .OrderByDescending(p => p.CreatedDate)
-                                               .Select(p => new GetExpenseChargeByGridQueryResponse(p));
+        var transactionQuery = _expenseChargeRepository.GetAllFull()
+                                                       .Where(t => t.Expense.PropertyId == query.PropertyId!.Value || 
+                                                                  (t.Expense.Property.OwnerId == query.OwnerId!.Value));
 
-        var response = await _transactionRepository.ToListPagedAsync(transactionQuery, query.PageNumber!.Value, query.PageSize!.Value);
+        if (query.Statuses != null && query.Statuses.Any())
+            transactionQuery = transactionQuery.Where(t => query.Statuses.Contains(t.Status));
 
+        var responseQuery = transactionQuery.OrderByDescending(e => e.CreatedDate)
+                                            .Select(e => new GetExpenseChargeByGridQueryResponse(e));
+
+        var response = await _expenseChargeRepository.ToListPagedAsync(responseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 
         return OperationResult<PagedList<GetExpenseChargeByGridQueryResponse>>.SuccessResult(response);
 

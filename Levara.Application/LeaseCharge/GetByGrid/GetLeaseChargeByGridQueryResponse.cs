@@ -1,6 +1,7 @@
 ﻿
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
+using Levara.Shared.Extensions;
 
 namespace Levara.Application.LeasesCharges.GetByGrid;
 
@@ -15,6 +16,7 @@ public class GetLeaseChargeByGridQueryResponse
         LeaseId = leaseCharge.LeaseId;
         Lease = leaseCharge.Lease;
         Status = leaseCharge.Status;
+        StatusDescription = EnumExtensions.GetEnumDescription(leaseCharge.Status);
     }
 
     public int Id { get; set; }
@@ -28,4 +30,5 @@ public class GetLeaseChargeByGridQueryResponse
     public Lease Lease { get; set; }
 
     public LeaseChargeStatus Status { get; set; }
+    public string StatusDescription { get; set; }
 }
