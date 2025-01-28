@@ -2326,7 +2326,7 @@ namespace Levara.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Expense");
+                    b.ToTable("Expenses", (string)null);
 
                     b.HasData(
                         new
@@ -2399,7 +2399,7 @@ namespace Levara.DAL.Migrations
 
                     b.HasIndex("TransactionId");
 
-                    b.ToTable("ExpenseCharge");
+                    b.ToTable("ExpenseCharges", (string)null);
 
                     b.HasData(
                         new
@@ -2558,6 +2558,44 @@ namespace Levara.DAL.Migrations
                             Status = 1,
                             TransactionId = 36
                         });
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.ExpensePayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("ExpensePayments", (string)null);
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.Lease", b =>
@@ -4118,7 +4156,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "f23b7228-7cbf-4c8a-a88b-617f9e03067f"
+                            TransactionId = "0a07e058-21bc-4982-b718-7b9c54bd1f68"
                         },
                         new
                         {
@@ -4133,7 +4171,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0e9d91e4-2577-43eb-b4d9-a6cc5c4717c4"
+                            TransactionId = "f46edfc2-7b15-41ab-9bf1-c1136b3ddfeb"
                         },
                         new
                         {
@@ -4148,7 +4186,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "4be96d3a-639c-4ba1-8f7c-ae870acccbcc"
+                            TransactionId = "4061a2c6-7806-4f7b-b765-ee4c93a68af9"
                         },
                         new
                         {
@@ -4163,7 +4201,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ac4d455f-5ffa-4432-a92b-e182d3231084"
+                            TransactionId = "4ccdc86e-5659-4b05-8de6-78c1cb6459a7"
                         },
                         new
                         {
@@ -4178,7 +4216,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "2b9c6270-2c42-408f-a076-e375f28df0ba"
+                            TransactionId = "4611f7aa-8886-484b-92e6-bd60868f0e98"
                         },
                         new
                         {
@@ -4193,7 +4231,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0b18fa02-0c67-46da-8939-aa0b835c2a12"
+                            TransactionId = "a03dd720-f4e7-4a7d-abe1-a070d1bfbc17"
                         },
                         new
                         {
@@ -4208,7 +4246,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "3c5240c7-21d7-47e9-8682-4ecce51b1ba4"
+                            TransactionId = "cee39f24-0114-42af-bb02-3e168bf7dcec"
                         },
                         new
                         {
@@ -4223,7 +4261,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "9617b40d-87ad-408b-bd47-83200a80d3fc"
+                            TransactionId = "460dc87b-b444-476a-a749-074e53c64e33"
                         },
                         new
                         {
@@ -4238,7 +4276,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "84839ef1-af4e-45ba-9a05-30e72d538a04"
+                            TransactionId = "7b9c78ed-8e01-458d-991a-ba6b88545963"
                         },
                         new
                         {
@@ -4253,7 +4291,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "279af335-522f-4154-a4c5-1f2127c4e1a0"
+                            TransactionId = "c7f42756-bdfc-4010-bb5e-1e749b06e1aa"
                         },
                         new
                         {
@@ -4268,7 +4306,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a0ac645e-9ece-4910-a5c1-1f0874e2cabb"
+                            TransactionId = "77edf583-220b-4eca-8477-711dbb24dc83"
                         },
                         new
                         {
@@ -4283,7 +4321,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "c7395942-3692-4101-b51f-361abd132a4e"
+                            TransactionId = "7ce99e5d-0e97-476b-a33e-98a828e23039"
                         },
                         new
                         {
@@ -4298,7 +4336,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "cb5078d5-3e51-4207-93d1-980e021372ee"
+                            TransactionId = "8ccfe259-53cf-407d-8675-856ce4b31ee4"
                         },
                         new
                         {
@@ -4313,7 +4351,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "62b3e806-4b7c-45b3-af36-11945cd8a97e"
+                            TransactionId = "30c50b1a-cf75-477c-a13b-ead70082574e"
                         },
                         new
                         {
@@ -4328,7 +4366,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6330cb1c-149b-486d-bea3-942b74a5c7a9"
+                            TransactionId = "6de73f1a-010d-4c85-acd0-3e9c8f6b5403"
                         },
                         new
                         {
@@ -4343,7 +4381,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d3e482da-4c58-46c6-ac3c-a455ab7de41a"
+                            TransactionId = "f033b76f-4470-477e-8b1f-0e36a7c8eb6a"
                         },
                         new
                         {
@@ -4358,7 +4396,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6e2e76bd-d15e-495f-aaae-97cae837a3d7"
+                            TransactionId = "156b3f9b-6d01-4756-ba09-28b5b805d356"
                         },
                         new
                         {
@@ -4373,7 +4411,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "1ad5ad31-1e9b-4cf3-a8b5-6468ec88c008"
+                            TransactionId = "a9da4b7c-8fa9-4adb-b739-adbebd3adc3c"
                         },
                         new
                         {
@@ -4388,7 +4426,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "38440e0b-30fe-4a77-90f4-0687fe1d60dc"
+                            TransactionId = "bd0d08c8-53de-4ad0-8aab-c8e7e773f8ca"
                         },
                         new
                         {
@@ -4403,7 +4441,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "95d205bf-e544-4ea1-906f-98f88d43ed5d"
+                            TransactionId = "59d4e2e3-8c40-4399-9c65-8df2a88cf4db"
                         },
                         new
                         {
@@ -4418,7 +4456,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "93c2e12b-b53e-43db-a7d9-67ab5434b8a5"
+                            TransactionId = "9c07d53c-64b4-4b03-8e29-f869facf3eac"
                         },
                         new
                         {
@@ -4433,7 +4471,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "f3dde13d-3c27-441e-a65d-4a926859d411"
+                            TransactionId = "d40d6724-be7b-4621-9fe4-6ba31e6785c5"
                         },
                         new
                         {
@@ -4448,7 +4486,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6dbd89fc-9f63-4437-a112-60794868dd4c"
+                            TransactionId = "11c34ceb-2273-486d-8558-b0d536956ab1"
                         },
                         new
                         {
@@ -4463,7 +4501,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "218f22dd-64eb-4a6d-8225-9f5c323cf18f"
+                            TransactionId = "6bcde499-c9ef-4dc6-9fad-8f18e945593b"
                         },
                         new
                         {
@@ -4478,7 +4516,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "b9a0b96b-0976-493f-95db-dbc0a1bc3078"
+                            TransactionId = "7a5926f4-a3a4-4da5-8b4e-abcdf70ebf27"
                         },
                         new
                         {
@@ -4493,7 +4531,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a94dd9e7-cc05-4d7e-9622-96ba00d496e5"
+                            TransactionId = "e9d16412-6d05-4b96-94fb-76df4acf2222"
                         },
                         new
                         {
@@ -4508,7 +4546,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a70421ab-e037-4ec5-b49b-c19c77e687b6"
+                            TransactionId = "0a9d0e93-0608-4110-b2f8-ab06cc71be6f"
                         },
                         new
                         {
@@ -4523,7 +4561,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "01dfdc64-b897-4ebb-8f84-312cd282b501"
+                            TransactionId = "87bd19b5-207d-492d-b415-8ec6a1383b76"
                         },
                         new
                         {
@@ -4538,7 +4576,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a5339888-0cd7-4d58-bb38-ae8d28ceb8cb"
+                            TransactionId = "23d59239-e03d-4767-9566-ccbeaddda688"
                         },
                         new
                         {
@@ -4553,7 +4591,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ad364d74-ce37-4d23-9fc7-86e669730d31"
+                            TransactionId = "0aad68ae-36fd-48bc-b104-b766a95f435d"
                         },
                         new
                         {
@@ -4568,7 +4606,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "dcac8f81-8299-4693-9863-fe0379043677"
+                            TransactionId = "4a8348ac-a2d2-4f09-9e62-4bfa030204b7"
                         },
                         new
                         {
@@ -4583,7 +4621,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ba8e589c-b83a-46a3-a319-4b8fd2844089"
+                            TransactionId = "6ea1c46b-61dd-4d71-b8eb-4cc7846ba0a0"
                         },
                         new
                         {
@@ -4598,7 +4636,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ec4ec0ca-2403-4529-9bd0-7856651265c4"
+                            TransactionId = "a0155534-ef18-4c57-a235-234993ea7f10"
                         },
                         new
                         {
@@ -4613,7 +4651,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "cbad0536-1d69-4f6d-b55e-1834928211a1"
+                            TransactionId = "2f3947ba-6764-43e5-9d18-dd87c36c6ec3"
                         },
                         new
                         {
@@ -4628,7 +4666,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "77879b69-70ab-4823-b905-ba9e1151943d"
+                            TransactionId = "5582f705-4dec-47bc-89eb-11b8af80be0b"
                         },
                         new
                         {
@@ -4643,7 +4681,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ec4c3505-c584-4ef9-9d57-62fd3ece007e"
+                            TransactionId = "7aaf4208-9c61-4453-bf36-a38cd929974f"
                         },
                         new
                         {
@@ -4658,7 +4696,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d838b829-2351-4793-bf50-5590d9df7d9b"
+                            TransactionId = "57460bdf-d1d9-4407-a445-03ae53d13332"
                         },
                         new
                         {
@@ -4673,7 +4711,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0bfe4a36-ce51-4c9a-ac34-cb132e99179f"
+                            TransactionId = "c2ebcd69-66cb-4530-ae07-4003f127afb8"
                         },
                         new
                         {
@@ -4688,7 +4726,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "9c285a91-b4ab-4d41-8208-eee21f82a535"
+                            TransactionId = "03e26694-6c93-4a47-a05a-6d7db150fdea"
                         },
                         new
                         {
@@ -4703,7 +4741,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "bfa9ea47-ad8f-4911-a841-55f09ccbb5b9"
+                            TransactionId = "0c84f008-5244-4270-abf6-821a7cdd1c75"
                         },
                         new
                         {
@@ -4718,7 +4756,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "8bd194a2-96ff-4534-857e-f36b0eddbae2"
+                            TransactionId = "8bf3fcc3-0975-4ce7-8397-714ea5a124fb"
                         },
                         new
                         {
@@ -4733,7 +4771,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6bd3e2a0-ee2a-43cb-a846-27948e260b37"
+                            TransactionId = "fb10c6bb-c306-4225-9f9b-af42430f05f2"
                         },
                         new
                         {
@@ -4748,7 +4786,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "c1989d80-4815-4480-9ff3-d634f83309cd"
+                            TransactionId = "b17fdf66-1859-4a95-8d2f-0b234e85178b"
                         },
                         new
                         {
@@ -4763,7 +4801,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "1d0ecf59-9b1c-40db-b5e3-bf93c8520ffa"
+                            TransactionId = "75de25c8-720d-411a-8211-ef4545566e7f"
                         },
                         new
                         {
@@ -4778,7 +4816,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6f729375-b5b0-4efb-93c5-a6d71e23bf55"
+                            TransactionId = "bec47b97-4cfb-4b25-b6cf-ac6a93ad2d91"
                         },
                         new
                         {
@@ -4793,7 +4831,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ca62c7c5-bd4b-4c72-beb4-76333810a1d3"
+                            TransactionId = "dca838df-7552-4b08-8018-508b90bd05a9"
                         },
                         new
                         {
@@ -4808,7 +4846,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "fef863d1-0df9-4914-8ba9-6c0b165c4e3a"
+                            TransactionId = "8bc6c21c-ab8e-4aed-a9f2-d74fac87f771"
                         },
                         new
                         {
@@ -4823,7 +4861,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "76ed32ea-f4f7-4ebd-8954-ba62a15eaa6f"
+                            TransactionId = "00caae4e-c399-4ccf-be56-c281b20c32bb"
                         });
                 });
 
@@ -10272,13 +10310,32 @@ namespace Levara.DAL.Migrations
                     b.HasOne("Levara.Domain.Models.Expense", "Expense")
                         .WithMany()
                         .HasForeignKey("ExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Levara.Domain.Models.Transaction", "Transaction")
                         .WithMany()
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Expense");
+
+                    b.Navigation("Transaction");
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.ExpensePayment", b =>
+                {
+                    b.HasOne("Levara.Domain.Models.Expense", "Expense")
+                        .WithMany()
+                        .HasForeignKey("ExpenseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Levara.Domain.Models.Transaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Expense");

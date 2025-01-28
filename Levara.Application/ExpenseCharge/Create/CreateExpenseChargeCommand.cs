@@ -1,12 +1,6 @@
-﻿
-using Levara.Application.Transactions.Create;
-using Levara.Domain.Enum;
-using Levara.Domain.Models;
-using Levara.Shared.Domain.Bus.Commands;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
+﻿using Levara.Shared.Domain.Bus.Commands;
 
-namespace Levara.Application.ExpensesCharges.Create
+namespace Levara.Application.ExpenseCharges.Create
 {
     public class CreateExpenseChargeCommand : Command<CreateExpenseChargeCommandResponse>
     {

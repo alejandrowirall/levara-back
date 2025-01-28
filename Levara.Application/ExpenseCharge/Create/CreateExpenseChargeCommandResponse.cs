@@ -1,5 +1,5 @@
 ﻿
-namespace Levara.Application.ExpensesCharges.Create;
+namespace Levara.Application.ExpenseCharges.Create;
 
 public class CreateExpenseChargeCommandResponse
 {

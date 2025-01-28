@@ -1,6 +1,4 @@
-﻿
-using Levara.Application.MaintenancesCharges.Create;
-using Levara.DAL.DbContext;
+﻿using Levara.DAL.DbContext;
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
@@ -8,7 +6,7 @@ using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Results;
 
-namespace Levara.Application.ExpensesCharges.Create;
+namespace Levara.Application.ExpenseCharges.Create;
 
 public class CreateExpenseChargeCommandHandler : ICommandHandler<CreateExpenseChargeCommand, CreateExpenseChargeCommandResponse>
 {
