@@ -17,8 +17,8 @@ public class GetExpenseChargeByGridQueryHandler : IQueryHandler<GetExpenseCharge
     {
 
         var transactionQuery = _expenseChargeRepository.GetAllFull()
-                                                       .Where(t => t.Expense.PropertyId == query.PropertyId!.Value || 
-                                                                  (t.Expense.Property.OwnerId == query.OwnerId!.Value));
+                                                       .Where(t => t.Transaction.PropertyId == query.PropertyId!.Value || 
+                                                                  (t.Transaction.Property.OwnerId == query.OwnerId!.Value));
 
         if (query.Statuses != null && query.Statuses.Any())
             transactionQuery = transactionQuery.Where(t => query.Statuses.Contains(t.Status));

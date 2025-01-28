@@ -29,13 +29,10 @@ public class UpdateExpenseCommandHandler : ICommandHandler<UpdateExpenseCommand,
         if (expense == null)
             return OperationResult<UpdateExpenseCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        if (_userContext.IsOwner && expense.Property.OwnerId != _userContext.OwnerId!.Value)
-            return OperationResult<UpdateExpenseCommandResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this expense."));
+        //if (_userContext.IsOwner && expense.Property.OwnerId != _userContext.OwnerId!.Value)
+        //    return OperationResult<UpdateExpenseCommandResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this expense."));
 
-
-        expense.PropertyId = command.PropertyId;
-        expense.Title = command.Title;
-        expense.TypeId = command.TypeId;
+        expense.Name = command.Name;
         expense.Description = command.Description;
        
         

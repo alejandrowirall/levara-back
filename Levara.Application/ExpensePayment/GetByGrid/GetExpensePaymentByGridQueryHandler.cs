@@ -19,7 +19,8 @@ public class GetExpensePaymentByGridQueryHandler : IQueryHandler<GetExpensePayme
     {
 
         var transactionQuery = _expensePaymentRepository.GetAll()
-                                               .Where(t => t.Expense.PropertyId == query.PropertyId!.Value || (t.Expense.Property.OwnerId == query.OwnerId!.Value))
+                                               .Where(t => t.Transaction.PropertyId == query.PropertyId!.Value || 
+                                                          (t.Transaction.Property.OwnerId == query.OwnerId!.Value))
                                                .OrderByDescending(p => p.CreatedDate)
                                                .Select(p => new GetExpensePaymentByGridQueryResponse(p));
 

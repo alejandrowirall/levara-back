@@ -7,13 +7,6 @@ namespace Levara.Application.Expenses.GetByGrid
 {
     public class GetExpenseByGridQuery : Query<PagedList<GetExpenseByGridQueryResponse>>
     {
-        [Range(1, int.MaxValue)]
-        public int? OwnerId { get; set; }
-
-
-        [Range(1, int.MaxValue)]
-        public int? PropertyId { get; set; }
-
         [Required]
         [Range(1, int.MaxValue)]
         public int? PageNumber { get; set; } = 1;

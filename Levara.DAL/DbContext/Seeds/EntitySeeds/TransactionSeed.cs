@@ -1,5 +1,5 @@
-﻿using Levara.Domain.Models;
-using Levara.Domain.Enum;
+﻿using Levara.Domain.Enum;
+using Levara.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Levara.DAL.DbContext.Seeds.EntitySeeds;
@@ -16,13 +16,19 @@ public class TransactionSeed : SeedBase
         List<TransactionApplication> transactionApplications = new();
         List<LeaseCharge> leaseCharges = new();
         List<LeasePayment> leasePayments = new();
+
+        List<Maintenance> maintenances = new();
+        List<MaintenanceCharge> maintenanceCharges = new();
+
+        List<ExpenseCharge> expenseCharges = new();
+
         Transaction? lastTransaction = default;
 
         for (int i = 1; i < 13; i++)
         {
             lastTransaction = transactions.OrderByDescending(t => t.Id).FirstOrDefault();
 
-            Transaction chargeTransaction = new()
+            Transaction leaseChargeTransaction = new()
             {
                 Id = transactions.Count() + 1,
                 Type = TransactionType.Lease,
@@ -40,13 +46,13 @@ public class TransactionSeed : SeedBase
                 LastEditedDate = datatimeApp,
             };
 
-            transactions.Add(chargeTransaction);
+            transactions.Add(leaseChargeTransaction);
 
             LeaseCharge leaseCharge = new()
             {
                 Id = leaseCharges.Count() + 1,
                 LeaseId = 1,
-                TransactionId = chargeTransaction.Id,
+                TransactionId = leaseChargeTransaction.Id,
                 DueDate = new DateTime(2024, i, 10, 0, 0, 0, DateTimeKind.Utc),
                 Status = LeaseChargeStatus.Unpaid,
                 CreatorId = 1,
@@ -57,55 +63,146 @@ public class TransactionSeed : SeedBase
 
             leaseCharges.Add(leaseCharge);
 
+            lastTransaction = transactions.OrderByDescending(t => t.Id).FirstOrDefault();
+
+            Transaction maintenanceChargeTransaction = new()
+            {
+                Id = transactions.Count() + 1,
+                Type = TransactionType.Maintenance,
+                SubType = TransactionSubType.Charge,
+                EntityId = 1,
+                Date = new DateTime(2024, i, 2, 0, 0, 0, DateTimeKind.Utc),
+                Description = $"Maintenance of {new DateTime(2024, i, i, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
+                Amount = 800,
+                RunningBalance = lastTransaction!.RunningBalance - 800,
+                EntityRunningBalance = lastTransaction!.RunningBalance - 800,
+                PropertyId = 1,
+                CreatorId = 1,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
+            };
+
+            transactions.Add(maintenanceChargeTransaction);
+
+            Maintenance maintenance = new()
+            {
+                Id = maintenances.Count() + 1,
+                Title = $"Plumber Service",
+                Description = "Plumber Service in Property 1",
+                TypeId = 1,
+                PropertyId = 1,
+                CreatorId = 1,
+                DueDate = new DateTime(2024, i, 10, 0, 0, 0, DateTimeKind.Utc),
+                Status = MaintenanceStatus.Completed,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
+            };
+
+            maintenances.Add(maintenance);
+
+            MaintenanceCharge maintenanceCharge = new()
+            {
+                Id = maintenanceCharges.Count() + 1,
+                MaintenanceId = maintenance.Id,
+                TransactionId = maintenanceChargeTransaction.Id,
+                DueDate = new DateTime(2024, i, 15, 0, 0, 0, DateTimeKind.Utc),
+                Status = MaintenanceChargeStatus.Unpaid,
+                CreatorId = 1,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
+            };
+
+            maintenanceCharges.Add(maintenanceCharge);
+
+            lastTransaction = transactions.OrderByDescending(t => t.Id).FirstOrDefault();
+
+            Transaction expenseChargeTransaction = new()
+            {
+                Id = transactions.Count() + 1,
+                Type = TransactionType.Expense,
+                SubType = TransactionSubType.Charge,
+                EntityId = 1,
+                Date = new DateTime(2024, i, 1, 0, 0, 0, DateTimeKind.Utc),
+                Description = $"Charge of cleaning {new DateTime(2024, i, i, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
+                Amount = 150,
+                RunningBalance = lastTransaction!.RunningBalance - 150,
+                EntityRunningBalance = lastTransaction!.RunningBalance - 150,
+                PropertyId = 1,
+                CreatorId = 1,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
+            };
+
+            transactions.Add(expenseChargeTransaction);
+
+            ExpenseCharge expenseCharge = new()
+            {
+                Id = maintenanceCharges.Count() + 1,
+                ExpenseId = 1,
+                TransactionId = expenseChargeTransaction.Id,
+                DueDate = new DateTime(2024, i, 20, 0, 0, 0, DateTimeKind.Utc),
+                Status = ExpenseChargeStatus.Unpaid,
+                CreatorId = 1,
+                CreatedDate = datatimeApp,
+                LastEditorId = 1,
+                LastEditedDate = datatimeApp,
+            };
+
+            expenseCharges.Add(expenseCharge);
+
             //if (i < 12)
             //{
-                //    Transaction paymentTransaction = new()
-                //    {
-                //        Id = transactions.Count() + 1,
-                //        Type = TransactionType.Lease,
-                //        SubType = TransactionSubType.Payment,
-                //        EntityId = 1,
-                //        Date = new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc),
-                //        Description = $"Payment of rent {new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
-                //        Amount = 1500,
-                //        RunningBalance = chargeTransaction!.RunningBalance + 1500,
-                //        EntityRunningBalance = chargeTransaction!.RunningBalance + 1500,
-                //        PropertyId = 1,
-                //        CreatorId = 1,
-                //        CreatedDate = datatimeApp,
-                //        LastEditorId = 1,
-                //        LastEditedDate = datatimeApp,
-                //    };
+            //    Transaction paymentTransaction = new()
+            //    {
+            //        Id = transactions.Count() + 1,
+            //        Type = TransactionType.Lease,
+            //        SubType = TransactionSubType.Payment,
+            //        EntityId = 1,
+            //        Date = new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc),
+            //        Description = $"Payment of rent {new DateTime(2024, i, 5, 0, 0, 0, DateTimeKind.Utc).ToShortDateString()}",
+            //        Amount = 1500,
+            //        RunningBalance = chargeTransaction!.RunningBalance + 1500,
+            //        EntityRunningBalance = chargeTransaction!.RunningBalance + 1500,
+            //        PropertyId = 1,
+            //        CreatorId = 1,
+            //        CreatedDate = datatimeApp,
+            //        LastEditorId = 1,
+            //        LastEditedDate = datatimeApp,
+            //    };
 
-                //    transactions.Add(paymentTransaction);
+            //    transactions.Add(paymentTransaction);
 
-                //    LeasePayment leasePayment = new()
-                //    {
-                //        Id = leasePayments.Count() + 1,
-                //        LeaseId = 1,
-                //        TransactionId = paymentTransaction.Id,
-                //        CreatorId = 1,
-                //        CreatedDate = datatimeApp,
-                //        LastEditorId = 1,
-                //        LastEditedDate = datatimeApp,
-                //    };
+            //    LeasePayment leasePayment = new()
+            //    {
+            //        Id = leasePayments.Count() + 1,
+            //        LeaseId = 1,
+            //        TransactionId = paymentTransaction.Id,
+            //        CreatorId = 1,
+            //        CreatedDate = datatimeApp,
+            //        LastEditorId = 1,
+            //        LastEditedDate = datatimeApp,
+            //    };
 
-                //    leasePayments.Add(leasePayment);
+            //    leasePayments.Add(leasePayment);
 
-                //    TransactionApplication transactionApplication = new()
-                //    {
-                //        Id = transactionApplications.Count() + 1,
-                //        ChargeTransactionId = chargeTransaction.Id,
-                //        PaymentTransactionId = paymentTransaction.Id,
-                //        AppliedAmount = paymentTransaction.Amount,
-                //        CreatorId = 1,
-                //        CreatedDate = datatimeApp,
-                //        LastEditorId = 1,
-                //        LastEditedDate = datatimeApp,
-                //        BankTransactionId = transactionApplications.Count() + 1,
-                //    };
+            //    TransactionApplication transactionApplication = new()
+            //    {
+            //        Id = transactionApplications.Count() + 1,
+            //        ChargeTransactionId = chargeTransaction.Id,
+            //        PaymentTransactionId = paymentTransaction.Id,
+            //        AppliedAmount = paymentTransaction.Amount,
+            //        CreatorId = 1,
+            //        CreatedDate = datatimeApp,
+            //        LastEditorId = 1,
+            //        LastEditedDate = datatimeApp,
+            //        BankTransactionId = transactionApplications.Count() + 1,
+            //    };
 
-                //    transactionApplications.Add(transactionApplication);
+            //    transactionApplications.Add(transactionApplication);
             //}
         }
 
@@ -135,5 +232,11 @@ public class TransactionSeed : SeedBase
         //this.modelBuilder.Entity<TransactionApplication>().HasData(transactionApplications);
         this.modelBuilder.Entity<LeaseCharge>().HasData(leaseCharges);
         //this.modelBuilder.Entity<LeasePayment>().HasData(leasePayments);
+
+        this.modelBuilder.Entity<Maintenance>().HasData(maintenances);
+        this.modelBuilder.Entity<MaintenanceCharge>().HasData(maintenanceCharges);
+
+        this.modelBuilder.Entity<ExpenseCharge>().HasData(expenseCharges);
+        
     }
 }

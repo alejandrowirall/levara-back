@@ -33,13 +33,13 @@ namespace Levara.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetByGrid([FromQuery] GetExpenseByGridQuery query)
         {
-            if (_userContext.IsAdmin && (!query.OwnerId.HasValue|| !query.PropertyId.HasValue))
-                return BadRequest();
+            //if (_userContext.IsAdmin && (!query.OwnerId.HasValue|| !query.PropertyId.HasValue))
+            //    return BadRequest();
 
-            if (_userContext.IsOwner)
-            {
-                query.OwnerId = _userContext.OwnerId!;
-            }
+            //if (_userContext.IsOwner)
+            //{
+            //    query.OwnerId = _userContext.OwnerId!;
+            //}
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {

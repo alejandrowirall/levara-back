@@ -102,6 +102,25 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Expense",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expense", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MaintenanceTypes",
                 columns: table => new
                 {
@@ -578,6 +597,39 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExpenseCharge",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<int>(type: "integer", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ExpenseId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpenseCharge", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExpenseCharge_Expense_ExpenseId",
+                        column: x => x.ExpenseId,
+                        principalTable: "Expense",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExpenseCharge_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LeaseCharges",
                 columns: table => new
                 {
@@ -896,6 +948,16 @@ namespace Levara.DAL.Migrations
                     { 59, 0, "c231efea-6e8c-40e5-ae33-f15bc5cfb2a0", "tenant9@levara.com", true, false, null, "TENANT9@LEVARA.COM", "TENANT9@LEVARA.COM", "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant9@levara.com" },
                     { 60, 0, "c231efea-6e8c-40e5-ae33-f15bc5cfb2a0", "tenant10@levara.com", true, false, null, "TENANT10@LEVARA.COM", "TENANT10@LEVARA.COM", "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "tenant10@levara.com" },
                     { 100, 0, "c231efea-6e8c-40e5-ae33-f15bc5cfb2a0", "admin@levara.com", true, false, null, "ADMIN@LEVARA.COM", "ADMIN@LEVARA.COM", "AQAAAAIAAYagAAAAEPeAV1996kkE+Il+HPFULI7rRDpVhoP89dglukaO/NrGgGDZi0dOyA4AT3rtnrzfrQ==", null, false, "e030be4a-c6ed-46a5-9e86-4ad6db062ed6", "eca8a667-056e-4622-9ff6-88cd57ca4b44", false, "admin@levara.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Expense",
+                columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "Description", "LastEditedDate", "LastEditorId", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "Cleaning service", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cleaning" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "Gardening Service", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gardening" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "Security Service", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Security" }
                 });
 
             migrationBuilder.InsertData(
@@ -1346,23 +1408,65 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Maintenances",
+                columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "Description", "DueDate", "LastEditedDate", "LastEditorId", "PropertyId", "Status", "Title", "TypeId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
+                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "PlaidTransaction",
                 columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "Date", "Deleted", "Description", "LastEditedDate", "LastEditorId", "OwnerBankAccountId", "Status", "TransactionId" },
                 values: new object[,]
                 {
-                    { 1, 5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 1, 13, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063015 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6BM" },
-                    { 2, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/1/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6CM" },
-                    { 3, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/2/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6DM" },
-                    { 4, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/3/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6DM" },
-                    { 5, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/4/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6EM" },
-                    { 6, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/5/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6FM" },
-                    { 7, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/6/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6GM" },
-                    { 8, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/7/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6HM" },
-                    { 9, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/8/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
-                    { 10, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/9/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
-                    { 11, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/10/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
-                    { 12, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/11/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" },
-                    { 13, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/12/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "rarm3XavAqHjkJoldNGdUa6KG1MqNeU71N6IM" }
+                    { 1, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063015 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "a6afe915-3293-4980-b4ab-6efb506284cd" },
+                    { 2, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/1/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "852f7033-2499-4a8d-80d1-78e6284af062" },
+                    { 3, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/1/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "7c6642c5-3d74-4971-a0fe-c9c3cb69e53b" },
+                    { 4, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063025 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "5d5aeae6-e7e6-41cf-b3f4-d43c1b7fdc95" },
+                    { 5, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/2/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "92892e81-440f-4012-a8fe-1db9e81e1f5e" },
+                    { 6, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 2, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/2/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "85003365-5a4b-4e49-bf5c-8649df83fd6b" },
+                    { 7, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063035 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "2d65e397-7198-4fb6-8589-d6bae5ef6a94" },
+                    { 8, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/3/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "c6a88224-929c-42ef-9ef6-9229f4d8705b" },
+                    { 9, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/3/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "0a64e203-2484-47a9-8be1-69d5f32d7d5d" },
+                    { 10, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063045 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "7ba64eb5-c9a8-4147-82d1-77ccbd79277e" },
+                    { 11, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/4/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "6a867bb7-4114-4dd8-845e-1cecfa8467de" },
+                    { 12, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/4/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "8fb5c2b9-a166-4c02-a132-24962a395fe0" },
+                    { 13, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063055 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "df96d80e-ab77-4a19-a61c-baf67e4ee0d6" },
+                    { 14, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/5/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "86d5b46f-9714-48aa-a873-e9225f6eef82" },
+                    { 15, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 5, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/5/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "ac344f94-c456-4be4-9714-093e96afebea" },
+                    { 16, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063065 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "ce0bd3ec-2527-4ce5-b1c2-d94eb2ccc1b7" },
+                    { 17, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/6/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "e1fffaee-db5b-457f-9617-cb52a7c46afa" },
+                    { 18, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/6/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "18a39290-520c-4bc4-80f3-c549da7fe03f" },
+                    { 19, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063075 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "f438585a-b360-4c46-a095-f7ae04c5f277" },
+                    { 20, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/7/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "8923a661-7d1b-49cd-aa64-612e3ce1bda9" },
+                    { 21, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/7/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "2a97a5a1-e1a3-441e-83ed-ba0f406b53ab" },
+                    { 22, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063085 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "22e15e79-6a73-454b-b5c5-676c81f3c3e7" },
+                    { 23, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/8/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "cff72d41-4567-4f87-98ca-122d47cd546d" },
+                    { 24, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 8, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/8/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "056bc2ba-1fca-4116-9d4c-9c2640d94be8" },
+                    { 25, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063095 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "b35a8d6e-8f89-41b0-a65e-6f235d5bae1f" },
+                    { 26, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/9/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "4587b21a-c7fb-4432-8146-4878dd16e180" },
+                    { 27, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/9/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "1f402016-3eea-406f-81a3-5446ef8870a1" },
+                    { 28, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 0630105 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "f150e3c4-dfc2-4fe4-849d-4eeee851e3d8" },
+                    { 29, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/10/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "40462d5c-66ec-4c69-b9f8-746f2a7f3b53" },
+                    { 30, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 10, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/10/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "b0a97236-3cb8-4537-bf49-559ec97b6202" },
+                    { 31, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 0630115 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "f36ebbef-2fc4-4ac0-b193-cb34e8e0ff2f" },
+                    { 32, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/11/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "419888eb-324c-4963-9c51-5a105632e699" },
+                    { 33, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 11, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/11/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "6b864a55-732b-4771-9aff-627cbc7b2db9" },
+                    { 34, -5.4000000000000004, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 0630125 SF**POOL**", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "b0913623-3773-46b0-aed2-980c10e14d55" },
+                    { 35, 1500.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/12/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "d4a40a01-f7dd-435f-8543-e781ab30d20c" },
+                    { 36, -800.0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2025, 12, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/12/2024", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "8fc328ca-5bee-4eba-8796-880dc72c8075" }
                 });
 
             migrationBuilder.InsertData(
@@ -1371,17 +1475,60 @@ namespace Levara.DAL.Migrations
                 values: new object[,]
                 {
                     { 1, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 1/1/2024", 1, -1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -1500m, 1, 1 },
-                    { 2, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 2/2/2024", 1, -3000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -3000m, 1, 1 },
-                    { 3, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 3/3/2024", 1, -4500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -4500m, 1, 1 },
-                    { 4, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 4/4/2024", 1, -6000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -6000m, 1, 1 },
-                    { 5, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 5/5/2024", 1, -7500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -7500m, 1, 1 },
-                    { 6, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 6/6/2024", 1, -9000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -9000m, 1, 1 },
-                    { 7, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 7/7/2024", 1, -10500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -10500m, 1, 1 },
-                    { 8, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 8/8/2024", 1, -12000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -12000m, 1, 1 },
-                    { 9, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 9/9/2024", 1, -13500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -13500m, 1, 1 },
-                    { 10, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 10/10/2024", 1, -15000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -15000m, 1, 1 },
-                    { 11, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 11/11/2024", 1, -16500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -16500m, 1, 1 },
-                    { 12, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 12/12/2024", 1, -18000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -18000m, 1, 1 }
+                    { 2, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 1/1/2024", 1, -2300m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -2300m, 1, 2 },
+                    { 3, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 1/1/2024", 1, -2450m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -2450m, 1, 3 },
+                    { 4, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 2/2/2024", 1, -3950m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -3950m, 1, 1 },
+                    { 5, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 2/2/2024", 1, -4750m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -4750m, 1, 2 },
+                    { 6, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 2/2/2024", 1, -4900m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -4900m, 1, 3 },
+                    { 7, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 3/3/2024", 1, -6400m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -6400m, 1, 1 },
+                    { 8, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 3/3/2024", 1, -7200m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -7200m, 1, 2 },
+                    { 9, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 3/3/2024", 1, -7350m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -7350m, 1, 3 },
+                    { 10, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 4/4/2024", 1, -8850m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -8850m, 1, 1 },
+                    { 11, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 4/4/2024", 1, -9650m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -9650m, 1, 2 },
+                    { 12, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 4/4/2024", 1, -9800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -9800m, 1, 3 },
+                    { 13, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 5/5/2024", 1, -11300m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -11300m, 1, 1 },
+                    { 14, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 5/5/2024", 1, -12100m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -12100m, 1, 2 },
+                    { 15, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 5/5/2024", 1, -12250m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -12250m, 1, 3 },
+                    { 16, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 6/6/2024", 1, -13750m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -13750m, 1, 1 },
+                    { 17, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 6/6/2024", 1, -14550m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -14550m, 1, 2 },
+                    { 18, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 6/6/2024", 1, -14700m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -14700m, 1, 3 },
+                    { 19, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 7/7/2024", 1, -16200m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -16200m, 1, 1 },
+                    { 20, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 7/7/2024", 1, -17000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -17000m, 1, 2 },
+                    { 21, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 7/7/2024", 1, -17150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -17150m, 1, 3 },
+                    { 22, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 8/8/2024", 1, -18650m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -18650m, 1, 1 },
+                    { 23, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 8/8/2024", 1, -19450m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -19450m, 1, 2 },
+                    { 24, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 8/8/2024", 1, -19600m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -19600m, 1, 3 },
+                    { 25, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 9/9/2024", 1, -21100m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -21100m, 1, 1 },
+                    { 26, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 9/9/2024", 1, -21900m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -21900m, 1, 2 },
+                    { 27, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 9/9/2024", 1, -22050m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -22050m, 1, 3 },
+                    { 28, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 10/10/2024", 1, -23550m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -23550m, 1, 1 },
+                    { 29, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 10/10/2024", 1, -24350m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -24350m, 1, 2 },
+                    { 30, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 10/10/2024", 1, -24500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -24500m, 1, 3 },
+                    { 31, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 11/11/2024", 1, -26000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -26000m, 1, 1 },
+                    { 32, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 11/11/2024", 1, -26800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -26800m, 1, 2 },
+                    { 33, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 11/11/2024", 1, -26950m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -26950m, 1, 3 },
+                    { 34, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of rent 12/12/2024", 1, -28450m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -28450m, 1, 1 },
+                    { 35, 800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Maintenance of 12/12/2024", 1, -29250m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -29250m, 1, 2 },
+                    { 36, 150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, "Charge of cleaning 12/12/2024", 1, -29400m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, -29400m, 1, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ExpenseCharge",
+                columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "DueDate", "ExpenseId", "LastEditedDate", "LastEditorId", "Status", "TransactionId" },
+                values: new object[,]
+                {
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3 },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 6 },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 9 },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 12 },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 15 },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 18 },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 21 },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 24 },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 27 },
+                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 30 },
+                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 33 },
+                    { 13, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 20, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 36 }
                 });
 
             migrationBuilder.InsertData(
@@ -1390,17 +1537,36 @@ namespace Levara.DAL.Migrations
                 values: new object[,]
                 {
                     { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 1 },
-                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 2 },
-                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 3 },
-                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 4 },
-                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 5 },
-                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 6 },
-                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 7 },
-                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 8 },
-                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 9 },
-                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 10 },
-                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 11 },
-                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 12 }
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 4 },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 7 },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 10 },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 13 },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 16 },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 19 },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 22 },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 25 },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 28 },
+                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 31 },
+                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 34 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MaintenanceCharges",
+                columns: new[] { "Id", "CreatedDate", "CreatorId", "Deleted", "DueDate", "LastEditedDate", "LastEditorId", "MaintenanceId", "Status", "TransactionId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, 2 },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 2, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 2, 1, 5 },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 3, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 3, 1, 8 },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 4, 1, 11 },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 5, 1, 14 },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 6, 1, 17 },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 7, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 7, 1, 20 },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 8, 1, 23 },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 9, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 9, 1, 26 },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 10, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 10, 1, 29 },
+                    { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 11, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 11, 1, 32 },
+                    { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 12, 1, 35 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1454,6 +1620,16 @@ namespace Levara.DAL.Migrations
                 name: "IX_BankTransaction_PropertyId",
                 table: "BankTransaction",
                 column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseCharge_ExpenseId",
+                table: "ExpenseCharge",
+                column: "ExpenseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseCharge_TransactionId",
+                table: "ExpenseCharge",
+                column: "TransactionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeaseCharges_LeaseId",
@@ -1608,6 +1784,9 @@ namespace Levara.DAL.Migrations
                 name: "DomainEvents");
 
             migrationBuilder.DropTable(
+                name: "ExpenseCharge");
+
+            migrationBuilder.DropTable(
                 name: "LeaseCharges");
 
             migrationBuilder.DropTable(
@@ -1630,6 +1809,9 @@ namespace Levara.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Expense");
 
             migrationBuilder.DropTable(
                 name: "Maintenances");

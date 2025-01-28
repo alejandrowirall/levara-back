@@ -15,7 +15,7 @@ public class ExpenseChargeRepository : Repository<ExpenseCharge>, IExpenseCharge
 
     public IQueryable<ExpenseCharge> GetAllFull()
     {
-        return GetAll().Include(l => l.Expense).ThenInclude(m => m.Property)
-                       .Include(lc => lc.Transaction);
+        return GetAll().Include(l => l.Expense)
+                       .Include(lc => lc.Transaction).ThenInclude(m => m.Property);
     }
 }

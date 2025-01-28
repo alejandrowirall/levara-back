@@ -28,7 +28,7 @@ public class SeedManager
 
     private SeedBase[] GetSeeds()
     {
-        return new SeedBase[8] {
+        return new SeedBase[9] {
             new RoleSeed(),
             new OwnerSeed(),
             new TenantSeed(),
@@ -36,6 +36,7 @@ public class SeedManager
             new LeaseSeed(),
             new TransactionSeed(),
             new MaintananceTypeSeed(),
+            new ExpenseSeed(),
             new PlaidTransactionSeed()
         };
     }

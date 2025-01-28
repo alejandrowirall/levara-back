@@ -1,10 +1,5 @@
-﻿
-using Levara.Application.MaintenancesCharges.Create;
-using Levara.DAL.DbContext;
-using Levara.DAL.Repositories;
-using Levara.Domain.DAL;
+﻿using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
-using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Results;
@@ -27,15 +22,16 @@ public class CreateExpenseCommandHandler : ICommandHandler<CreateExpenseCommand,
     public async Task<OperationResult<CreateExpenseCommandResponse>> Handle(CreateExpenseCommand command)
     {
         var expenseDuplicated = _expenseRepository.GetAll()
-        .Where(t => t.PropertyId == command.PropertyId && t.Title==command.Title &&
-         t.TypeId==command.TypeId && t.Description==command.Description ) 
-        .FirstOrDefault();        
+                                                  .Where(t => t.Name == command.Name && 
+                                                              t.Description==command.Description) 
+                                                  .FirstOrDefault();
+
+        if (expenseDuplicated != null)
+            return OperationResult<CreateExpenseCommandResponse>.ErrorResult(new ErrorDetails(400, $"Doubled expense"));
 
         Expense expense = new()
         {
-            PropertyId = command.PropertyId,
-            Title = command.Title,
-            TypeId = command.TypeId,
+            Name = command.Name,
             Description = command.Description
         };
 
