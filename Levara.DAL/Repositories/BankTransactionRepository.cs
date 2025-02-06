@@ -1,11 +1,7 @@
 ﻿using Levara.Domain.Contexts;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Levara.DAL.Repositories
 {
@@ -15,6 +11,16 @@ namespace Levara.DAL.Repositories
         IUserContext userContext) : base(unitOfWork, userContext)
         {
 
+        }
+
+        public IQueryable<BankTransaction> GetAllWithOwnerBankAccount()
+        {
+            return GetAll().Include(bt => bt.OwnerBankAccount);
+        }
+
+        public IQueryable<BankTransaction> GetAllWithProperty()
+        {
+            return GetAll().Include(bt => bt.Property).ThenInclude(p => p.Address);
         }
     }
 }

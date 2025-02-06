@@ -6,7 +6,7 @@ namespace Levara.DAL.DbContext.Seeds.EntitySeeds
     {
         protected override void Execute()
         {
-            DateTime datatimeApp = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime datatimeApp = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             List<PlaidTransaction> plaidTransactions = new();
 
@@ -16,7 +16,7 @@ namespace Levara.DAL.DbContext.Seeds.EntitySeeds
                 {
                     Id = plaidTransactions.Count + 1,
                     TransactionId = Guid.NewGuid().ToString(),
-                    Date = new DateTime(2025, i, 2, 0, 0, 0, DateTimeKind.Utc),
+                    Date = new DateTime(2024, i, 2, 0, 0, 0, DateTimeKind.Utc),
                     Description = $"Uber 0630{i}5 SF**POOL**",
                     Amount = -5.4,
                     Status = Domain.Enum.PlaidTransactionStatus.Created,
@@ -33,7 +33,7 @@ namespace Levara.DAL.DbContext.Seeds.EntitySeeds
                 {
                     Id = plaidTransactions.Count + 1,
                     TransactionId = Guid.NewGuid().ToString(),
-                    Date = new DateTime(2025, i, 6, 0, 0, 0, DateTimeKind.Utc),
+                    Date = new DateTime(2024, i, 6, 0, 0, 0, DateTimeKind.Utc),
                     Description = $"Payment rent 1/{i}/2024",
                     Amount = 1500,
                     Status = Domain.Enum.PlaidTransactionStatus.Created,
@@ -50,7 +50,7 @@ namespace Levara.DAL.DbContext.Seeds.EntitySeeds
                 {
                     Id = plaidTransactions.Count + 1,
                     TransactionId = Guid.NewGuid().ToString(),
-                    Date = new DateTime(2025, i, 11, 0, 0, 0, DateTimeKind.Utc),
+                    Date = new DateTime(2024, i, 11, 0, 0, 0, DateTimeKind.Utc),
                     Description = $"Payment maintenance charge 2/{i}/2024",
                     Amount = -800,
                     Status = Domain.Enum.PlaidTransactionStatus.Created,
@@ -67,7 +67,7 @@ namespace Levara.DAL.DbContext.Seeds.EntitySeeds
                 {
                     Id = plaidTransactions.Count + 1,
                     TransactionId = Guid.NewGuid().ToString(),
-                    Date = new DateTime(2025, i, 12, 0, 0, 0, DateTimeKind.Utc),
+                    Date = new DateTime(2024, i, 12, 0, 0, 0, DateTimeKind.Utc),
                     Description = $"Payment cleaning charge 3/{i}/2024",
                     Amount = -150,
                     Status = Domain.Enum.PlaidTransactionStatus.Created,

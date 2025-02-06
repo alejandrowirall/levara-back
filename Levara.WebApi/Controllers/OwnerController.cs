@@ -1,5 +1,6 @@
 ﻿using Levara.Application.Owners.Create;
 using Levara.Application.Owners.Delete;
+using Levara.Application.Owners.GetBalance;
 using Levara.Application.Owners.GetByGrid;
 using Levara.Application.Owners.GetDashboard;
 using Levara.Application.Owners.GetForCreate;
@@ -39,6 +40,27 @@ namespace Levara.WebApi.Controllers
                 return BadRequest();
 
             if(_userContext.IsOwner)
+                query.Id = _userContext.Id!;
+
+            var response = await _queryBus.Ask(query);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("balance")]
+        public async Task<IActionResult> GetBalance([FromQuery] GetOwnerBalanceQuery query)
+        {
+            if (_userContext.IsAdmin && !query.Id.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
                 query.Id = _userContext.Id!;
 
             var response = await _queryBus.Ask(query);

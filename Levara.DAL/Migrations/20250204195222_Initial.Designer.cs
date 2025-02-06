@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250128224841_Initial")]
+    [Migration("20250204195222_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -4150,721 +4150,721 @@ namespace Levara.DAL.Migrations
                         {
                             Id = 1,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063015 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0a07e058-21bc-4982-b718-7b9c54bd1f68"
+                            TransactionId = "af828629-60d0-47ce-ae32-7ed6286fefcb"
                         },
                         new
                         {
                             Id = 2,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/1/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "f46edfc2-7b15-41ab-9bf1-c1136b3ddfeb"
+                            TransactionId = "0d88da7e-8c55-438e-a68c-416e8cd52f97"
                         },
                         new
                         {
                             Id = 3,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/1/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "4061a2c6-7806-4f7b-b765-ee4c93a68af9"
+                            TransactionId = "e047f1fd-d8e5-4034-8bc8-434b77f027f0"
                         },
                         new
                         {
                             Id = 4,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/1/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "4ccdc86e-5659-4b05-8de6-78c1cb6459a7"
+                            TransactionId = "213eaf27-55a1-4213-ae04-8272c8ad50b8"
                         },
                         new
                         {
                             Id = 5,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063025 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "4611f7aa-8886-484b-92e6-bd60868f0e98"
+                            TransactionId = "3fd10bec-c1a6-40c7-8ee3-05e9380ab353"
                         },
                         new
                         {
                             Id = 6,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/2/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a03dd720-f4e7-4a7d-abe1-a070d1bfbc17"
+                            TransactionId = "421ea348-cc9c-40e9-906d-b420ed25ec52"
                         },
                         new
                         {
                             Id = 7,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 2, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/2/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "cee39f24-0114-42af-bb02-3e168bf7dcec"
+                            TransactionId = "9e345a19-c6d0-4ec8-95f6-e598d315f571"
                         },
                         new
                         {
                             Id = 8,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 2, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 2, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/2/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "460dc87b-b444-476a-a749-074e53c64e33"
+                            TransactionId = "555b958d-924c-4b7c-9279-a1afc5580845"
                         },
                         new
                         {
                             Id = 9,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063035 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "7b9c78ed-8e01-458d-991a-ba6b88545963"
+                            TransactionId = "ef7cf713-2d34-45dc-89b9-a49cdc25d928"
                         },
                         new
                         {
                             Id = 10,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/3/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "c7f42756-bdfc-4010-bb5e-1e749b06e1aa"
+                            TransactionId = "8e752e6a-ff65-4d67-854e-a9ce19549809"
                         },
                         new
                         {
                             Id = 11,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/3/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "77edf583-220b-4eca-8477-711dbb24dc83"
+                            TransactionId = "0f273fdc-1264-4051-8ec3-3737600f4344"
                         },
                         new
                         {
                             Id = 12,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 3, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/3/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "7ce99e5d-0e97-476b-a33e-98a828e23039"
+                            TransactionId = "d5608487-1bdd-40d9-a2b7-bdc06b71c4eb"
                         },
                         new
                         {
                             Id = 13,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063045 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "8ccfe259-53cf-407d-8675-856ce4b31ee4"
+                            TransactionId = "20f9c64e-2a29-4bb7-b5eb-789671ca764f"
                         },
                         new
                         {
                             Id = 14,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/4/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "30c50b1a-cf75-477c-a13b-ead70082574e"
+                            TransactionId = "82dcbdf8-e94b-472d-8d4f-76444dfc5082"
                         },
                         new
                         {
                             Id = 15,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/4/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6de73f1a-010d-4c85-acd0-3e9c8f6b5403"
+                            TransactionId = "aac7acb0-ddec-4785-9a5a-cfd86621dfa6"
                         },
                         new
                         {
                             Id = 16,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 4, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/4/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "f033b76f-4470-477e-8b1f-0e36a7c8eb6a"
+                            TransactionId = "29e85e79-b20d-4508-9e37-de2b79e3a9e9"
                         },
                         new
                         {
                             Id = 17,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063055 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "156b3f9b-6d01-4756-ba09-28b5b805d356"
+                            TransactionId = "5a596688-173d-4690-80bd-aededfebc6f2"
                         },
                         new
                         {
                             Id = 18,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/5/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a9da4b7c-8fa9-4adb-b739-adbebd3adc3c"
+                            TransactionId = "fdbcc901-a483-40b9-baab-8049e31844c5"
                         },
                         new
                         {
                             Id = 19,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 5, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/5/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "bd0d08c8-53de-4ad0-8aab-c8e7e773f8ca"
+                            TransactionId = "d457d802-e9a4-453f-b286-c20e811e3421"
                         },
                         new
                         {
                             Id = 20,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/5/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "59d4e2e3-8c40-4399-9c65-8df2a88cf4db"
+                            TransactionId = "ec48f51f-f63f-4474-8d0e-82cd8d09bf85"
                         },
                         new
                         {
                             Id = 21,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063065 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "9c07d53c-64b4-4b03-8e29-f869facf3eac"
+                            TransactionId = "5c9104d2-9543-4fab-a3e1-7f7fdb4cf8a4"
                         },
                         new
                         {
                             Id = 22,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/6/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d40d6724-be7b-4621-9fe4-6ba31e6785c5"
+                            TransactionId = "d73d4b65-a2fa-4e7d-8bf1-99fdd6d73e4e"
                         },
                         new
                         {
                             Id = 23,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/6/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "11c34ceb-2273-486d-8558-b0d536956ab1"
+                            TransactionId = "514b8ea7-e29f-418d-97e3-4504e53c8a9f"
                         },
                         new
                         {
                             Id = 24,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/6/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6bcde499-c9ef-4dc6-9fad-8f18e945593b"
+                            TransactionId = "29c5c6e8-bb60-40e1-8072-dc32aae1d3b2"
                         },
                         new
                         {
                             Id = 25,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063075 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "7a5926f4-a3a4-4da5-8b4e-abcdf70ebf27"
+                            TransactionId = "2e6cfa43-5225-472c-b9c3-70eed2129e8a"
                         },
                         new
                         {
                             Id = 26,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/7/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "e9d16412-6d05-4b96-94fb-76df4acf2222"
+                            TransactionId = "d75893e0-b207-4680-a888-466b4d16e07d"
                         },
                         new
                         {
                             Id = 27,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/7/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0a9d0e93-0608-4110-b2f8-ab06cc71be6f"
+                            TransactionId = "fd89bf1f-4e0c-4ea2-bbce-6f324d483f00"
                         },
                         new
                         {
                             Id = 28,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 7, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 7, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/7/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "87bd19b5-207d-492d-b415-8ec6a1383b76"
+                            TransactionId = "040fb0a0-99ec-48bd-a4cc-fc4f7862c9a8"
                         },
                         new
                         {
                             Id = 29,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063085 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "23d59239-e03d-4767-9566-ccbeaddda688"
+                            TransactionId = "c682f7d6-eaf5-41c0-8bda-fd304d08779c"
                         },
                         new
                         {
                             Id = 30,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/8/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0aad68ae-36fd-48bc-b104-b766a95f435d"
+                            TransactionId = "7ce72d40-96c6-4ffb-9f34-367ef2999af9"
                         },
                         new
                         {
                             Id = 31,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 8, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 8, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/8/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "4a8348ac-a2d2-4f09-9e62-4bfa030204b7"
+                            TransactionId = "fd9e077f-070e-4235-89df-9728f8cd9547"
                         },
                         new
                         {
                             Id = 32,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 8, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 8, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/8/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "6ea1c46b-61dd-4d71-b8eb-4cc7846ba0a0"
+                            TransactionId = "9356ce87-000d-4d27-82b8-43533f7e8c5c"
                         },
                         new
                         {
                             Id = 33,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 063095 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a0155534-ef18-4c57-a235-234993ea7f10"
+                            TransactionId = "74d35810-eab3-4db7-9d98-79f14d910afc"
                         },
                         new
                         {
                             Id = 34,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/9/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "2f3947ba-6764-43e5-9d18-dd87c36c6ec3"
+                            TransactionId = "c9c95bd9-c8a1-488b-ba9e-3ef5e07a1a04"
                         },
                         new
                         {
                             Id = 35,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/9/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "5582f705-4dec-47bc-89eb-11b8af80be0b"
+                            TransactionId = "8302ab10-3722-4f1f-a3df-89c7164c8bfb"
                         },
                         new
                         {
                             Id = 36,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/9/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "7aaf4208-9c61-4453-bf36-a38cd929974f"
+                            TransactionId = "5a680db0-93f3-405d-9de8-d2f7bec0c080"
                         },
                         new
                         {
                             Id = 37,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 0630105 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "57460bdf-d1d9-4407-a445-03ae53d13332"
+                            TransactionId = "4fa14a14-93bb-4a96-a49f-2043bf2f5f40"
                         },
                         new
                         {
                             Id = 38,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/10/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "c2ebcd69-66cb-4530-ae07-4003f127afb8"
+                            TransactionId = "715ebc20-128e-48c5-84c4-394b79f0f254"
                         },
                         new
                         {
                             Id = 39,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 10, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 10, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/10/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "03e26694-6c93-4a47-a05a-6d7db150fdea"
+                            TransactionId = "680cfc72-d895-449f-8d14-f3a6c21b58fc"
                         },
                         new
                         {
                             Id = 40,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 10, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 10, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/10/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0c84f008-5244-4270-abf6-821a7cdd1c75"
+                            TransactionId = "20332aec-91b2-4eca-ab2b-b06e3f9b72e2"
                         },
                         new
                         {
                             Id = 41,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 0630115 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "8bf3fcc3-0975-4ce7-8397-714ea5a124fb"
+                            TransactionId = "03821edd-e537-4444-8b15-f3e52240b02f"
                         },
                         new
                         {
                             Id = 42,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/11/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "fb10c6bb-c306-4225-9f9b-af42430f05f2"
+                            TransactionId = "22dfadc5-f6e9-44e0-bdc7-412244ccf41d"
                         },
                         new
                         {
                             Id = 43,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 11, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/11/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "b17fdf66-1859-4a95-8d2f-0b234e85178b"
+                            TransactionId = "72b49f02-0223-4943-a7b2-1c670cf4c7b7"
                         },
                         new
                         {
                             Id = 44,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 11, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 11, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/11/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "75de25c8-720d-411a-8211-ef4545566e7f"
+                            TransactionId = "535f6688-208a-4377-a2a6-b7bd369ac1b8"
                         },
                         new
                         {
                             Id = 45,
                             Amount = -5.4000000000000004,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Uber 0630125 SF**POOL**",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "bec47b97-4cfb-4b25-b6cf-ac6a93ad2d91"
+                            TransactionId = "3a14cbb6-f799-4905-a343-6ae3bcbfa982"
                         },
                         new
                         {
                             Id = 46,
                             Amount = 1500.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment rent 1/12/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "dca838df-7552-4b08-8018-508b90bd05a9"
+                            TransactionId = "1d3ac3a8-b208-4fe4-a50e-d28ec1b654fa"
                         },
                         new
                         {
                             Id = 47,
                             Amount = -800.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 12, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 12, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment maintenance charge 2/12/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "8bc6c21c-ab8e-4aed-a9f2-d74fac87f771"
+                            TransactionId = "b59097bb-24eb-450f-9cbf-293743eb2e08"
                         },
                         new
                         {
                             Id = 48,
                             Amount = -150.0,
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
-                            Date = new DateTime(2025, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Deleted = false,
                             Description = "Payment cleaning charge 3/12/2024",
-                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "00caae4e-c399-4ccf-be56-c281b20c32bb"
+                            TransactionId = "a8ef67ed-261c-47a7-852d-cb5c29e5e412"
                         });
                 });
 
