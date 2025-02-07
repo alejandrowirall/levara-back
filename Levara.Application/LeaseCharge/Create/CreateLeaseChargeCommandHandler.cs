@@ -37,18 +37,18 @@ public class CreateLeaseChargeCommandHandler : ICommandHandler<CreateLeaseCharge
 
         if (lastTransaction != null)
         {
-            nextEntityRunningBalance = lastTransaction.EntityRunningBalance - command.Amount;
-            nextRunningBalance = lastTransaction.RunningBalance - command.Amount;
+            nextEntityRunningBalance = lastTransaction.EntityRunningBalance - command.Amount!.Value;
+            nextRunningBalance = lastTransaction.RunningBalance - command.Amount!.Value;
         }
 
         Transaction transaction = new()
         {
             Type = TransactionType.Lease,
             SubType = TransactionSubType.Charge,
-            PropertyId = command.PropertyId,
-            EntityId = command.LeaseId,
-            Amount=command.Amount,
-            Date= command.Date.ToUniversalTime(),
+            PropertyId = command.PropertyId!.Value,
+            EntityId = command.LeaseId!.Value,
+            Amount=command.Amount!.Value,
+            Date = DateTime.UtcNow,
             Description= command.Description, 
             RunningBalance=nextRunningBalance,
             EntityRunningBalance=nextEntityRunningBalance
@@ -56,7 +56,9 @@ public class CreateLeaseChargeCommandHandler : ICommandHandler<CreateLeaseCharge
 
         LeaseCharge leaseCharge = new()
         {
-            LeaseId = command.LeaseId
+            LeaseId = command.LeaseId!.Value,
+            Status = LeaseChargeStatus.Unpaid,
+            DueDate = command.DueDate!.Value.ToUniversalTime(),
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
