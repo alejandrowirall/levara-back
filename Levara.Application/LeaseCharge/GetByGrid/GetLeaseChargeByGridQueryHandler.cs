@@ -16,8 +16,13 @@ public class GetLeaseChargeByGridQueryHandler : IQueryHandler<GetLeaseChargeByGr
     public async Task<OperationResult<PagedList<GetLeaseChargeByGridQueryResponse>>> Handle(GetLeaseChargeByGridQuery query)
     {
 
-        var transactionQuery = _leaseChargeRepository.GetAllFull()
-                                                     .Where(t => t.Lease.PropertyId == query.PropertyId!.Value || (t.Lease.OwnerId == query.OwnerId!.Value));
+        var transactionQuery = _leaseChargeRepository.GetAllFull();
+
+        if(query.PropertyId.HasValue)
+            transactionQuery = transactionQuery.Where(t => t.Lease.PropertyId == query.PropertyId!.Value);
+
+        if (query.OwnerId.HasValue)
+            transactionQuery = transactionQuery.Where(t => t.Lease.OwnerId == query.OwnerId!.Value);
 
         if (query.Statuses != null && query.Statuses.Any())
             transactionQuery = transactionQuery.Where(t => query.Statuses.Contains(t.Status));
