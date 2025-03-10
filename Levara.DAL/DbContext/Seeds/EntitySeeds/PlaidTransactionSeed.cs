@@ -18,7 +18,7 @@ namespace Levara.DAL.DbContext.Seeds.EntitySeeds
                     TransactionId = Guid.NewGuid().ToString(),
                     Date = new DateTime(2024, i, 2, 0, 0, 0, DateTimeKind.Utc),
                     Description = $"Uber 0630{i}5 SF**POOL**",
-                    Amount = -5.4,
+                    Amount = -5.4m,
                     Status = Domain.Enum.PlaidTransactionStatus.Created,
                     OwnerBankAccountId = 1,
                     CreatorId = 1,

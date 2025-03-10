@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Levara.Domain.Enum
 {
     public enum PaymentMethod
     {
-        Cash,
+        [Description("Cash")]
+        Cash = 1,
+
+        [Description("BankTransfer")]
         BankTransfer,
-        CreditCard,
-        DebitCard,
-        Check
+
+        //[Description("CreditCard")]
+        //CreditCard,
+
+        //[Description("DebitCard")]
+        //DebitCard,
+
+        //[Description("Check")]
+        //Check
     }
 }

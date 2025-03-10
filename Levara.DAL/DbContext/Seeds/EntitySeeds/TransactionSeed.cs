@@ -55,6 +55,7 @@ public class TransactionSeed : SeedBase
                 TransactionId = leaseChargeTransaction.Id,
                 DueDate = new DateTime(2024, i, 10, 0, 0, 0, DateTimeKind.Utc),
                 Status = LeaseChargeStatus.Unpaid,
+                Description = leaseChargeTransaction.Description,
                 CreatorId = 1,
                 CreatedDate = datatimeApp,
                 LastEditorId = 1,

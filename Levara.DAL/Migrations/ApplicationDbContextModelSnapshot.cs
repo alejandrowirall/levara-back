@@ -2185,72 +2185,6 @@ namespace Levara.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Levara.Domain.Models.BankTransaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<double?>("Amount")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("LastEditorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("LeaseId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OwnerBankAccountId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PlaidIdTransaction")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("RunningBalance")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("TransactionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeaseId");
-
-                    b.HasIndex("OwnerBankAccountId");
-
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("BankTransaction");
-                });
-
             modelBuilder.Entity("Levara.Domain.Models.DomainEventPrimitive", b =>
                 {
                     b.Property<int>("Id")
@@ -2836,6 +2770,10 @@ namespace Levara.DAL.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -2869,6 +2807,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/1/2024",
                             DueDate = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2882,6 +2821,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/2/2024",
                             DueDate = new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2895,6 +2835,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/3/2024",
                             DueDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2908,6 +2849,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/4/2024",
                             DueDate = new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2921,6 +2863,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/5/2024",
                             DueDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2934,6 +2877,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/6/2024",
                             DueDate = new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2947,6 +2891,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/7/2024",
                             DueDate = new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2960,6 +2905,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/8/2024",
                             DueDate = new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2973,6 +2919,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/9/2024",
                             DueDate = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2986,6 +2933,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/10/2024",
                             DueDate = new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -2999,6 +2947,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/11/2024",
                             DueDate = new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -3012,6 +2961,7 @@ namespace Levara.DAL.Migrations
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Deleted = false,
+                            Description = "Charge of rent 1/12/2024",
                             DueDate = new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
@@ -4092,6 +4042,79 @@ namespace Levara.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Levara.Domain.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("BankAccountBalance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LeaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("OwnerBankAccountId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("PlaidTransactionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("RunningBalance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaseId");
+
+                    b.HasIndex("OwnerBankAccountId");
+
+                    b.HasIndex("PlaidTransactionId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
             modelBuilder.Entity("Levara.Domain.Models.PlaidTransaction", b =>
                 {
                     b.Property<int>("Id")
@@ -4100,9 +4123,9 @@ namespace Levara.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double?>("Amount")
+                    b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -4146,7 +4169,7 @@ namespace Levara.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4156,12 +4179,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "af828629-60d0-47ce-ae32-7ed6286fefcb"
+                            TransactionId = "60e0a45f-235f-458d-b87b-eac6370da70c"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4171,12 +4194,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0d88da7e-8c55-438e-a68c-416e8cd52f97"
+                            TransactionId = "2c26443d-aec1-452e-8d14-5ae5dffb669a"
                         },
                         new
                         {
                             Id = 3,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4186,12 +4209,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "e047f1fd-d8e5-4034-8bc8-434b77f027f0"
+                            TransactionId = "168a0971-63e8-46dc-b830-ceaba7366706"
                         },
                         new
                         {
                             Id = 4,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4201,12 +4224,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "213eaf27-55a1-4213-ae04-8272c8ad50b8"
+                            TransactionId = "a7ab48d2-ea3c-4abc-a3af-1f33797fac54"
                         },
                         new
                         {
                             Id = 5,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4216,12 +4239,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "3fd10bec-c1a6-40c7-8ee3-05e9380ab353"
+                            TransactionId = "73d5d10b-a25b-4440-8409-ea5ec4937de5"
                         },
                         new
                         {
                             Id = 6,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4231,12 +4254,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "421ea348-cc9c-40e9-906d-b420ed25ec52"
+                            TransactionId = "1f0bf519-34d6-41e9-8fc9-0b56760fed6c"
                         },
                         new
                         {
                             Id = 7,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4246,12 +4269,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "9e345a19-c6d0-4ec8-95f6-e598d315f571"
+                            TransactionId = "b089d7c4-b7fb-42f1-8ee8-972a1a521713"
                         },
                         new
                         {
                             Id = 8,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 2, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4261,12 +4284,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "555b958d-924c-4b7c-9279-a1afc5580845"
+                            TransactionId = "7e8da614-1214-46d8-9c31-b9ff53694158"
                         },
                         new
                         {
                             Id = 9,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4276,12 +4299,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ef7cf713-2d34-45dc-89b9-a49cdc25d928"
+                            TransactionId = "efeb19c8-43a2-429d-8cd4-9b2b7d7c737a"
                         },
                         new
                         {
                             Id = 10,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4291,12 +4314,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "8e752e6a-ff65-4d67-854e-a9ce19549809"
+                            TransactionId = "bdebcdc9-8845-4dec-820c-5dffb965de33"
                         },
                         new
                         {
                             Id = 11,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4306,12 +4329,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "0f273fdc-1264-4051-8ec3-3737600f4344"
+                            TransactionId = "433d7b4f-cd78-4253-8371-0eb4d64299bc"
                         },
                         new
                         {
                             Id = 12,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 3, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4321,12 +4344,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d5608487-1bdd-40d9-a2b7-bdc06b71c4eb"
+                            TransactionId = "88120ba1-2cef-4735-ad6c-fb40b1c92f86"
                         },
                         new
                         {
                             Id = 13,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4336,12 +4359,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "20f9c64e-2a29-4bb7-b5eb-789671ca764f"
+                            TransactionId = "c5b10503-2465-4b4f-b67b-f038353d0e11"
                         },
                         new
                         {
                             Id = 14,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4351,12 +4374,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "82dcbdf8-e94b-472d-8d4f-76444dfc5082"
+                            TransactionId = "240da673-0414-4aae-b040-7343d9033bff"
                         },
                         new
                         {
                             Id = 15,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4366,12 +4389,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "aac7acb0-ddec-4785-9a5a-cfd86621dfa6"
+                            TransactionId = "8f76efff-e08f-413f-8853-6cda25806502"
                         },
                         new
                         {
                             Id = 16,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 4, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4381,12 +4404,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "29e85e79-b20d-4508-9e37-de2b79e3a9e9"
+                            TransactionId = "50773862-a779-48db-8bf0-425426b0f4b1"
                         },
                         new
                         {
                             Id = 17,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4396,12 +4419,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "5a596688-173d-4690-80bd-aededfebc6f2"
+                            TransactionId = "2914d9c0-023e-4a51-b1ff-e715b8dcbd01"
                         },
                         new
                         {
                             Id = 18,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4411,12 +4434,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "fdbcc901-a483-40b9-baab-8049e31844c5"
+                            TransactionId = "4f63d1cc-0ffc-463c-b0f1-f3cf80e5d646"
                         },
                         new
                         {
                             Id = 19,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4426,12 +4449,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d457d802-e9a4-453f-b286-c20e811e3421"
+                            TransactionId = "7fac0675-1e23-4537-b266-29b0dd9ce5c6"
                         },
                         new
                         {
                             Id = 20,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4441,12 +4464,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "ec48f51f-f63f-4474-8d0e-82cd8d09bf85"
+                            TransactionId = "4aa40e83-558f-46fc-8d5c-d32b7a0220d1"
                         },
                         new
                         {
                             Id = 21,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4456,12 +4479,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "5c9104d2-9543-4fab-a3e1-7f7fdb4cf8a4"
+                            TransactionId = "488e4e80-67db-4cfa-aab9-10ac4d5ea982"
                         },
                         new
                         {
                             Id = 22,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4471,12 +4494,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d73d4b65-a2fa-4e7d-8bf1-99fdd6d73e4e"
+                            TransactionId = "c5285d94-eb87-4d77-aa0a-32e8fe354b61"
                         },
                         new
                         {
                             Id = 23,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4486,12 +4509,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "514b8ea7-e29f-418d-97e3-4504e53c8a9f"
+                            TransactionId = "3fd93061-2b2e-41f5-a70d-95c995ee0d33"
                         },
                         new
                         {
                             Id = 24,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4501,12 +4524,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "29c5c6e8-bb60-40e1-8072-dc32aae1d3b2"
+                            TransactionId = "bad57e32-4f72-49bc-87fe-1af49360cdb4"
                         },
                         new
                         {
                             Id = 25,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4516,12 +4539,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "2e6cfa43-5225-472c-b9c3-70eed2129e8a"
+                            TransactionId = "fd337a3a-54e9-43a0-8c1c-267aabfbd3f5"
                         },
                         new
                         {
                             Id = 26,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4531,12 +4554,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "d75893e0-b207-4680-a888-466b4d16e07d"
+                            TransactionId = "33ad85f1-1de2-48b1-a08c-a793675ed380"
                         },
                         new
                         {
                             Id = 27,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4546,12 +4569,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "fd89bf1f-4e0c-4ea2-bbce-6f324d483f00"
+                            TransactionId = "909e4992-d66a-4887-856a-b2c46170919a"
                         },
                         new
                         {
                             Id = 28,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 7, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4561,12 +4584,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "040fb0a0-99ec-48bd-a4cc-fc4f7862c9a8"
+                            TransactionId = "6c65211d-860b-4dd3-8c68-ffc25e184eb3"
                         },
                         new
                         {
                             Id = 29,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4576,12 +4599,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "c682f7d6-eaf5-41c0-8bda-fd304d08779c"
+                            TransactionId = "4c54b5f8-1cba-46ad-bace-97852fc3b0bb"
                         },
                         new
                         {
                             Id = 30,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4591,12 +4614,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "7ce72d40-96c6-4ffb-9f34-367ef2999af9"
+                            TransactionId = "788e934c-2af5-493e-a4d0-49743822c8b6"
                         },
                         new
                         {
                             Id = 31,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 8, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4606,12 +4629,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "fd9e077f-070e-4235-89df-9728f8cd9547"
+                            TransactionId = "b59d8687-dfb6-4f37-8a8f-c4bb93d3d503"
                         },
                         new
                         {
                             Id = 32,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 8, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4621,12 +4644,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "9356ce87-000d-4d27-82b8-43533f7e8c5c"
+                            TransactionId = "f993e8fd-94f6-48b8-8fe5-d42e7f129bf7"
                         },
                         new
                         {
                             Id = 33,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4636,12 +4659,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "74d35810-eab3-4db7-9d98-79f14d910afc"
+                            TransactionId = "86a659b3-8691-452c-a705-dd5d6916ce4c"
                         },
                         new
                         {
                             Id = 34,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4651,12 +4674,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "c9c95bd9-c8a1-488b-ba9e-3ef5e07a1a04"
+                            TransactionId = "a7f3d4a8-c383-4851-a837-48e6f9c2fe03"
                         },
                         new
                         {
                             Id = 35,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4666,12 +4689,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "8302ab10-3722-4f1f-a3df-89c7164c8bfb"
+                            TransactionId = "70b13071-56fe-49fb-bb5f-1cd6080e31a0"
                         },
                         new
                         {
                             Id = 36,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4681,12 +4704,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "5a680db0-93f3-405d-9de8-d2f7bec0c080"
+                            TransactionId = "9a6ea09d-0484-42b5-9625-7da777b3f934"
                         },
                         new
                         {
                             Id = 37,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4696,12 +4719,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "4fa14a14-93bb-4a96-a49f-2043bf2f5f40"
+                            TransactionId = "29b221c9-14b7-4676-a5b9-4a2cd1a5ff16"
                         },
                         new
                         {
                             Id = 38,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4711,12 +4734,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "715ebc20-128e-48c5-84c4-394b79f0f254"
+                            TransactionId = "95a97bca-a169-48e7-861d-7c3c53e403dd"
                         },
                         new
                         {
                             Id = 39,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 10, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4726,12 +4749,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "680cfc72-d895-449f-8d14-f3a6c21b58fc"
+                            TransactionId = "a75097d5-951a-4378-a7ee-5b0ae2ac036a"
                         },
                         new
                         {
                             Id = 40,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 10, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4741,12 +4764,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "20332aec-91b2-4eca-ab2b-b06e3f9b72e2"
+                            TransactionId = "547cfb3e-b2b8-4d66-9761-968789d52f2b"
                         },
                         new
                         {
                             Id = 41,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4756,12 +4779,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "03821edd-e537-4444-8b15-f3e52240b02f"
+                            TransactionId = "dd21cb67-5a0f-4eec-b0ce-e73c8e429a18"
                         },
                         new
                         {
                             Id = 42,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4771,12 +4794,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "22dfadc5-f6e9-44e0-bdc7-412244ccf41d"
+                            TransactionId = "dd53da85-49ed-4f63-a5ef-88fa42b88c68"
                         },
                         new
                         {
                             Id = 43,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4786,12 +4809,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "72b49f02-0223-4943-a7b2-1c670cf4c7b7"
+                            TransactionId = "5bd2a8b4-9a2b-46f8-95a2-ed2523471f63"
                         },
                         new
                         {
                             Id = 44,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 11, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4801,12 +4824,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "535f6688-208a-4377-a2a6-b7bd369ac1b8"
+                            TransactionId = "c29c9a15-54e3-4a50-a148-4d1f10d5a9fc"
                         },
                         new
                         {
                             Id = 45,
-                            Amount = -5.4000000000000004,
+                            Amount = -5.4m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4816,12 +4839,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "3a14cbb6-f799-4905-a343-6ae3bcbfa982"
+                            TransactionId = "3e1eeb65-68c5-4ae3-a502-eeede394f48e"
                         },
                         new
                         {
                             Id = 46,
-                            Amount = 1500.0,
+                            Amount = 1500m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4831,12 +4854,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "1d3ac3a8-b208-4fe4-a50e-d28ec1b654fa"
+                            TransactionId = "33d571e7-7190-4719-9456-3f319ee62f3d"
                         },
                         new
                         {
                             Id = 47,
-                            Amount = -800.0,
+                            Amount = -800m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 12, 11, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4846,12 +4869,12 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "b59097bb-24eb-450f-9cbf-293743eb2e08"
+                            TransactionId = "f254f0b1-05ef-41d6-b476-764a77adacf3"
                         },
                         new
                         {
                             Id = 48,
-                            Amount = -150.0,
+                            Amount = -150m,
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = 1,
                             Date = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -4861,7 +4884,7 @@ namespace Levara.DAL.Migrations
                             LastEditorId = 1,
                             OwnerBankAccountId = 1,
                             Status = 0,
-                            TransactionId = "a8ef67ed-261c-47a7-852d-cb5c29e5e412"
+                            TransactionId = "9b584172-c72d-4223-938f-e5cd1807f4aa"
                         });
                 });
 
@@ -7226,9 +7249,6 @@ namespace Levara.DAL.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
-                    b.Property<int>("BankTransactionId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ChargeTransactionId")
                         .HasColumnType("integer");
 
@@ -7247,14 +7267,17 @@ namespace Levara.DAL.Migrations
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("PaymentTransactionId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BankTransactionId");
-
                     b.HasIndex("ChargeTransactionId");
+
+                    b.HasIndex("PaymentId");
 
                     b.HasIndex("PaymentTransactionId");
 
@@ -10280,31 +10303,6 @@ namespace Levara.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Levara.Domain.Models.BankTransaction", b =>
-                {
-                    b.HasOne("Levara.Domain.Models.Lease", "Lease")
-                        .WithMany()
-                        .HasForeignKey("LeaseId");
-
-                    b.HasOne("Levara.Domain.Models.OwnerBankAccount", "OwnerBankAccount")
-                        .WithMany()
-                        .HasForeignKey("OwnerBankAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Levara.Domain.Models.Property", "Property")
-                        .WithMany()
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lease");
-
-                    b.Navigation("OwnerBankAccount");
-
-                    b.Navigation("Property");
-                });
-
             modelBuilder.Entity("Levara.Domain.Models.ExpenseCharge", b =>
                 {
                     b.HasOne("Levara.Domain.Models.Expense", "Expense")
@@ -10504,6 +10502,38 @@ namespace Levara.DAL.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("Levara.Domain.Models.Payment", b =>
+                {
+                    b.HasOne("Levara.Domain.Models.Lease", "Lease")
+                        .WithMany()
+                        .HasForeignKey("LeaseId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.OwnerBankAccount", "OwnerBankAccount")
+                        .WithMany()
+                        .HasForeignKey("OwnerBankAccountId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.PlaidTransaction", "PlaidTransaction")
+                        .WithMany()
+                        .HasForeignKey("PlaidTransactionId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Lease");
+
+                    b.Navigation("OwnerBankAccount");
+
+                    b.Navigation("PlaidTransaction");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Levara.Domain.Models.PlaidTransaction", b =>
                 {
                     b.HasOne("Levara.Domain.Models.OwnerBankAccount", "OwnerBankAccount")
@@ -10564,15 +10594,15 @@ namespace Levara.DAL.Migrations
 
             modelBuilder.Entity("Levara.Domain.Models.TransactionApplication", b =>
                 {
-                    b.HasOne("Levara.Domain.Models.BankTransaction", "BankTransaction")
-                        .WithMany()
-                        .HasForeignKey("BankTransactionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Levara.Domain.Models.Transaction", "ChargeTransaction")
                         .WithMany()
                         .HasForeignKey("ChargeTransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Levara.Domain.Models.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -10582,9 +10612,9 @@ namespace Levara.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("BankTransaction");
-
                     b.Navigation("ChargeTransaction");
+
+                    b.Navigation("Payment");
 
                     b.Navigation("PaymentTransaction");
                 });

@@ -16,14 +16,21 @@ public class GetLeaseByGridQueryHandler : IQueryHandler<GetLeaseByGridQuery, Pag
     public async Task<OperationResult<PagedList<GetLeaseByGridQueryResponse>>> Handle(GetLeaseByGridQuery query)
     {
 
-        var leaseQuery = _leaseRepository.GetAllLeases()
-                                               .Where(l => l.OwnerId == query.OwnerId!.Value)
-                                               .OrderByDescending(p => p.CreatedDate)
-                                               //.Select(l => new GetLeaseByGridQueryResponse(l));
-                                               .Select(l => new GetLeaseByGridQueryResponse(l)
-                                               );
+        var leaseQuery = _leaseRepository.GetAllLeases();
 
-        var response = await _leaseRepository.ToListPagedAsync(leaseQuery, query.PageNumber!.Value, query.PageSize!.Value);
+        if (query.OwnerId.HasValue)
+            leaseQuery = leaseQuery.Where(l => l.OwnerId == query.OwnerId!.Value);
+
+        if (query.TenantId.HasValue)
+            leaseQuery = leaseQuery.Where(l => l.TenantId == query.TenantId!.Value);
+
+        if (query.PropertyId.HasValue)
+            leaseQuery = leaseQuery.Where(l => l.PropertyId == query.PropertyId!.Value);
+
+        var leaseQueryResponse = leaseQuery.OrderByDescending(l => l.CreatedDate)
+                                           .Select(l => new GetLeaseByGridQueryResponse(l));
+
+        var response = await _leaseRepository.ToListPagedAsync(leaseQueryResponse, query.PageNumber!.Value, query.PageSize!.Value);
 
 
         return OperationResult<PagedList<GetLeaseByGridQueryResponse>>.SuccessResult(response);

@@ -13,12 +13,32 @@ public class CreateMaintenancePaymentCommand : Command<CreateMaintenancePaymentC
     [Range(1, int.MaxValue)]
     public int? OwnerId { get; set; }
 
-    [Required]
     [Range(1, int.MaxValue)]
     public int? MaintenanceChargeId { get; set; }
 
     [Required]
-    [Range(1, Double.MaxValue)]
+    [Range(0, double.MaxValue)]
     public decimal? Amount { get; set; }
 
+    public CreateMaintenance? CreateMaintenance { get; set; }
+
+}
+
+public class CreateMaintenance
+{
+    [Required]
+    [Length(1, 200)]
+    public string Title { get; set; }
+
+    [Required]
+    [Length(1, 200)]
+    public string Description { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int? TypeId { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int? PropertyId { get; set; }
 }

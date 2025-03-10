@@ -23,7 +23,7 @@ namespace Levara.Application.Plaid.GetTransactionsOwner
         public DateTime Date { get; set; }
         public string Description { get; set; }
 
-        public double? Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public PlaidTransactionStatus Status { get; set; }
 

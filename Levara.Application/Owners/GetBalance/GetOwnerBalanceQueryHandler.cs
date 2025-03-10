@@ -9,20 +9,20 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetOwnerBalanceQuery, G
 {
     private readonly IOwnerRepository _ownerRepository;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
-    private readonly IBankTransactionRepository _bankTransactionRepository;
+    private readonly IPaymentRepository _paymentRepository;
     private readonly IPropertyRepository _propertyRepository;
     private readonly IPropertyNotificationRepository _propertyNotificationRepository;
     private readonly IRentPaymentNotificationRepository _rentPaymentNotificationRepository;
     public GetOwnerBalanceQueryHandler(IOwnerRepository ownerRepository,
         IOwnerBankAccountRepository ownerBankAccountRepository,
-        IBankTransactionRepository bankTransactionRepository,
+        IPaymentRepository paymentRepository,
         IPropertyRepository propertyRepository,
         IPropertyNotificationRepository propertyNotificationRepository,
         IRentPaymentNotificationRepository rentPaymentNotificationRepository) 
     {
         _ownerRepository = ownerRepository;
         _ownerBankAccountRepository = ownerBankAccountRepository;
-        _bankTransactionRepository = bankTransactionRepository;
+        _paymentRepository = paymentRepository;
         _propertyRepository = propertyRepository;
         _propertyNotificationRepository = propertyNotificationRepository;
         _rentPaymentNotificationRepository = rentPaymentNotificationRepository;
@@ -43,24 +43,24 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetOwnerBalanceQuery, G
 
         //var ownerBankAccount = await _ownerBankAccountRepository.FirstOrDefaultAsync(ownerBankAccountQuery);
 
-        var ownerBalance = await _bankTransactionRepository.GetAll()
-                                                           .Where(bt => bt.OwnerBankAccount.OwnerId == owner.Id)
-                                                           .GroupBy(bt => bt.OwnerBankAccountId)
-                                                           .Select(g => g.OrderByDescending(bt => bt.Date).FirstOrDefault().RunningBalance ?? 0)
-                                                           .SumAsync();
+        var ownerBalance = await _paymentRepository.GetAll()
+                                                   .Where(bt => bt.Property.OwnerId == owner.Id)
+                                                   .GroupBy(bt => bt.PropertyId)
+                                                   .Select(g => g.OrderByDescending(bt => bt.CreatedDate).FirstOrDefault().RunningBalance)
+                                                   .SumAsync();
 
-        var bankTransactionQuery = _bankTransactionRepository.GetAllWithOwnerBankAccount()
-                                                             .Where(bt => bt.OwnerBankAccount.OwnerId == owner.Id)
-                                                             .Take(3)
-                                                             .OrderByDescending(bt => bt.Date);
+        var lastPaymentsQuery = _paymentRepository.GetAllWithOwnerBankAccount()
+                                                     .Where(bt => bt.Property.OwnerId == owner.Id)
+                                                     .OrderByDescending(bt => bt.Date)
+                                                     .Take(3);
 
-        var lastBankTransactions = await _bankTransactionRepository.ToListAsync(bankTransactionQuery);
+        var lastPayments = await _paymentRepository.ToListAsync(lastPaymentsQuery);
 
-        var lastBankTransaction = lastBankTransactions.FirstOrDefault();
+        var lastPayment = lastPayments.FirstOrDefault();
 
         OwnerCard ownerCard = new (owner, ownerBalance.ToString("F2"));
 
-        var btsGrid = lastBankTransactions.Select(bt => new BankTransactionGrid(bt));
+        var btsGrid = lastPayments.Select(bt => new BankTransactionGrid(bt));
 
         var propertyBalances = await GetPropertyBalances(owner.Id);
 
@@ -79,19 +79,19 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetOwnerBalanceQuery, G
         var propertyBalances = await propertyBalanceQuery.ToListAsync();
 
 
-        var propertyRunningBalanceQuery = _bankTransactionRepository.GetAllWithProperty()
+        var propertyRunningBalanceQuery = _paymentRepository.GetAllWithProperty()
                                                                .Where(bt => bt.Property.OwnerId == ownerId)
                                                                .GroupBy(bt => bt.PropertyId)
-                                                               .Select(g => g.OrderByDescending(bt => bt.Date)
+                                                               .Select(g => g.OrderByDescending(bt => bt.CreatedDate)
                                                                              .ThenByDescending(bt => bt.Id)
                                                                              .Select(bt => new
                                                                              {
                                                                                  PropertyId = bt.Property.Id,
-                                                                                 RunningBalance = bt.RunningBalance!.Value
+                                                                                 RunningBalance = bt.RunningBalance
                                                                              })
                                                                              .Single());
 
-        var propertyRunningBalances = await _bankTransactionRepository.ToListAsync(propertyRunningBalanceQuery);
+        var propertyRunningBalances = await _paymentRepository.ToListAsync(propertyRunningBalanceQuery);
 
 
         foreach (var propertyRunningBalance in propertyRunningBalances)

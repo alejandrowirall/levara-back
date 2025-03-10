@@ -12,8 +12,8 @@
 
         public decimal AppliedAmount { get; set; }
 
-        public int BankTransactionId { get; set; }
+        public int PaymentId { get; set; }
 
-        public BankTransaction BankTransaction { get; set; }
+        public Payment Payment { get; set; }
     }
 }

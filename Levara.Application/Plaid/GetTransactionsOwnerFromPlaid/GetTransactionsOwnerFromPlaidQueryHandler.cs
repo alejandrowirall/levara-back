@@ -109,7 +109,7 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
             TransactionId = transaction.TransactionId, // Asumiendo que existe un campo equivalente en ExternalService.Plaid.Added
             Date = DateTime.Parse(transaction.Date).ToUniversalTime(),                  // Mapea al campo de tipo DateTime
             Description = transaction.Name,    // Mapea la descripción
-            Amount = transaction.Amount,              // Mapea el monto
+            Amount = (decimal)transaction.Amount,              // Mapea el monto
             Status = Domain.Enum.PlaidTransactionStatus.Created,    // Traduce el estado (requiere método adicional)
             OwnerBankAccountId= account_Token.Id
         }).ToList();

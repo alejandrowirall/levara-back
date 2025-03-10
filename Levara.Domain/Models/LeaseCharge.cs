@@ -1,9 +1,13 @@
 ﻿using Levara.Domain.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace Levara.Domain.Models;
 
 public class LeaseCharge : Entity
 {
+    [Required]
+    public string Description { get; set; }
+
     public int TransactionId { get; set; }
     public Transaction Transaction { get; set; }
 

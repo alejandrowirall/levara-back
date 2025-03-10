@@ -1,6 +1,6 @@
-﻿using Levara.Application.LeasesPayment.Create;
-using Levara.Application.LeasesPayment.GetByGrid;
-using Levara.Application.LeasesPayment.GetForCreate;
+﻿using Levara.Application.LeasePayments.Create;
+using Levara.Application.LeasePayments.GetByGrid;
+using Levara.Application.LeasePayments.GetForCreate;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Commands;

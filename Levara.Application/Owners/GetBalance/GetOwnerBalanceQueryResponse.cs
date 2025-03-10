@@ -1,6 +1,6 @@
-﻿using Levara.Domain.Models;
+﻿using Levara.Domain.Enum;
+using Levara.Domain.Models;
 using Levara.Shared.Extensions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Levara.Application.Owners.GetBalance;
 
@@ -32,7 +32,7 @@ public class PropertyBalanceGrid
         Number = property.Number;
         Address = $"{property.Address.Street} {property.Address.Number}";
         City = $"{property.Address.City}, {property.Address.State}";
-        Balance = 0.00;
+        Balance = 0;
     }
 
     public int Id { get; }
@@ -43,7 +43,7 @@ public class PropertyBalanceGrid
 
     public string City { get; }
 
-    public double Balance { get; set; }
+    public decimal Balance { get; set; }
 }
 
 public class OwnerCard
@@ -83,22 +83,25 @@ public class OwnerBankAccountCard
 
 public class BankTransactionGrid
 {
-    public BankTransactionGrid(BankTransaction bankTransaction)
+    public BankTransactionGrid(Payment payment)
     {
-        Id = bankTransaction.Id;
-        Description = bankTransaction.Description;
-        BankName = bankTransaction.OwnerBankAccount.BankName;
-        AccountNumber = bankTransaction.OwnerBankAccount.AccountNumberMasked;
-        Date = bankTransaction.Date;
-        Amount = bankTransaction.Amount!.Value;
+        Id = payment.Id;
+        Description = payment.Description;
+        BankName = payment.OwnerBankAccount?.BankName;
+        AccountNumber = payment.OwnerBankAccount?.AccountNumberMasked;
+        PaymentMethod = EnumExtensions.GetEnumDescription(payment.PaymentMethod);
+        Date = payment.Date;
+        Amount = payment.Amount;
     }
     public int Id { get; }
     
-    public string BankName { get; }
-    public string AccountNumber { get; }
+    public string? BankName { get; }
+    public string? AccountNumber { get; }
+
+    public string PaymentMethod { get; }
     public DateTime Date { get; }
     public string Description { get; }
-    public double Amount { get; }
+    public decimal Amount { get; }
 }
 
 
