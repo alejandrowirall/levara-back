@@ -20,7 +20,8 @@ try
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .WithExposedHeaders(new string[] { "Token-Expired" });
             });
     });
 
@@ -109,13 +110,13 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseCors(AllowAnyOrigin);
+
     app.UseLevaraApiKey();
 
     app.UseAuthentication();
 
     app.UseAuthorization();
-
-    app.UseCors(AllowAnyOrigin);
 
     app.UseLevaraLogger();
     app.UseLevaraException();

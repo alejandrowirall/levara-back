@@ -23,8 +23,6 @@ public class RefreshCommandHandler : ICommandHandler<RefreshCommand, RefreshComm
 
     public async Task<OperationResult<RefreshCommandResponse>> Handle(RefreshCommand command)
     {
-        _jwtService.GetPrincipalFromToken(command.Access_token);
-
         var principal = _jwtService.GetPrincipalFromToken(command.Access_token, validateExpiration: false);
         var username = principal.Identity.Name;
 

@@ -1,13 +1,16 @@
 ﻿using Levara.Application.Payments.GetByGrid;
 using Levara.Application.Payments.SummaryByMonth;
+using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Queries;
+using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Levara.WebApi.Controllers
 {
     [Route("api/payment")]
     [ApiController]
+    [AuthorizeAnyRoles(Roles.Admin, Roles.Owner)]
     public class PaymentController : ControllerBase
     {
         private readonly IQueryBus _queryBus;
