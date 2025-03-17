@@ -1,5 +1,4 @@
-﻿using Levara.Domain.Enum;
-using Levara.Domain.Models;
+﻿using Levara.Domain.Models;
 using Levara.Shared.Extensions;
 
 namespace Levara.Application.Owners.GetBalance;
@@ -7,18 +6,18 @@ namespace Levara.Application.Owners.GetBalance;
 public class GetOwnerBalanceQueryResponse
 {
     public GetOwnerBalanceQueryResponse(OwnerCard owner,
-        IEnumerable<BankTransactionGrid> lastBankTransactions,
+        IEnumerable<PaymentGrid> lastPayments,
         IEnumerable<PropertyBalanceGrid> propertyBalances)
     {
         Owner = owner;
-        LastBankTransactions = lastBankTransactions;
+        LastPayments = lastPayments;
         PropertyBalances = propertyBalances;
     }
    
 
     public OwnerCard Owner { get; }
 
-    public IEnumerable<BankTransactionGrid> LastBankTransactions { get; }
+    public IEnumerable<PaymentGrid> LastPayments { get; }
 
     public IEnumerable<PropertyBalanceGrid> PropertyBalances { get; }
 
@@ -81,9 +80,9 @@ public class OwnerBankAccountCard
     public string Balance { get; }
 }
 
-public class BankTransactionGrid
+public class PaymentGrid
 {
-    public BankTransactionGrid(Payment payment)
+    public PaymentGrid(Payment payment)
     {
         Id = payment.Id;
         Description = payment.Description;

@@ -60,7 +60,7 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetOwnerBalanceQuery, G
 
         OwnerCard ownerCard = new (owner, ownerBalance.ToString("F2"));
 
-        var btsGrid = lastPayments.Select(bt => new BankTransactionGrid(bt));
+        var btsGrid = lastPayments.Select(bt => new PaymentGrid(bt));
 
         var propertyBalances = await GetPropertyBalances(owner.Id);
 

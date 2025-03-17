@@ -9,41 +9,55 @@ namespace Levara.Application.Payments.SummaryByMonth;
 public class GetPaymentsSummaryByMonthQueryHandler : IQueryHandler<GetPaymentsSummaryByMonthQuery, GetPaymentsSummaryByMonthQueryResponse>
 {
     private readonly IPaymentRepository _paymentRepository;
-    public GetPaymentsSummaryByMonthQueryHandler(IPaymentRepository paymentRepository) 
+
+    public GetPaymentsSummaryByMonthQueryHandler(IPaymentRepository paymentRepository)
     {
         _paymentRepository = paymentRepository;
     }
+
     public async Task<OperationResult<GetPaymentsSummaryByMonthQueryResponse>> Handle(GetPaymentsSummaryByMonthQuery query)
     {
-
-        DateTime fromDate = new DateTime(query.Year!.Value, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        DateTime toDate = new DateTime(query.Year!.Value, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+        var fromDate = new DateTime(query.Years.Min(), 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var toDate = new DateTime(query.Years.Max(), 12, 31, 23, 59, 59, DateTimeKind.Utc);
 
         var btQuery = _paymentRepository.GetAll()
-                                        .Where(bt => bt.Property.OwnerId == query.OwnerId &&
-                                                     bt.Date >= fromDate && bt.Date <= toDate);
+            .Where(bt => bt.Property.OwnerId == query.OwnerId &&
+                         query.Years.Contains(bt.Date.Year) &&
+                         bt.Date >= fromDate && bt.Date <= toDate);
+
+        if (query.PropertyId.HasValue)
+        {
+            btQuery = btQuery.Where(bt => bt.PropertyId == query.PropertyId.Value);
+        }
+
+        if (query.TransactionTypes.Any())
+        {
+            btQuery = btQuery.Where(bt => query.TransactionTypes.Contains(bt.Type));
+        }
 
         var payments = await _paymentRepository.ToListAsync(btQuery);
 
-        var paymentsByMonth = payments.GroupBy(bt => bt.Date.Month)
-                                              .ToDictionary(g => g.Key, g => new
-                                              {
-                                                  Income = g.Where(t => t.Type == TransactionType.Lease).Sum(t => t.Amount),
-                                                  Expenses = g.Where(t => t.Type == TransactionType.Maintenance).Sum(t => t.Amount)
-                                              });
+        var paymentsByYearMonth = payments.GroupBy(bt => new { bt.Date.Year, bt.Date.Month })
+            .ToDictionary(g => g.Key, g => new
+            {
+                Income = g.Where(t => t.Type == TransactionType.Lease).Sum(t => t.Amount),
+                Expenses = g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount),
+                Maintenances = g.Where(t => t.Type == TransactionType.Maintenance).Sum(t => t.Amount)
+            });
 
-        var btsSummaryByMonth = Enumerable.Range(1, 12)
-                                          .Select(month => new PaymentsSummaryByMonth
-                                          {
-                                              Month = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(month),
-                                              Income = paymentsByMonth.ContainsKey(month) ? paymentsByMonth[month].Income : 0,
-                                              Expenses = paymentsByMonth.ContainsKey(month) ? paymentsByMonth[month].Expenses : 0
-                                          });
+        var btsSummaryByMonth = query.Years.SelectMany(year => Enumerable.Range(1, 12)
+            .Select(month => new PaymentsSummaryByMonth
+            {
+                Year = year,
+                Month = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(month),
+                Income = paymentsByYearMonth.ContainsKey(new { Year = year, Month = month }) ? paymentsByYearMonth[new { Year = year, Month = month }].Income : 0,
+                Expenses = paymentsByYearMonth.ContainsKey(new { Year = year, Month = month }) ? paymentsByYearMonth[new { Year = year, Month = month }].Expenses : 0,
+                Maintenances = paymentsByYearMonth.ContainsKey(new { Year = year, Month = month }) ? paymentsByYearMonth[new { Year = year, Month = month }].Maintenances : 0
+            }));
 
-        GetPaymentsSummaryByMonthQueryResponse response = new(btsSummaryByMonth);
+        var response = new GetPaymentsSummaryByMonthQueryResponse(btsSummaryByMonth);
 
         return OperationResult<GetPaymentsSummaryByMonthQueryResponse>.SuccessResult(response);
-
     }
 }
 
