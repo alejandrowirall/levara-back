@@ -34,15 +34,6 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetOwnerBalanceQuery, G
             return OperationResult<GetOwnerBalanceQueryResponse>.ErrorResult(new ErrorDetails(404, "Owner not found."));
 
 
-      
-
-
-        //var ownerBankAccountQuery = _ownerBankAccountRepository.GetAll()
-        //                                                       .Where(oba => oba.OwnerId == query.Id!.Value)
-        //                                                       .OrderByDescending(oba => oba.Id);
-
-        //var ownerBankAccount = await _ownerBankAccountRepository.FirstOrDefaultAsync(ownerBankAccountQuery);
-
         var ownerBalance = await _paymentRepository.GetAll()
                                                    .Where(bt => bt.Property.OwnerId == owner.Id)
                                                    .GroupBy(bt => bt.PropertyId)
@@ -58,7 +49,7 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetOwnerBalanceQuery, G
 
         var lastPayment = lastPayments.FirstOrDefault();
 
-        OwnerCard ownerCard = new (owner, ownerBalance.ToString("F2"));
+        OwnerCard ownerCard = new (owner, ownerBalance);
 
         var btsGrid = lastPayments.Select(bt => new PaymentGrid(bt));
 

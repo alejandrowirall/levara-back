@@ -40,7 +40,7 @@ namespace Levara.WebApi.Controllers
                 return BadRequest();
 
             if(_userContext.IsOwner)
-                query.Id = _userContext.Id!;
+                query.Id = _userContext.OwnerId!;
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)
@@ -61,7 +61,7 @@ namespace Levara.WebApi.Controllers
                 return BadRequest();
 
             if (_userContext.IsOwner)
-                query.Id = _userContext.Id!;
+                query.Id = _userContext.OwnerId!;
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)

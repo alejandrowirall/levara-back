@@ -47,7 +47,7 @@ public class PropertyBalanceGrid
 
 public class OwnerCard
 {
-    public OwnerCard(Owner owner, string balance)
+    public OwnerCard(Owner owner, decimal balance)
     {
         Id = owner.Id;
         Surname = owner.Surname;
@@ -61,23 +61,7 @@ public class OwnerCard
 
     public string Name { get; }
     public string Identification { get; }
-    public string Balance { get; }
-}
-
-public class OwnerBankAccountCard
-{
-    public OwnerBankAccountCard(OwnerBankAccount ownerBankAccount, string balance)
-    {
-        Id = ownerBankAccount.Id;
-        BankName = ownerBankAccount.BankName;
-        Description = $"{ownerBankAccount.BankName} - {ownerBankAccount.AccountNumberMasked}";
-        Balance = balance;
-    }
-
-    public int Id { get; }
-    public string BankName { get; }
-    public string Description { get; }
-    public string Balance { get; }
+    public decimal Balance { get; }
 }
 
 public class PaymentGrid
@@ -101,43 +85,4 @@ public class PaymentGrid
     public DateTime Date { get; }
     public string Description { get; }
     public decimal Amount { get; }
-}
-
-
-public class RentPaymentNotificationGrid
-{
-    public RentPaymentNotificationGrid(RentPaymentNotification rentPaymentNotification)
-    {
-        Id = rentPaymentNotification.Id;
-        Property = rentPaymentNotification.Property;
-        DueDate = rentPaymentNotification.DueDate;
-        Status = rentPaymentNotification.Status;
-    }
-
-    public int Id { get; set; }
-
-    public string Property { get; set; }
-
-    public DateTime DueDate { get; set; }
-
-    public string Status { get; set; }
-}
-
-public class ImportantNotificationGrid
-{
-    public ImportantNotificationGrid(PropertyNotification propertyNotification)
-    {
-        Id = propertyNotification.Id;
-        Property = propertyNotification.Property;
-        Date = propertyNotification.Date;
-        Detail = propertyNotification.Detail;
-    }
-
-    public int Id { get; set; }
-
-    public string Property { get; set; }
-
-    public DateTime Date { get; set; }
-
-    public string Detail { get; set; }
 }
