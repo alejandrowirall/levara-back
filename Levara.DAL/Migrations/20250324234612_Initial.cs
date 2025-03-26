@@ -10,9 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Initail : Migration
+    public partial class Initial : Migration
     {
-
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -1300,23 +1299,6 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "OwnerBankAccounts",
-                columns: new[] { "Id", "AccountNumberMasked", "BankName", "CreatedDate", "CreatorId", "Deleted", "LastEditedDate", "LastEditorId", "LastSyncId", "OwnerId", "PlaidAccountId" },
-                values: new object[,]
-                {
-                    { 1, "****1234", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "account-abc123" },
-                    { 2, "****1235", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 2, "account-abc124" },
-                    { 3, "****1236", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 3, "account-abc125" },
-                    { 4, "****1237", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 4, "account-abc126" },
-                    { 5, "****1238", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 5, "account-abc127" },
-                    { 6, "****1239", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 6, "account-abc128" },
-                    { 7, "****1240", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 7, "account-abc129" },
-                    { 8, "****1241", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 8, "account-abc130" },
-                    { 9, "****1242", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 9, "account-abc131" },
-                    { 10, "****1243", "Chase", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 10, "account-abc132" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Properties",
                 columns: new[] { "Id", "AddressId", "AreaQuantity", "AvaliableFrom", "BathroomQuantity", "CreatedDate", "CreatorId", "Deleted", "DetailDepositAndAdittionalInfo", "HasBalcony", "HasGarage", "HasPool", "Img", "LastEditedDate", "LastEditorId", "Number", "OwnerId", "PetsPoliticAndRate", "Price", "RoomsQuantity", "TenantRequirements" },
                 values: new object[,]
@@ -1457,61 +1439,6 @@ namespace Levara.DAL.Migrations
                     { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
                     { 11, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 11, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 },
                     { 12, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, "Plumber Service in Property 1", new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 3, "Plumber Service", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "PlaidTransaction",
-                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "Date", "Deleted", "Description", "LastEditedDate", "LastEditorId", "OwnerBankAccountId", "Status", "TransactionId" },
-                values: new object[,]
-                {
-                    { 1, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063015 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "60e0a45f-235f-458d-b87b-eac6370da70c" },
-                    { 2, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/1/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "2c26443d-aec1-452e-8d14-5ae5dffb669a" },
-                    { 3, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/1/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "168a0971-63e8-46dc-b830-ceaba7366706" },
-                    { 4, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/1/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "a7ab48d2-ea3c-4abc-a3af-1f33797fac54" },
-                    { 5, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063025 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "73d5d10b-a25b-4440-8409-ea5ec4937de5" },
-                    { 6, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/2/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "1f0bf519-34d6-41e9-8fc9-0b56760fed6c" },
-                    { 7, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/2/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "b089d7c4-b7fb-42f1-8ee8-972a1a521713" },
-                    { 8, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 2, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/2/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "7e8da614-1214-46d8-9c31-b9ff53694158" },
-                    { 9, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063035 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "efeb19c8-43a2-429d-8cd4-9b2b7d7c737a" },
-                    { 10, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/3/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "bdebcdc9-8845-4dec-820c-5dffb965de33" },
-                    { 11, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/3/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "433d7b4f-cd78-4253-8371-0eb4d64299bc" },
-                    { 12, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 3, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/3/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "88120ba1-2cef-4735-ad6c-fb40b1c92f86" },
-                    { 13, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063045 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "c5b10503-2465-4b4f-b67b-f038353d0e11" },
-                    { 14, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/4/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "240da673-0414-4aae-b040-7343d9033bff" },
-                    { 15, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/4/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "8f76efff-e08f-413f-8853-6cda25806502" },
-                    { 16, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 4, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/4/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "50773862-a779-48db-8bf0-425426b0f4b1" },
-                    { 17, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063055 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "2914d9c0-023e-4a51-b1ff-e715b8dcbd01" },
-                    { 18, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/5/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "4f63d1cc-0ffc-463c-b0f1-f3cf80e5d646" },
-                    { 19, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/5/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "7fac0675-1e23-4537-b266-29b0dd9ce5c6" },
-                    { 20, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/5/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "4aa40e83-558f-46fc-8d5c-d32b7a0220d1" },
-                    { 21, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063065 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "488e4e80-67db-4cfa-aab9-10ac4d5ea982" },
-                    { 22, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/6/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "c5285d94-eb87-4d77-aa0a-32e8fe354b61" },
-                    { 23, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/6/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "3fd93061-2b2e-41f5-a70d-95c995ee0d33" },
-                    { 24, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/6/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "bad57e32-4f72-49bc-87fe-1af49360cdb4" },
-                    { 25, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063075 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "fd337a3a-54e9-43a0-8c1c-267aabfbd3f5" },
-                    { 26, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/7/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "33ad85f1-1de2-48b1-a08c-a793675ed380" },
-                    { 27, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/7/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "909e4992-d66a-4887-856a-b2c46170919a" },
-                    { 28, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 7, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/7/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "6c65211d-860b-4dd3-8c68-ffc25e184eb3" },
-                    { 29, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063085 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "4c54b5f8-1cba-46ad-bace-97852fc3b0bb" },
-                    { 30, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/8/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "788e934c-2af5-493e-a4d0-49743822c8b6" },
-                    { 31, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/8/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "b59d8687-dfb6-4f37-8a8f-c4bb93d3d503" },
-                    { 32, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 8, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/8/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "f993e8fd-94f6-48b8-8fe5-d42e7f129bf7" },
-                    { 33, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 063095 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "86a659b3-8691-452c-a705-dd5d6916ce4c" },
-                    { 34, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/9/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "a7f3d4a8-c383-4851-a837-48e6f9c2fe03" },
-                    { 35, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/9/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "70b13071-56fe-49fb-bb5f-1cd6080e31a0" },
-                    { 36, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/9/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "9a6ea09d-0484-42b5-9625-7da777b3f934" },
-                    { 37, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 0630105 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "29b221c9-14b7-4676-a5b9-4a2cd1a5ff16" },
-                    { 38, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/10/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "95a97bca-a169-48e7-861d-7c3c53e403dd" },
-                    { 39, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/10/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "a75097d5-951a-4378-a7ee-5b0ae2ac036a" },
-                    { 40, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 10, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/10/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "547cfb3e-b2b8-4d66-9761-968789d52f2b" },
-                    { 41, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 0630115 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "dd21cb67-5a0f-4eec-b0ce-e73c8e429a18" },
-                    { 42, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/11/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "dd53da85-49ed-4f63-a5ef-88fa42b88c68" },
-                    { 43, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/11/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "5bd2a8b4-9a2b-46f8-95a2-ed2523471f63" },
-                    { 44, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 11, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/11/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "c29c9a15-54e3-4a50-a148-4d1f10d5a9fc" },
-                    { 45, -5.4m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, "Uber 0630125 SF**POOL**", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "3e1eeb65-68c5-4ae3-a502-eeede394f48e" },
-                    { 46, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment rent 1/12/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "33d571e7-7190-4719-9456-3f319ee62f3d" },
-                    { 47, -800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 11, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment maintenance charge 2/12/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "f254f0b1-05ef-41d6-b476-764a77adacf3" },
-                    { 48, -150m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), false, "Payment cleaning charge 3/12/2024", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 0, "9b584172-c72d-4223-938f-e5cd1807f4aa" }
                 });
 
             migrationBuilder.InsertData(

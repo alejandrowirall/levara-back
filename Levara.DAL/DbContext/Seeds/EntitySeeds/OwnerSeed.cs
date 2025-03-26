@@ -91,20 +91,20 @@ public class OwnerSeed : SeedBase
 
             allOwnersToAdd.Add(owner);
 
-            OwnerBankAccount ownerBankAccount = new()
-            {
-                Id = i,
-                BankName = "Chase",
-                AccountNumberMasked = $"****{1233 + i}",
-                PlaidAccountId = $"account-abc{122 + i}",
-                OwnerId = owner.Id,
-                CreatorId = 1,
-                CreatedDate = datatimeApp,
-                LastEditorId = 1,
-                LastEditedDate = datatimeApp,
-            };
+            //OwnerBankAccount ownerBankAccount = new()
+            //{
+            //    Id = i,
+            //    BankName = "Chase",
+            //    AccountNumberMasked = $"****{1233 + i}",
+            //    PlaidAccountId = $"account-abc{122 + i}",
+            //    OwnerId = owner.Id,
+            //    CreatorId = 1,
+            //    CreatedDate = datatimeApp,
+            //    LastEditorId = 1,
+            //    LastEditedDate = datatimeApp,
+            //};
 
-            allOwnersBankAccounts.Add(ownerBankAccount);
+            //allOwnersBankAccounts.Add(ownerBankAccount);
 
             userClaims.Add(
                 new IdentityUserClaim<int>
@@ -197,7 +197,9 @@ public class OwnerSeed : SeedBase
 
         this.modelBuilder.Entity<Address>().HasData(allAddresssToAdd);
         this.modelBuilder.Entity<Owner>().HasData(allOwnersToAdd);
-        this.modelBuilder.Entity<OwnerBankAccount>().HasData(allOwnersBankAccounts);
+
+        if(allOwnersBankAccounts.Count > 0)
+            this.modelBuilder.Entity<OwnerBankAccount>().HasData(allOwnersBankAccounts);
 
         this.modelBuilder.Entity<IdentityUserClaim<int>>().HasData(userClaims);
         

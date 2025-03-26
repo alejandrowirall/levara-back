@@ -19,7 +19,10 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
     private readonly string _secret;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
     private readonly IPlaidRepository _plaidRepository;
-    public GetTransactionsOwnerFromPlaidQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, IOwnerBankAccountRepository ownerBankAccountRepository, IPlaidRepository plaidRepository) 
+    public GetTransactionsOwnerFromPlaidQueryHandler(IUnitOfWork unitOfWork, 
+        IOptions<RemoteServicesConfig> config, 
+        IOwnerBankAccountRepository ownerBankAccountRepository, 
+        IPlaidRepository plaidRepository) 
     {
         _unitOfWork = unitOfWork;
         _httpClient = new HttpClient();
@@ -32,9 +35,13 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
     public async Task<OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>> Handle(GetTransactionsOwnerFromPlaidQuery query)
     {
         var bankAccountQuery = _ownerBankAccountRepository.GetAll()
-                                               .Where(p => p.OwnerId == query.ownerId);
+                                                          .Where(ba => ba.Id == query.BankAccountId!.Value && 
+                                                                       ba.OwnerId == query.OwnerId!.Value);
 
-        OwnerBankAccount account_Token = await _ownerBankAccountRepository.FirstOrDefaultAsync<OwnerBankAccount>(bankAccountQuery);
+        OwnerBankAccount? account_Token = await _ownerBankAccountRepository.FirstOrDefaultAsync(bankAccountQuery);
+        if (account_Token == null)
+            return OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+
         var startDate = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd"); // Ayer
         var endDate = DateTime.UtcNow.ToString("yyyy-MM-dd");             // Hoy
         const int maxCount = 500; // Máximo permitido
@@ -128,15 +135,10 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-            foreach(var transaction in newTransactions)
-            { 
-                await _plaidRepository.AddAsync(transaction);
-
-            }
+            await _plaidRepository.AddAsync(newTransactions);
+            _ownerBankAccountRepository.Update(account_Token);
         });
-            
-       
-        _ownerBankAccountRepository.Update(account_Token);
+        
         var responseFunction = new GetTransactionsOwnerQueryFromPlaidResponse(allTransactions.Count);
        
         return OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>.SuccessResult(responseFunction);

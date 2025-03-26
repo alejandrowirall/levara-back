@@ -1,10 +1,10 @@
 ﻿using Levara.Application.Plaid.CreateExpensePayment;
 using Levara.Application.Plaid.CreateLeasePayment;
 using Levara.Application.Plaid.CreateMaintenancePayment;
+using Levara.Application.Plaid.GetByGrid;
 using Levara.Application.Plaid.GetForUpdate;
 using Levara.Application.Plaid.GetLinkToken;
 using Levara.Application.Plaid.GetPublicToken;
-using Levara.Application.Plaid.GetTransactionsOwner;
 using Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 using Levara.Application.Plaid.Update;
 using Levara.Domain.Authentication;
@@ -68,6 +68,12 @@ namespace Levara.WebApi.Controllers
         [HttpGet("GetTransactionsOwnerFromPlaid")]
         public async Task<IActionResult> GetTransactionsOwnerFromPlaid([FromQuery] GetTransactionsOwnerFromPlaidQuery query)
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
@@ -80,9 +86,15 @@ namespace Levara.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetTransactionsOwner")]
-        public async Task<IActionResult> GetTransactionsOwner([FromQuery] GetTransactionsOwnerQuery query)
+        [HttpGet]
+        public async Task<IActionResult> GetByGrid([FromQuery] GetTransactionByGridQuery query)
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {

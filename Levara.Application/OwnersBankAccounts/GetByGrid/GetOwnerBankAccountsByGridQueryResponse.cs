@@ -11,12 +11,15 @@ public class GetOwnerBankAccountsByGridQueryResponse
         BankName = ownerBankAccount.BankName;
         AccountNumberMasked = ownerBankAccount.AccountNumberMasked;
         PlaidAccountId = ownerBankAccount.PlaidAccountId;
+        LastUpdated = ownerBankAccount.LastEditedDate;
     }
     public int Id { get; }
 
     public string BankName { get; set; }
 
     public string AccountNumberMasked { get; set; }
+
+    public DateTime LastUpdated { get; set; }
 
     public string PlaidAccountId { get; set; }
 
