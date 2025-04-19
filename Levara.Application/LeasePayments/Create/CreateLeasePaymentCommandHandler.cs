@@ -65,7 +65,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {command.CreateLeaseCharge!.Description}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = lease.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
@@ -191,7 +191,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {leaseCharge.Description}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate!=null?command.CreationDate.Value: DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
@@ -269,7 +269,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {leaseCharge.Description}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,

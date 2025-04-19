@@ -19,6 +19,7 @@ public class CreateLeasePaymentCommand : Command<CreateLeasePaymentCommandRespon
 
     public CreateLeaseCharge? CreateLeaseCharge { get; set; }
 
+    public DateTime? CreationDate { get; set; }
 }
 
 public class CreateLeaseCharge

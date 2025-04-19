@@ -57,7 +57,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {command.CreateMaintenance!.Title}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = command.CreateMaintenance!.PropertyId!.Value,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -198,7 +198,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {maintenanceCharge.Maintenance.Title}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = maintenanceCharge.Maintenance.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -276,7 +276,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         {
             Amount = command.Amount!.Value,
             Description = $"Maintenance payment {maintenanceCharge.Maintenance.Title}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = maintenanceCharge.Maintenance.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,

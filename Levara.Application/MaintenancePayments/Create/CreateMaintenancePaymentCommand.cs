@@ -14,7 +14,7 @@ public class CreateMaintenancePaymentCommand : Command<CreateMaintenancePaymentC
     [Required]
     [Range(0, double.MaxValue)]
     public decimal? Amount { get; set; }
-
+    public DateTime? CreationDate { get; set; }
     public CreateMaintenance? CreateMaintenance { get; set; }
 
 }

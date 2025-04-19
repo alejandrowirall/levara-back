@@ -65,7 +65,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {expense.Name}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = command.CreateExpenseCharge!.PropertyId!.Value,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -190,7 +190,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {expenseCharge.Expense.Name}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = expenseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -267,7 +267,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {expenseCharge.Expense.Name}",
-            Date = DateTime.UtcNow,
+            Date = command.CreationDate != null ? command.CreationDate.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = expenseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
