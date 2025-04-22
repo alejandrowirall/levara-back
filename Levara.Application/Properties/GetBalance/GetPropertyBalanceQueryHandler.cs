@@ -20,6 +20,9 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetPropertyBalanceQuery
         var propertyQuery =  _propertyRepository.GetAllWithAddress()
                                                 .Where(p => p.Id == query.IdProperty!.Value && p.OwnerId == query.IdOwner!.Value);
 
+        if (query.IdOwner.HasValue)
+            propertyQuery = propertyQuery.Where(p => p.OwnerId == query.IdOwner!.Value);
+
         var property = await _propertyRepository.FirstOrDefaultAsync(propertyQuery);
         if (property == null)
             return OperationResult<GetPropertyBalanceQueryResponse>.ErrorResult(new ErrorDetails(404, $"Property with id {query.IdProperty!.Value} not found."));
@@ -44,7 +47,7 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetPropertyBalanceQuery
 
         var paymentsGrid = lastPayments.Select(p => new PaymentGrid(p));
 
-        GetPropertyBalanceQueryResponse response = new(propertyCard, paymentsGrid);
+        GetPropertyBalanceQueryResponse response = new(property.OwnerId, propertyCard, paymentsGrid);
         
         return OperationResult<GetPropertyBalanceQueryResponse>.SuccessResult(response);
 

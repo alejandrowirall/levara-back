@@ -5,14 +5,16 @@ namespace Levara.Application.Properties.GetBalance;
 
 public class GetPropertyBalanceQueryResponse
 {
-    public GetPropertyBalanceQueryResponse(PropertyCard property,
+    public GetPropertyBalanceQueryResponse(int ownerId,
+        PropertyCard property,
         IEnumerable<PaymentGrid> lastPayments)
     {
+        OwnerId = ownerId;
         Property = property;
         LastPayments = lastPayments;
     }
-   
 
+    public int OwnerId { get; }
     public PropertyCard Property { get; }
 
     public IEnumerable<PaymentGrid> LastPayments { get; }

@@ -137,9 +137,6 @@ namespace Levara.WebApi.Controllers
         [HttpGet("balance")]
         public async Task<IActionResult> GetBalance([FromQuery] GetPropertyBalanceQuery query)
         {
-            if (_userContext.IsAdmin && !query.IdOwner.HasValue)
-                return BadRequest();
-
             if (_userContext.IsOwner)
                 query.IdOwner = _userContext.OwnerId!;
 
