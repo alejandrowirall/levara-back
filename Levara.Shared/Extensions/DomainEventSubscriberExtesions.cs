@@ -1,7 +1,7 @@
 ﻿using Levara.Shared.Domain.Bus.Events;
+using Levara.Shared.Infrastructure.Bus.Commands;
 using Levara.Shared.Infrastructure.Bus.Events;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic;
 using System.Reflection;
 
 namespace Levara.Shared.Extensions;
@@ -13,7 +13,7 @@ public static class DomainEventSubscriberExtesions
     {
         var eventsType = AppDomain.CurrentDomain.GetAssemblies()
                                                 .SelectMany(x => x.GetTypes())
-                                                .Where(x => !x.IsAbstract && typeof(DomainEvent).IsAssignableFrom(x)).ToList();
+                                                .Where(x => !x.IsAbstract && typeof(IDomainEvent).IsAssignableFrom(x)).ToList();
 
         foreach (var eventType in eventsType ?? Enumerable.Empty<Type>())
         {
@@ -30,7 +30,8 @@ public static class DomainEventSubscriberExtesions
         }
 
         services.AddSingleton<DomainEventsInformation>();
-        services.AddScoped<DomainEventJsonDeserializer>();
+        services.AddSingleton<DomainEventJsonDeserializer>();
+        services.AddScoped<IDomainEventConsumer, DomainEventConsumer>();
 
         return services;
     }

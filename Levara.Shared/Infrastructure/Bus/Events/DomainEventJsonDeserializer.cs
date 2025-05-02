@@ -1,5 +1,4 @@
 ﻿using Levara.Shared.Domain.Bus.Events;
-using System.Reflection;
 using Newtonsoft.Json;
 
 
@@ -14,28 +13,21 @@ public class DomainEventJsonDeserializer
         this.information = information;
     }
 
-    public DomainEvent Deserialize(string body)
+    public IDomainEvent Deserialize(string body)
     {
-        var eventData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(body);
+        Dictionary<string, object> domainEventKv = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
 
-        var data = eventData["data"];
-        var attributes = JsonConvert.DeserializeObject<Dictionary<string, string>>(data["attributes"].ToString());
 
-        var domainEventType = information.ForName((string)data["type"]);
+        string nameEvent = domainEventKv.TryGetValue("Name", out var name) ? (string)name : string.Empty;
+        if (string.IsNullOrEmpty(nameEvent))
+        {
+            nameEvent = domainEventKv.TryGetValue("name", out var nameLower) ? (string)nameLower : string.Empty;
+        }
 
-        var instance = (DomainEvent)Activator.CreateInstance(domainEventType);
+        var domainEventType = information.ForName(nameEvent);
 
-        var domainEvent = (DomainEvent)domainEventType
-            .GetTypeInfo()
-            .GetDeclaredMethod(nameof(DomainEvent.FromPrimitives))
-            .Invoke(instance, new object[]
-            {
-                int.Parse(attributes["id"]),
-                attributes,
-                new Guid(data["id"].ToString()),
-                (DateTime)data["occurred_on"]
-            });
+        var domainEvent = JsonConvert.DeserializeObject(body, domainEventType);
 
-        return domainEvent;
+        return (IDomainEvent)domainEvent;
     }
 }

@@ -11,35 +11,29 @@ public class ScheduleJobsCommandHandler : ICommandHandler<ScheduleJobsCommand, S
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
-    private readonly IDomainEventPrimitiveRepository _domainEventPrimitiveRepository;
+    private readonly IDomainEventRepository _domainEventRepository;
     private readonly IEventBus _eventBus;
     public ScheduleJobsCommandHandler(IUnitOfWork unitOfWork,
         IOwnerBankAccountRepository ownerBankAccountRepository,
-        IDomainEventPrimitiveRepository domainEventPrimitiveRepository,
+        IDomainEventRepository domainEventRepository,
         IEventBus eventBus) 
     {
         _unitOfWork = unitOfWork;
         _ownerBankAccountRepository = ownerBankAccountRepository;
-        _domainEventPrimitiveRepository = domainEventPrimitiveRepository;
+        _domainEventRepository = domainEventRepository;
         _eventBus = eventBus;
     }
     public async Task<OperationResult<ScheduleJobsCommandResponse>> Handle(ScheduleJobsCommand command)
     {
-        var query = _ownerBankAccountRepository.GetAll().Select(a => a.Id);
+        var query = _ownerBankAccountRepository.GetAll().Select(account => new PlaidBankAccountSyncJobCreated(Guid.NewGuid(), account.Id, null) { OwnerId = account.OwnerId });
 
-        var ownerBankAccountIds = await _ownerBankAccountRepository.ToListAsync(query);
+        var events = await _ownerBankAccountRepository.ToListAsync(query);
 
-        List<DomainEvent> events = new()
-        {
-            new DomainEventTestCreated(0, Guid.NewGuid(), DateTime.UtcNow),
-        };
-        
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-            await _domainEventPrimitiveRepository.AddAsync(events);
+            await _domainEventRepository.AddAsync([.. events]);
+            await _eventBus.PublishAsync([.. events]);
         });
-
-        await _eventBus.PublishAsync(events);
 
         return OperationResult<ScheduleJobsCommandResponse>.SuccessResult(new());
 

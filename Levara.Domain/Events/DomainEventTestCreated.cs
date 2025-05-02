@@ -1,5 +1,5 @@
 ﻿
-using Levara.Shared.Domain.Bus.Events;
+using Levara.Domain.Models;
 
 namespace Levara.Domain.Events;
 
@@ -7,22 +7,9 @@ public class DomainEventTestCreated : DomainEvent
 {
     public DomainEventTestCreated() { }
 
-    public DomainEventTestCreated(int entityId, Guid eventId, DateTime occurredOn)
-        : base(entityId, eventId, occurredOn)
+    public DomainEventTestCreated(Guid id, int entityId,  DateTime occurredOn)
+        : base(id, entityId, occurredOn)
     { 
     }
-    public override string EventName()
-    {
-        return "domain.event.test.created";
-    }
-
-    public override DomainEvent FromPrimitives(int entityId, Dictionary<string, string> body, Guid eventId, DateTime occurredOn)
-    {
-        return new DomainEventTestCreated(entityId, eventId, occurredOn);
-    }
-
-    public override Dictionary<string, string> ToPrimitives()
-    {
-        return new Dictionary<string, string>();
-    }
+    
 }

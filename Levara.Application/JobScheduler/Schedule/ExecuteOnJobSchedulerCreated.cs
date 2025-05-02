@@ -4,26 +4,28 @@ using Levara.Domain.DAL;
 using Levara.Domain.Events;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Domain.Bus.Events;
+using Levara.Shared.Results;
 
 namespace Levara.Application.OwnersBankAccounts.Sync;
 
 public class ExecuteOnJobSchedulerCreated : IDomainEventSubscriber<JobSchedulerCreated>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ICommandBus _commandBus;
-    public ExecuteOnJobSchedulerCreated(IUnitOfWork unitOfWork,
-        ICommandBus commandBus) 
+    public ExecuteOnJobSchedulerCreated(ICommandBus commandBus) 
     {
-        _unitOfWork = unitOfWork;
         _commandBus = commandBus;
     }
 
-    public async Task On(JobSchedulerCreated domainEvent)
+    public async Task<OperationResult<bool>> On(JobSchedulerCreated domainEvent)
     {
         var command = new ScheduleJobsCommand()
         {
         };
 
-        await _commandBus.Dispatch(command);
+        var response = await _commandBus.Dispatch(command);
+        if(!response.Success)
+            return OperationResult<bool>.ErrorResult(response.Error!);
+
+        return OperationResult<bool>.SuccessResult(true);
     }
 }

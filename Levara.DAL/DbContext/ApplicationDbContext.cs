@@ -16,7 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       // Debugger.Launch();
+        //Debugger.Launch();
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyModelAssemblyEntityConfigurations();

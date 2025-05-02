@@ -4,21 +4,29 @@ using Levara.Domain.Models;
 
 namespace Levara.DAL.DbContext.EntityConfigurations;
 
-public class DomainEventPrimitiveConfiguration : IEntityTypeConfiguration<DomainEventPrimitive>
+public class DomainEventConfiguration : IEntityTypeConfiguration<DomainEvent>
 {
-    public void Configure(EntityTypeBuilder<DomainEventPrimitive> builder)
+    public void Configure(EntityTypeBuilder<DomainEvent> builder)
     {
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Id)
                .ValueGeneratedOnAdd();
 
-        builder.Property(o => o.EventId);
-        builder.Property(o => o.Name);
+        builder.Property(o => o.EventId)
+               .IsRequired();
 
-        builder.Property(n => n.Body)
+        builder.HasIndex(o => o.EventId)
+               .IsUnique();
+
+        builder.Property(o => o.Name);
+        builder.Property(o => o.Status);
+        builder.Property(o => o.EntityId);
+
+        builder.Property(n => n.Data)
                 .HasColumnType("jsonb");
 
         builder.ToTable("DomainEvents")
                .HasQueryFilter(c => !c.Deleted);
+
     }
 }

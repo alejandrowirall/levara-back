@@ -8,7 +8,7 @@ namespace Levara.Shared.Infrastructure.Bus.Events
 
         public DomainEventsInformation()
         {
-            GetDomainTypes().ForEach(eventType => IndexedDomainEvents.Add(GetEventName(eventType), eventType));
+            GetDomainTypes().ForEach(eventType => IndexedDomainEvents.Add(eventType.Name, eventType));
         }
 
         public Type ForName(string name)
@@ -18,20 +18,14 @@ namespace Levara.Shared.Infrastructure.Bus.Events
             return value;
         }
 
-        public string ForClass(DomainEvent domainEvent)
+        public string ForClass(IDomainEvent domainEvent)
         {
             return IndexedDomainEvents.FirstOrDefault(x => x.Value.Equals(domainEvent.GetType())).Key;
         }
 
-        private string GetEventName(Type eventType)
-        {
-            var instance = (DomainEvent)Activator.CreateInstance(eventType);
-            return eventType.GetMethod("EventName").Invoke(instance, null).ToString();
-        }
-
         private List<Type> GetDomainTypes()
         {
-            var type = typeof(DomainEvent);
+            var type = typeof(IDomainEvent);
 
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())

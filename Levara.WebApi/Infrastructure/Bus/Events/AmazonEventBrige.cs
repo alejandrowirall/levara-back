@@ -1,7 +1,7 @@
 ﻿using Amazon.EventBridge;
 using Amazon.EventBridge.Model;
 using Levara.Shared.Domain.Bus.Events;
-using Levara.Shared.Infrastructure.Bus.Events;
+using Newtonsoft.Json;
 
 namespace Levara.WebApi.Infrastructure.Bus.Events;
 
@@ -14,21 +14,22 @@ public class AmazonEventBrige : IEventBus
         _eventBridgeClient = eventBridgeClient;
     }
 
-    public async Task PublishAsync(List<DomainEvent> domainEvents)
+    public async Task PublishAsync(List<IDomainEvent> domainEvents)
     {
 
         List<PutEventsRequestEntry> entries = new();
         foreach (var domainEvent in domainEvents)
         {
-            var serializedDomainEvent = DomainEventJsonSerializer.Serialize(domainEvent);
+            var serializedDomainEvent = JsonConvert.SerializeObject(domainEvent);
 
             PutEventsRequestEntry entry = new()
             {
                 EventBusName = EventBusName,
                 Source = "levara.function",
-                DetailType = domainEvent.EventName(),
+                DetailType = domainEvent.Name,
                 Detail = serializedDomainEvent,
                 Time = DateTime.UtcNow
+
             };
 
             entries.Add(entry);

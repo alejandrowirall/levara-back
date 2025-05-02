@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Levara.DAL.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430192324_DropDomainEvent")]
+    partial class DropDomainEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2183,57 +2186,6 @@ namespace Levara.DAL.Migrations
                             TwoFactorEnabled = false,
                             UserName = "admin@levara.com"
                         });
-                });
-
-            modelBuilder.Entity("Levara.Domain.Models.DomainEvent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
-
-                    b.Property<Dictionary<string, object>>("Data")
-                        .IsRequired()
-                        .HasColumnType("jsonb");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("EntityId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("LastEditorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("OccurredOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId")
-                        .IsUnique();
-
-                    b.ToTable("DomainEvents", (string)null);
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.Expense", b =>
