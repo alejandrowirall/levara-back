@@ -14,4 +14,11 @@ public class TransactionApplicationRepository : Repository<TransactionApplicatio
 
     }
 
+    public IQueryable<TransactionApplication> GetAllFull()
+    {
+        return GetAll().Include(ta => ta.Payment).ThenInclude(ct => ct.Property).ThenInclude(p => p.Address)
+                       .Include(ta => ta.ChargeTransaction)
+                       .Include(ta => ta.PaymentTransaction);
+    }
+
 }

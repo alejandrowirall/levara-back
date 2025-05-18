@@ -87,9 +87,11 @@ namespace Levara.DAL.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EventId = table.Column<Guid>(type: "uuid", nullable: false),
-                    EntityId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Body = table.Column<Dictionary<string, string>>(type: "jsonb", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    EntityId = table.Column<int>(type: "integer", nullable: true),
+                    OccurredOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Data = table.Column<Dictionary<string, object>>(type: "jsonb", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -462,6 +464,7 @@ namespace Levara.DAL.Migrations
                     Frequency = table.Column<int>(type: "integer", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     StatusLease = table.Column<int>(type: "integer", nullable: true),
+                    MatchTags = table.Column<List<string>>(type: "text[]", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -776,6 +779,35 @@ namespace Levara.DAL.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MaintenancePayments_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlaidReconciliation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionId = table.Column<int>(type: "integer", nullable: false),
+                    PlaidTransactionId = table.Column<int>(type: "integer", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaidReconciliation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlaidReconciliation_PlaidTransaction_PlaidTransactionId",
+                        column: x => x.PlaidTransactionId,
+                        principalTable: "PlaidTransaction",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PlaidReconciliation_Transactions_TransactionId",
                         column: x => x.TransactionId,
                         principalTable: "Transactions",
                         principalColumn: "Id");
@@ -1299,6 +1331,19 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "OwnerBankAccounts",
+                columns: new[] { "Id", "AccountNumberMasked", "BankName", "CreatedDate", "CreatorId", "Deleted", "LastEditedDate", "LastEditorId", "LastSyncId", "OwnerId", "PlaidAccountId" },
+                values: new object[,]
+                {
+                    { 1, "****0000", "Chase", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "access-sandbox-9fd21743-09b8-4e9b-8f8c-26fb07c0b7c7" },
+                    { 2, "****0000", "Bank of America", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "access-sandbox-2d239d6a-1de6-4d51-8094-d168e414fb62" },
+                    { 3, "****0000", "Citibank Online", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "access-sandbox-73afb973-7579-4811-ae7b-f860eeaf02c1" },
+                    { 4, "****0000", "U.S. Bank", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "access-sandbox-c965a93d-7f0d-4d90-9030-42eb6956d29b" },
+                    { 5, "****0000", "Capital One", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "access-sandbox-f2f106c8-0ecb-4200-91d8-7e61d2e62a8b" },
+                    { 6, "****0000", "Wells Fargo", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, null, 1, "access-sandbox-ad12184c-d3dc-4be9-92e2-9a36b6f5447b" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Properties",
                 columns: new[] { "Id", "AddressId", "AreaQuantity", "AvaliableFrom", "BathroomQuantity", "CreatedDate", "CreatorId", "Deleted", "DetailDepositAndAdittionalInfo", "HasBalcony", "HasGarage", "HasPool", "Img", "LastEditedDate", "LastEditorId", "Number", "OwnerId", "PetsPoliticAndRate", "Price", "RoomsQuantity", "TenantRequirements" },
                 values: new object[,]
@@ -1407,19 +1452,19 @@ namespace Levara.DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Leases",
-                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "DateFrom", "DateTo", "Deleted", "Frequency", "LastEditedDate", "LastEditorId", "OwnerId", "PropertyId", "StatusLease", "TenantId" },
+                columns: new[] { "Id", "Amount", "CreatedDate", "CreatorId", "DateFrom", "DateTo", "Deleted", "Frequency", "LastEditedDate", "LastEditorId", "MatchTags", "OwnerId", "PropertyId", "StatusLease", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 1100m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 1, 1, null, 1 },
-                    { 2, 1200m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 2, 2, null, 2 },
-                    { 3, 1300m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 3, 3, null, 3 },
-                    { 4, 1400m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 4, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 4, 4, null, 4 },
-                    { 5, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 5, 5, null, 5 },
-                    { 6, 1600m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 6, 6, null, 6 },
-                    { 7, 1700m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 7, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 7, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 7, 7, null, 7 },
-                    { 8, 1800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 8, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 8, 8, null, 8 },
-                    { 9, 1900m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 9, 9, null, 9 },
-                    { 10, 2000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, 10, 10, null, 10 }
+                    { 1, 1100m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 1, 1, 1, 1 },
+                    { 2, 1200m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 2, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 2, 2, 1, 2 },
+                    { 3, 1300m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 3, 3, 1, 3 },
+                    { 4, 1400m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 4, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 4, 4, 1, 4 },
+                    { 5, 1500m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 5, 5, 1, 5 },
+                    { 6, 1600m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 6, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 6, 6, 1, 6 },
+                    { 7, 1700m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 7, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 7, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 7, 7, 1, 7 },
+                    { 8, 1800m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 8, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 8, 8, 1, 8 },
+                    { 9, 1900m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 9, 9, 1, 9 },
+                    { 10, 2000m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Utc), false, 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, new List<string>(), 10, 10, 1, 10 }
                 });
 
             migrationBuilder.InsertData(
@@ -1579,6 +1624,12 @@ namespace Levara.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_DomainEvents_EventId",
+                table: "DomainEvents",
+                column: "EventId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExpenseCharges_ExpenseId",
                 table: "ExpenseCharges",
                 column: "ExpenseId");
@@ -1704,6 +1755,16 @@ namespace Levara.DAL.Migrations
                 column: "PropertyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlaidReconciliation_PlaidTransactionId",
+                table: "PlaidReconciliation",
+                column: "PlaidTransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlaidReconciliation_TransactionId",
+                table: "PlaidReconciliation",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlaidTransaction_OwnerBankAccountId",
                 table: "PlaidTransaction",
                 column: "OwnerBankAccountId");
@@ -1790,6 +1851,9 @@ namespace Levara.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "PlaidReconciliation");
 
             migrationBuilder.DropTable(
                 name: "TransactionApplications");

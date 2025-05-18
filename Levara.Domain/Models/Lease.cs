@@ -36,4 +36,6 @@ public class Lease : Entity
 
     public LeaseStatus? StatusLease {  get; set; }
 
+    public List<string> MatchTags { get; set; } = new List<string>();
+
 }

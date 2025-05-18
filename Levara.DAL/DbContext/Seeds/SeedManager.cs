@@ -28,7 +28,7 @@ public class SeedManager
 
     private SeedBase[] GetSeeds()
     {
-        return new SeedBase[8] {
+        return new List<SeedBase> {
             new RoleSeed(),
             new OwnerSeed(),
             new TenantSeed(),
@@ -37,7 +37,8 @@ public class SeedManager
             new TransactionSeed(),
             new MaintananceTypeSeed(),
             new ExpenseSeed(),
+            new OwnerBankAccountSandboxSeed()
            // new PlaidTransactionSeed()
-        };
+        }.ToArray();
     }
 }

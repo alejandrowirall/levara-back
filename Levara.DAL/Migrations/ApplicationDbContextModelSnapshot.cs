@@ -2577,6 +2577,10 @@ namespace Levara.DAL.Migrations
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
 
+                    b.Property<List<string>>("MatchTags")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<int>("OwnerId")
                         .HasColumnType("integer");
 
@@ -2612,8 +2616,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 1,
                             PropertyId = 1,
+                            StatusLease = 1,
                             TenantId = 1
                         },
                         new
@@ -2628,8 +2634,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 2,
                             PropertyId = 2,
+                            StatusLease = 1,
                             TenantId = 2
                         },
                         new
@@ -2644,8 +2652,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 3,
                             PropertyId = 3,
+                            StatusLease = 1,
                             TenantId = 3
                         },
                         new
@@ -2660,8 +2670,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 4,
                             PropertyId = 4,
+                            StatusLease = 1,
                             TenantId = 4
                         },
                         new
@@ -2676,8 +2688,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 5,
                             PropertyId = 5,
+                            StatusLease = 1,
                             TenantId = 5
                         },
                         new
@@ -2692,8 +2706,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 6,
                             PropertyId = 6,
+                            StatusLease = 1,
                             TenantId = 6
                         },
                         new
@@ -2708,8 +2724,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 7,
                             PropertyId = 7,
+                            StatusLease = 1,
                             TenantId = 7
                         },
                         new
@@ -2724,8 +2742,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 8,
                             PropertyId = 8,
+                            StatusLease = 1,
                             TenantId = 8
                         },
                         new
@@ -2740,8 +2760,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 9,
                             PropertyId = 9,
+                            StatusLease = 1,
                             TenantId = 9
                         },
                         new
@@ -2756,8 +2778,10 @@ namespace Levara.DAL.Migrations
                             Frequency = 3,
                             LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastEditorId = 1,
+                            MatchTags = new List<string>(),
                             OwnerId = 10,
                             PropertyId = 10,
+                            StatusLease = 1,
                             TenantId = 10
                         });
                 });
@@ -3917,6 +3941,86 @@ namespace Levara.DAL.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("OwnerBankAccounts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountNumberMasked = "****0000",
+                            BankName = "Chase",
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            OwnerId = 1,
+                            PlaidAccountId = "access-sandbox-9fd21743-09b8-4e9b-8f8c-26fb07c0b7c7"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccountNumberMasked = "****0000",
+                            BankName = "Bank of America",
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            OwnerId = 1,
+                            PlaidAccountId = "access-sandbox-2d239d6a-1de6-4d51-8094-d168e414fb62"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccountNumberMasked = "****0000",
+                            BankName = "Citibank Online",
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            OwnerId = 1,
+                            PlaidAccountId = "access-sandbox-73afb973-7579-4811-ae7b-f860eeaf02c1"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccountNumberMasked = "****0000",
+                            BankName = "U.S. Bank",
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            OwnerId = 1,
+                            PlaidAccountId = "access-sandbox-c965a93d-7f0d-4d90-9030-42eb6956d29b"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AccountNumberMasked = "****0000",
+                            BankName = "Capital One",
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            OwnerId = 1,
+                            PlaidAccountId = "access-sandbox-f2f106c8-0ecb-4200-91d8-7e61d2e62a8b"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AccountNumberMasked = "****0000",
+                            BankName = "Wells Fargo",
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            LastEditedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            OwnerId = 1,
+                            PlaidAccountId = "access-sandbox-ad12184c-d3dc-4be9-92e2-9a36b6f5447b"
+                        });
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.Payment", b =>
@@ -3990,6 +4094,44 @@ namespace Levara.DAL.Migrations
                     b.HasIndex("PropertyId");
 
                     b.ToTable("Payments", (string)null);
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.PlaidReconciliation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PlaidTransactionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaidTransactionId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("PlaidReconciliation", (string)null);
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.PlaidTransaction", b =>
@@ -9687,6 +9829,25 @@ namespace Levara.DAL.Migrations
                     b.Navigation("PlaidTransaction");
 
                     b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.PlaidReconciliation", b =>
+                {
+                    b.HasOne("Levara.Domain.Models.PlaidTransaction", "PlaidTransaction")
+                        .WithMany()
+                        .HasForeignKey("PlaidTransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Levara.Domain.Models.Transaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("PlaidTransaction");
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.PlaidTransaction", b =>

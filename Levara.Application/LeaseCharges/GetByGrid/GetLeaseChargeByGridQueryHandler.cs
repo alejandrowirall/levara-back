@@ -27,6 +27,9 @@ public class GetLeaseChargeByGridQueryHandler : IQueryHandler<GetLeaseChargeByGr
         if (query.Statuses != null && query.Statuses.Any())
             leaseChargeQuery = leaseChargeQuery.Where(t => query.Statuses.Contains(t.Status));
 
+        if (query.Ids != null && query.Ids.Any())
+            leaseChargeQuery = leaseChargeQuery.Where(t => query.Ids.Contains(t.Id));
+
         var responseQuery = leaseChargeQuery.OrderByDescending(p => p.CreatedDate)
                                             .Select(p => new GetLeaseChargeByGridQueryResponse(p));
 

@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Amazon.EventBridge;
+using Levara.Shared.Infrastructure.OperationScopes;
 
 namespace Levara.Infrastructure;
 public static class ServiceInjection
@@ -39,14 +40,12 @@ public static class ServiceInjection
         services.AddScoped<ICommandBus, InMemoryCommandBus>();
         services.AddScoped<IQueryBus, InMemoryQueryBus>();
 
-        services.AddScoped<IEventBus, AmazonEventBrige>();
-        services.AddScoped<AmazonEventBrige>(provider => (AmazonEventBrige)provider.GetRequiredService<IEventBus>());
+        services.AddEventBus();
 
         services.Configure<RemoteServicesConfig>(configuration.GetSection("PlaidSettings"));
 
         services.AddTransient<ApiKeyConfiguration>();
 
-        services.AddAWSService<IAmazonEventBridge>();
 
         services.AddInfrastructureSecurity();
 
@@ -106,8 +105,37 @@ public static class ServiceInjection
 
     private static void AddInfrastructureSecurity(this IServiceCollection services)
     {
-        services.AddScoped<IUserContext, WebUserContext>();
+        services.AddScoped<OperationScope>();
+        services.AddScoped<WebUserContext>();
+        services.AddScoped<SnapshotUserContext>();
+
+        services.AddScoped<IUserContext>((serviceProvider) =>
+        {
+            OperationScope operationScope = serviceProvider.GetRequiredService<OperationScope>();
+
+            if (operationScope.Current == OperationScopeType.Background)
+                return serviceProvider.GetRequiredService<SnapshotUserContext>();
+
+            return serviceProvider.GetRequiredService<WebUserContext>();
+        });
+
         services.AddScoped<ContextIdentifier>();
         services.AddScoped<IContextIdentifier, WebContextIdentifier>();
+    }
+
+    private static void AddEventBus(this IServiceCollection services)
+    {
+#if DEBUG
+        services.AddScoped<IEventBus, InMemoryEventBus>();
+        services.AddHostedService<BackgroundQueueHostedService>();
+        services.AddSingleton<BackgroundQueue>(_ =>
+        {
+            return new BackgroundQueue(100);
+        });
+#else
+        services.AddScoped<IEventBus, AmazonEventBrige>();
+        services.AddScoped<AmazonEventBrige>(provider => (AmazonEventBrige)provider.GetRequiredService<IEventBus>());
+        services.AddAWSService<IAmazonEventBridge>();
+#endif
     }
 }

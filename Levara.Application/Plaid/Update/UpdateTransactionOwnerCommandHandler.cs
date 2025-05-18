@@ -20,7 +20,8 @@ public class UpdateTransactionOwnerCommandHandler : ICommandHandler<UpdateTransa
     {
         
         var plaidTxQuery = _plaidRepository.GetAll()
-                                           .Where(o => o.Id == command.Id!);
+                                           .Where(p => p.Id == command.PlaidId! && 
+                                                       p.OwnerBankAccount.OwnerId == command.OwnerId!);
 
         PlaidTransaction? plaidtx = await _plaidRepository.FirstOrDefaultAsync(plaidTxQuery);
         if (plaidtx == null)

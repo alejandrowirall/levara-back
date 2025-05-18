@@ -6,6 +6,7 @@ using Levara.Application.Plaid.GetForUpdate;
 using Levara.Application.Plaid.GetLinkToken;
 using Levara.Application.Plaid.GetPublicToken;
 using Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
+using Levara.Application.Plaid.ReconcileTransaction;
 using Levara.Application.Plaid.Update;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
@@ -13,6 +14,7 @@ using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Levara.WebApi.Controllers
 {
@@ -107,9 +109,15 @@ namespace Levara.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("Update/{Id}")]
-        public async Task<IActionResult> Update([FromRoute] GetTransactionOwnerForUpdateQuery query)
+        [HttpGet("update")]
+        public async Task<IActionResult> Update([FromQuery] GetPlaidTransactionForUpdateQuery query)
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
@@ -125,6 +133,12 @@ namespace Levara.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTransactionOwnerCommand command)
         {
+            if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                command.OwnerId = _userContext.OwnerId!;
+
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
             {
@@ -187,6 +201,27 @@ namespace Levara.WebApi.Controllers
 
             if (_userContext.IsOwner)
                 command.OwnerId = _userContext.OwnerId!;
+
+            var response = await _commandBus.Dispatch(command);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("reconcile-transaction")]
+        public async Task<IActionResult> ReconcileTransaction([FromBody] ReconcileTransactionCommand command)
+        {
+            //if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+            //    return BadRequest();
+
+            //if (_userContext.IsOwner)
+            //    command.OwnerId = _userContext.OwnerId!;
 
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)

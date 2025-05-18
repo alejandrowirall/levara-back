@@ -26,4 +26,5 @@ public class UpdateLeaseCommand : Command<UpdateLeaseCommandResponse>
     public DateTime DateTo { get; set; }
     public decimal Price { get; set; }
     public LeaseStatus LeaseStatus { get; set; }
+    public List<string>? MatchTags { get; set; }
 }

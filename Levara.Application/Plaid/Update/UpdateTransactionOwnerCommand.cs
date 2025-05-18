@@ -9,12 +9,12 @@ public class UpdateTransactionOwnerCommand : Command<UpdateTransactionOwnerComma
 {
     [Required]
     [Range(1, int.MaxValue)]
-    public int? Id {  get; set; }
+    public int? PlaidId {  get; set; }
     
     [Required]
     public PlaidTransactionStatus Status { get; set; }
 
-    [Required]
+
     [Range(1, int.MaxValue)]
     public int? OwnerId { get; set; }       
 
