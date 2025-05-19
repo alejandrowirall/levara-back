@@ -18,4 +18,10 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
     {
         return GetAll().Include(o => o.Property);
     }
+
+    public IQueryable<Transaction> GetAllFull()
+    {
+        return GetAll().Include(o => o.Property).ThenInclude(p => p.Address)
+                       .Include(o => o.Property).ThenInclude(p => p.Owner);
+    }
 }

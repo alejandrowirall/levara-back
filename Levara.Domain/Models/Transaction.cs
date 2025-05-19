@@ -1,5 +1,4 @@
 ﻿using Levara.Domain.Enum;
-using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
 
 namespace Levara.Domain.Models;
@@ -25,8 +24,8 @@ public class Transaction : Entity
     public decimal RunningBalance { get; set; }
     public decimal EntityRunningBalance { get; set; }
 
-    
-    
+
+
     public static Transaction CreateExpenseCharge(int propertyId,
         decimal amount,
         int expenseId,

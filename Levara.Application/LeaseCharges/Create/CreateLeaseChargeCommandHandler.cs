@@ -39,38 +39,33 @@ public class CreateLeaseChargeCommandHandler : ICommandHandler<CreateLeaseCharge
             nextRunningBalance = lastTx.RunningBalance - command.Amount!.Value;
         }
 
-        Transaction transaction = new()
-        {
-            Type = TransactionType.Lease,
-            SubType = TransactionSubType.Charge,
-            PropertyId = command.PropertyId!.Value,
-            EntityId = command.LeaseId!.Value,
-            Amount = command.Amount!.Value,
-            Date = DateTime.UtcNow,
-            Description = command.Description,
-            RunningBalance = nextRunningBalance,
-            EntityRunningBalance = nextEntityRunningBalance
-        };
+        Transaction newTransaction =
+            Transaction.CreateLeaseCharge(command.PropertyId!.Value,
+                command.Amount!.Value,
+                command.LeaseId!.Value,
+                command.Description!,
+                nextRunningBalance,
+                nextEntityRunningBalance);
 
-        LeaseCharge leaseCharge = new()
+        LeaseCharge newLeaseCharge = new()
         {
             Description = command.Description,
             LeaseId = command.LeaseId!.Value,
             Status = LeaseChargeStatus.Unpaid,
             DueDate = command.DueDate!.Value.ToUniversalTime(),
-            Transaction = transaction
+            Transaction = newTransaction
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-            await _transactionRepository.AddAsync(transaction);
-            await _leaseChargeRepository.AddAsync(leaseCharge);
+            await _transactionRepository.AddAsync(newTransaction);
+            await _leaseChargeRepository.AddAsync(newLeaseCharge);
         });
 
 
         CreateLeaseChargeCommandResponse response = new()
         {
-            Id = transaction.Id
+            Id = newTransaction.Id
         };
 
         return OperationResult<CreateLeaseChargeCommandResponse>.SuccessResult(response);

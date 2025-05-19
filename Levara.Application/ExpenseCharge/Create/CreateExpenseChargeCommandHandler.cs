@@ -1,5 +1,4 @@
-﻿using Levara.DAL.DbContext;
-using Levara.Domain.DAL;
+﻿using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
@@ -12,70 +11,69 @@ public class CreateExpenseChargeCommandHandler : ICommandHandler<CreateExpenseCh
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITransactionRepository _transactionRepository;
+    private readonly IExpenseRepository _expenseRepository;
     private readonly IExpenseChargeRepository _expenseChargeRepository;
-    private readonly ApplicationDbContext _context;
     public CreateExpenseChargeCommandHandler(IUnitOfWork unitOfWork,
-        ITransactionRepository transactionRepository, IExpenseChargeRepository expenseChargeRepository, 
-        ApplicationDbContext context) 
+        ITransactionRepository transactionRepository,
+        IExpenseRepository expenseRepository,
+        IExpenseChargeRepository expenseChargeRepository) 
     {
         _unitOfWork = unitOfWork;
         _transactionRepository = transactionRepository;
+        _expenseRepository = expenseRepository;
         _expenseChargeRepository = expenseChargeRepository;
-        _context = context;
     }
     public async Task<OperationResult<CreateExpenseChargeCommandResponse>> Handle(CreateExpenseChargeCommand command)
     {
-        //Debo obtener la ultima transaccion de la propiedad para poder luego actualizar el running balance
-        //Y el entity Running Balance
-        var lastTransaction = _transactionRepository.GetAll()
-        .Where(t => t.PropertyId == command.PropertyId) // Filtra por la propiedad
-        .OrderByDescending(t => t.CreatedDate) // Ordena por fecha de creación descendente
-        .FirstOrDefault();
+        var expenseQuery = _expenseRepository.GetAll()
+                                             .Where(e => e.Id == command.ExpenseId!.Value);
+
+        Expense? expense = await _expenseRepository.FirstOrDefaultAsync(expenseQuery);
+        if(expense == null)
+            return OperationResult<CreateExpenseChargeCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Expense with id {command.ExpenseId!.Value}"));
+
+        var lastTransactionQuery = _transactionRepository.GetAll()
+                                                         .Where(t => t.PropertyId == command.PropertyId!.Value)
+                                                         .OrderByDescending(t => t.CreatedDate);
+
+        Transaction? lastTransaction = await _transactionRepository.FirstOrDefaultAsync(lastTransactionQuery);
+        if (lastTransaction == null)
+            return OperationResult<CreateExpenseChargeCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Transaction with propertyId {command.PropertyId!.Value}"));
 
         decimal nextRunningBalance = 0;
         decimal nextEntityRunningBalance = 0;
 
         if (lastTransaction != null)
         {
-            nextEntityRunningBalance = lastTransaction.EntityRunningBalance - command.Amount;
-            nextRunningBalance = lastTransaction.RunningBalance - command.Amount;
+            nextEntityRunningBalance = lastTransaction.EntityRunningBalance - command.Amount!.Value;
+            nextRunningBalance = lastTransaction.RunningBalance - command.Amount!.Value;
         }
 
-        Transaction transaction = new()
-        {
-            Type = TransactionType.Lease,
-            SubType = TransactionSubType.Charge,
-            PropertyId = command.PropertyId,
-            EntityId = command.ExpenseId,
-            Amount=command.Amount,
-            Date= command.Date.ToUniversalTime(),
-            Description= command.Description, 
-            RunningBalance=nextRunningBalance,
-            EntityRunningBalance=nextEntityRunningBalance
-        };
+        Transaction newTransaction = 
+            Transaction.CreateExpenseCharge(command.PropertyId!.Value, 
+                                            command.Amount!.Value, 
+                                            command.ExpenseId!.Value, 
+                                            expense.Name, 
+                                            nextRunningBalance, 
+                                            nextEntityRunningBalance);
 
-        ExpenseCharge expenseCharge = new()
+        ExpenseCharge newExpenseCharge = new()
         {
-            ExpenseId = command.ExpenseId
+            ExpenseId = command.ExpenseId.Value,
+            DueDate = command.DueDate!.Value.ToUniversalTime(),
+            Status = ExpenseChargeStatus.Unpaid,
+            Transaction = newTransaction,
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {  
-            await _transactionRepository.AddAsync(transaction);
-            await _context.SaveChangesAsync();
-
-            expenseCharge.TransactionId = transaction.Id;
-            
-            await _expenseChargeRepository.AddAsync(expenseCharge);
-            await _context.SaveChangesAsync(); 
-
-            return true;
+            await _transactionRepository.AddAsync(newTransaction);            
+            await _expenseChargeRepository.AddAsync(newExpenseCharge); 
         });
-
 
         CreateExpenseChargeCommandResponse response = new ()
         {
-            Id = transaction.Id
+            Id = newExpenseCharge.Id
         };
 
         return OperationResult<CreateExpenseChargeCommandResponse>.SuccessResult(response);

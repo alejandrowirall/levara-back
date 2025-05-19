@@ -41,4 +41,9 @@ public class Property : Entity
     public DateTime? AvaliableFrom { get; set; }
 
     public byte[]? Img { get; set; }
+
+    public string OneLineDescription()
+    {
+        return $"{Number} - {Address.Street} {Address.Number}, {Address.City}, {Address.State}";
+    }
 }
