@@ -57,7 +57,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {command.CreateMaintenance!.Title}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = command.CreateMaintenance!.PropertyId!.Value,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -88,7 +88,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
             Title = command.CreateMaintenance.Title,
             Status = MaintenanceStatus.Completed,
             TypeId = command.CreateMaintenance!.TypeId!.Value,
-            DueDate = DateTime.UtcNow,
+            DueDate = newPayment.Date,
             Description = command.CreateMaintenance.Description
         };
 
@@ -98,13 +98,14 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
                                                 0,
                                                 newMaintenance.Title,
                                                 currentRunningBalance,
-                                                currentEntityRunningBalance);
+                                                currentEntityRunningBalance,
+                                                newPayment.Date);
 
         MaintenanceCharge newMaintenanceCharge = new()
         {
             Transaction = newMaintenanceChargeTx,
             Maintenance = newMaintenance,
-            DueDate = DateTime.UtcNow,
+            DueDate = newPayment.Date,
             Status = MaintenanceChargeStatus.Paid,
         };
 
@@ -114,7 +115,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
                                                 0,
                                                 newMaintenance.Title,
                                                 newMaintenanceChargeTx.RunningBalance,
-                                                newMaintenanceChargeTx.EntityRunningBalance);
+                                                newMaintenanceChargeTx.EntityRunningBalance,
+                                                newPayment.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -198,7 +200,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {maintenanceCharge.Maintenance.Title}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = maintenanceCharge.Maintenance.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -221,7 +223,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
                                                               maintenanceCharge.MaintenanceId,
                                                               maintenanceCharge.Maintenance.Title,
                                                               lastTx.RunningBalance,
-                                                              lastTx.EntityRunningBalance);
+                                                              lastTx.EntityRunningBalance,
+                                                              newPayment.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -276,7 +279,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         {
             Amount = command.Amount!.Value,
             Description = $"Maintenance payment {maintenanceCharge.Maintenance.Title}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = maintenanceCharge.Maintenance.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -299,7 +302,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
                                                               maintenanceCharge.MaintenanceId,
                                                               maintenanceCharge.Maintenance.Title,
                                                               lastTx.RunningBalance,
-                                                              lastTx.EntityRunningBalance);
+                                                              lastTx.EntityRunningBalance, 
+                                                              newPayment.Date);
 
         var currentTotalAmountTxAp = await _transactionApplicationRepository.GetAll()
                                                                             .Where(ta => ta.ChargeTransactionId == maintenanceCharge.TransactionId)

@@ -65,7 +65,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {expense.Name}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = command.CreateExpenseCharge!.PropertyId!.Value,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -96,13 +96,14 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
                                             expense.Id,
                                             expense.Name,
                                             currentRunningBalance,
-                                            currentEntityRunningBalance);
+                                            currentEntityRunningBalance,
+                                            newPayment.Date);
 
         ExpenseCharge newExpenseCharge = new()
         {
             Transaction = newExpenseChargeTx,
             ExpenseId = expense.Id,
-            DueDate = DateTime.UtcNow,
+            DueDate = newPayment.Date,
             Status = ExpenseChargeStatus.Paid,
         };
 
@@ -112,7 +113,8 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
                                              expense.Id,
                                              expense.Name,
                                              newExpenseChargeTx.RunningBalance,
-                                             newExpenseChargeTx.EntityRunningBalance);
+                                             newExpenseChargeTx.EntityRunningBalance,
+                                             newPayment.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -190,7 +192,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {expenseCharge.Expense.Name}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = expenseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -213,7 +215,8 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
                                                           expenseCharge.ExpenseId,
                                                           expenseCharge.Expense.Name,
                                                           lastTx.RunningBalance,
-                                                          lastTx.EntityRunningBalance);
+                                                          lastTx.EntityRunningBalance,
+                                                          newPayment.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -267,7 +270,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {expenseCharge.Expense.Name}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime(): DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = expenseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
@@ -291,7 +294,8 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
                                                           expenseCharge.ExpenseId,
                                                           expenseCharge.Expense.Name,
                                                           lastTx.RunningBalance,
-                                                          lastTx.EntityRunningBalance);
+                                                          lastTx.EntityRunningBalance, 
+                                                          newPayment.Date);
 
         var currentTotalAmountTxAp = await _transactionApplicationRepository.GetAll()
                                                                             .Where(ta => ta.ChargeTransactionId == expenseCharge.TransactionId)

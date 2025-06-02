@@ -65,7 +65,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {command.CreateLeaseCharge!.Description}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = lease.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
@@ -96,14 +96,15 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
                                           command.CreateLeaseCharge!.LeaseId!.Value,
                                           command.CreateLeaseCharge!.Description,
                                           currentRunningBalance,
-                                          currentEntityRunningBalance);
+                                          currentEntityRunningBalance,
+                                          newPayment.Date);
 
         LeaseCharge newLeaseCharge = new()
         {
             Transaction = newLeaseChargeTx,
             Description = command.CreateLeaseCharge!.Description,
             LeaseId = lease.Id,
-            DueDate = DateTime.UtcNow,
+            DueDate = newPayment.Date,
             Status = LeaseChargeStatus.Paid,
         };
 
@@ -113,7 +114,8 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
                                           command.CreateLeaseCharge!.LeaseId!.Value,
                                           command.CreateLeaseCharge!.Description,
                                           newLeaseChargeTx.RunningBalance,
-                                          newLeaseChargeTx.EntityRunningBalance);
+                                          newLeaseChargeTx.EntityRunningBalance, 
+                                          newPayment.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -191,7 +193,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {leaseCharge.Description}",
-            Date = command.CreationDate!=null?command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
@@ -214,7 +216,8 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
                                                         leaseCharge.LeaseId,
                                                         leaseCharge.Description,
                                                         lastTx.RunningBalance,
-                                                        lastTx.EntityRunningBalance);
+                                                        lastTx.EntityRunningBalance, 
+                                                        newPayment.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -269,7 +272,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Amount = command.Amount!.Value,
             Description = $"Payment of {leaseCharge.Description}",
-            Date = command.CreationDate != null ? command.CreationDate.Value.ToUniversalTime() : DateTime.UtcNow,
+            Date = command.Date.HasValue ? command.Date!.Value : DateTime.UtcNow,
             OwnerBankAccountId = null,
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
@@ -292,7 +295,8 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
                                                         leaseCharge.LeaseId,
                                                         leaseCharge.Description,
                                                         lastTx.RunningBalance,
-                                                        lastTx.EntityRunningBalance);
+                                                        lastTx.EntityRunningBalance, 
+                                                        newPayment.Date);
 
         var currentTotalAmountTxAp = await _transactionApplicationRepository.GetAll()
                                                                             .Where(ta => ta.ChargeTransactionId == leaseCharge.TransactionId)

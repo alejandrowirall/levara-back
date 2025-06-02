@@ -25,7 +25,7 @@ public class LeaseSeed : SeedBase
                 DateTo = new DateTime(2024, 12, i, 0, 0, 0, DateTimeKind.Utc),
                 Frequency = FrequencyType.Monthly,
                 Amount = 1000 + 100 * i,
-                StatusLease = LeaseStatus.UploadDocumentation,
+                Status = LeaseStatus.UploadDocumentation,
                 CreatorId = 1,
                 CreatedDate = datatimeApp,
                 LastEditorId = 1,

@@ -12,12 +12,14 @@ namespace Levara.Application.LeaseCharges.Create
         [Required]
         [Range(0, double.MaxValue)]
         public decimal? Amount { get; set; }
-        
+
+        public DateTime? Date { get; set; }
+
         [Required]
         public DateTime? DueDate { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]

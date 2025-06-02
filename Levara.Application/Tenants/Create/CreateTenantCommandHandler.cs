@@ -14,23 +14,36 @@ public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, C
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserStore<ApplicationUser> _userStore;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAddressRepository _addressRepository;
     private readonly ITenantRepository _tenantRepository;
     public CreateTenantCommandHandler(UserManager<ApplicationUser> userManager,
         IUserStore<ApplicationUser> userStore,
         IUnitOfWork unitOfWork,
+        IAddressRepository addressRepository,
         ITenantRepository tenantRepository) 
     {
         _userManager = userManager;
         _userStore = userStore;
         _unitOfWork = unitOfWork;
+        _addressRepository = addressRepository;
         _tenantRepository = tenantRepository;
     }
     public async Task<OperationResult<CreateTenantCommandResponse>> Handle(CreateTenantCommand command)
     {
         if (await _tenantRepository.AnyAsync(o => o.IdentificationType == command.IdentificationType && o.Identification == command.Identification))
-            return OperationResult<CreateTenantCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
+            return OperationResult<CreateTenantCommandResponse>.ErrorResult(new ErrorDetails(400, "A tenant with the same identification type and number already exists."));
 
-        Tenant tenant = new()
+        Address newAddress = new()
+        {
+            Street = command.Street!,
+            Number = command.Number!.Value,
+            AdditionalLine = command.AdditionalLine,
+            City = command.City!,
+            State = command.State!,
+            PostalCode = command.PostalCode!
+        };
+
+        Tenant newTenant = new()
         {
             Name = command.Name!,
             Surname = command.Surname!,
@@ -40,15 +53,7 @@ public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, C
             PersonType = command.PersonType.GetValueOrDefault(),
             MobilePhone = command.MobilePhone!,
             Email = command.Email!,
-            Address = new()
-            {
-                Street = command.Street!,
-                Number = command.Number.GetValueOrDefault(),
-                AdditionalLine = command.AdditionalLine,
-                City = command.City!,
-                State = command.State!,
-                PostalCode = command.PostalCode!
-            }
+            Address = newAddress
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
@@ -68,15 +73,16 @@ public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, C
                     throw new Exception(result.ToString());
             }
 
-            tenant.ApplicationUserId = user.Id;
+            newTenant.ApplicationUserId = user.Id;
 
-            await _tenantRepository.AddAsync(tenant);
+            await _addressRepository.AddAsync(newAddress);
+            await _tenantRepository.AddAsync(newTenant);
 
             var addRolesResult = await _userManager.AddToRolesAsync(user, [Roles.Tenant]);
             if (!addRolesResult.Succeeded)
                 throw new Exception(addRolesResult.Errors.ToString());
 
-            var AddClaimsResult = await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.TenantId, tenant.Id.ToString()));
+            var AddClaimsResult = await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.TenantId, newTenant.Id.ToString()));
             if (!AddClaimsResult.Succeeded)
                 throw new Exception(AddClaimsResult.Errors.ToString());
 
@@ -84,7 +90,7 @@ public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, C
 
         var response = new CreateTenantCommandResponse
         {
-            Id = tenant.Id
+            Id = newTenant.Id
         };
 
         return OperationResult<CreateTenantCommandResponse>.SuccessResult(response);

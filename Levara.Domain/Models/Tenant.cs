@@ -1,5 +1,6 @@
 ﻿using Levara.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Levara.Domain.Models;
 
@@ -36,4 +37,9 @@ public class Tenant : Entity
 
     public int? ApplicationUserId { get; set; }
     public ApplicationUser? ApplicationUser { get; set; }
+
+    public string OneLineDescription()
+    {
+        return $"{Surname} {Name}";
+    }
 }

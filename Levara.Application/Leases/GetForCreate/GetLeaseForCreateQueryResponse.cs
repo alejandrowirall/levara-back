@@ -1,29 +1,24 @@
 ﻿
-using Levara.Domain.Models;
 using Levara.Shared.Domain.Models;
 
 namespace Levara.Application.Leases.GetForCreate;
 
 public class GetLeaseForCreateQueryResponse
 {
-    private Lease l;
-    private object collection;
-
-    public GetLeaseForCreateQueryResponse(Lease lease, List<ListModel> leaseStatus)
+    public GetLeaseForCreateQueryResponse(IEnumerable<ListModel> properties,
+        IEnumerable<ListModel> tenants,
+        IEnumerable<ListModel> leaseStatuses,
+        IEnumerable<ListModel> frequencyTypes)
     {
-        TenantId = lease.TenantId;
-        TenantName = $"{lease.Tenant.Name} {lease.Tenant.Surname}";
-        LeaseStatus = leaseStatus;
+        Properties = properties;
+        Tenants = tenants;
+        LeaseStatuses = leaseStatuses;
+        FrequencyTypes = frequencyTypes;
     }
 
-    public GetLeaseForCreateQueryResponse(Lease l, object collection)
-    {
-        this.l = l;
-        this.collection = collection;
-    }
-
-    public int TenantId { get; set; }
-    public string TenantName { get; set; }
-    public List<ListModel> LeaseStatus { get; }
+    public IEnumerable<ListModel> Properties { get; }
+    public IEnumerable<ListModel> Tenants { get; }
+    public IEnumerable<ListModel> LeaseStatuses { get; }
+    public IEnumerable<ListModel> FrequencyTypes { get; }
 
 }

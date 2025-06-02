@@ -1,5 +1,4 @@
-﻿using Levara.Domain.Contexts;
-using Levara.Domain.DAL;
+﻿using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
@@ -9,38 +8,31 @@ namespace Levara.Application.Leases.Update;
 
 public class UpdateLeaseCommandHandler : ICommandHandler<UpdateLeaseCommand, UpdateLeaseCommandResponse>
 {
-    private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILeaseRepository _leaseRepository;
-    public UpdateLeaseCommandHandler(IUserContext userContext,
-        IUnitOfWork unitOfWork,
+    public UpdateLeaseCommandHandler(IUnitOfWork unitOfWork,
         ILeaseRepository leaseRepository) 
     {
-        _userContext = userContext;
         _unitOfWork = unitOfWork;
         _leaseRepository = leaseRepository;
     }
     public async Task<OperationResult<UpdateLeaseCommandResponse>> Handle(UpdateLeaseCommand command)
     {
-        var propertyQuery = _leaseRepository.GetAllLeases()
-                                               .Where(p => p.Id == command.Id!.Value);
+        var leaseQuery = _leaseRepository.GetAllFull()
+                                               .Where(l => l.Id == command.Id!.Value && l.OwnerId == command.OwnerId!.Value);
 
-        Lease? lease = await _leaseRepository.FirstOrDefaultAsync(propertyQuery);
+        Lease? lease = await _leaseRepository.FirstOrDefaultAsync(leaseQuery);
         if (lease == null)
             return OperationResult<UpdateLeaseCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        if (_userContext.IsOwner && lease.OwnerId != _userContext.OwnerId!.Value)
-            return OperationResult<UpdateLeaseCommandResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this property."));
 
-
-        lease.OwnerId = command.OwnerId!;
-        lease.PropertyId = command.PropertyId!;
-        lease.TenantId = command.TenantId!;
-        lease.DateFrom = command.DateFrom!.ToUniversalTime();
-        lease.DateTo = command.DateTo!.ToUniversalTime();
-        lease.Amount = command.Price!;
-        lease.StatusLease = command.LeaseStatus!;
-        lease.MatchTags = command.MatchTags ?? new();
+        lease.TenantId = command.TenantId!.Value;
+        lease.Frequency = command.Frequency!.Value;
+        lease.DateFrom = command.DateFrom!.Value;
+        lease.DateTo = command.DateTo!.Value;
+        lease.Amount = command.Price!.Value;
+        lease.Status = command.Status!.Value;
+        lease.MatchTags = command.MatchTags;
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {

@@ -31,14 +31,9 @@ public class SeedManager
         return new List<SeedBase> {
             new RoleSeed(),
             new OwnerSeed(),
-            new TenantSeed(),
             new AdminSeed(),
-            new LeaseSeed(),
-            new TransactionSeed(),
             new MaintananceTypeSeed(),
             new ExpenseSeed(),
-            new OwnerBankAccountSandboxSeed()
-           // new PlaidTransactionSeed()
         }.ToArray();
     }
 }

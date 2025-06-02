@@ -1,6 +1,4 @@
-﻿
-using Levara.Application.Leases.GetByGrid;
-using Levara.Domain.DAL.Repositories;
+﻿using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Domain.Models;
@@ -9,26 +7,34 @@ using Levara.Shared.Results;
 
 namespace Levara.Application.Leases.GetForCreate;
 
-//TODO We still don't know if we will need this service.
-public class GetLeaseForCreateQueryHandler : IQueryHandler<GetLeaseForCreateQuery, List<GetLeaseForCreateQueryResponse>>
+public class GetLeaseForCreateQueryHandler : IQueryHandler<GetLeaseForCreateQuery, GetLeaseForCreateQueryResponse>
 {
-    private readonly ILeaseRepository _leaseRepository;
-    public GetLeaseForCreateQueryHandler(ILeaseRepository leaseRepository) 
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IPropertyRepository _propertyRepository;
+    public GetLeaseForCreateQueryHandler(ITenantRepository tenantRepository,
+        IPropertyRepository propertyRepository) 
     {
-        _leaseRepository = leaseRepository;
+        _tenantRepository = tenantRepository;
+        _propertyRepository = propertyRepository;
     }
-    public Task<OperationResult<List<GetLeaseForCreateQueryResponse>>> Handle(GetLeaseForCreateQuery query)
+    public async Task<OperationResult<GetLeaseForCreateQueryResponse>> Handle(GetLeaseForCreateQuery query)
     {
-        List<ListModel> listModels = EnumExtensions.ToListModel<LeaseStatus>();
+        IEnumerable<ListModel> leaseStatuses = EnumExtensions.ToListModel<LeaseStatus>();
+        IEnumerable<ListModel> frequencyTypes = EnumExtensions.ToListModel<FrequencyType>();
 
-        var leaseQuery = _leaseRepository.GetAllLeases()
-                                          .Where(l => l.OwnerId == query.OwnerId!.Value)
-                                          .OrderByDescending(p => p.CreatedDate)
-                                          .Select(l => new GetLeaseForCreateQueryResponse(l, listModels)
-                                          ).ToList<GetLeaseForCreateQueryResponse>();
-        var ignoreduplicated = leaseQuery.DistinctBy(x => x.TenantId).ToList();
-      //  List<GetLeaseForCreateQueryResponse> response = new();
-        
-        return Task.FromResult(OperationResult<List<GetLeaseForCreateQueryResponse>>.SuccessResult(ignoreduplicated));
+        var propertyQuery = _propertyRepository.GetAllWithAddress()
+                                               .Where(p => p.OwnerId == query.OwnerId!.Value)
+                                               .Select(p => new ListModel { Id = p.Id, Text = p.OneLineDescription() });
+
+        IEnumerable<ListModel> properties = await _propertyRepository.ToListAsync(propertyQuery);
+
+        var tenantQuery = _tenantRepository.GetAllWithAddress()
+                                           .Select(t => new ListModel { Id = t.Id, Text = t.OneLineDescription() });
+
+        IEnumerable<ListModel> tenants = await _tenantRepository.ToListAsync(tenantQuery);
+
+        var response = new GetLeaseForCreateQueryResponse(properties, tenants, leaseStatuses, frequencyTypes);
+
+        return OperationResult<GetLeaseForCreateQueryResponse>.SuccessResult(response);
     }
 }

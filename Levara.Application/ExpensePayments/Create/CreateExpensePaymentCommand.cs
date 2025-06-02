@@ -17,7 +17,7 @@ public class CreateExpensePaymentCommand : Command<CreateExpensePaymentCommandRe
     [Range(1, double.MaxValue)]
     public decimal? Amount { get; set; }
 
-    public DateTime? CreationDate { get; set; }
+    public DateTime? Date { get; set; }
     public CreateExpenseCharge? CreateExpenseCharge { get; set; }
 
 }

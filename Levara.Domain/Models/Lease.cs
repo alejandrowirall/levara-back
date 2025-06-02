@@ -34,8 +34,8 @@ public class Lease : Entity
     [Required]
     public decimal Amount { get; set; }
 
-    public LeaseStatus? StatusLease {  get; set; }
+    public LeaseStatus Status {  get; set; }
 
-    public List<string> MatchTags { get; set; } = new List<string>();
+    public List<string>? MatchTags { get; set; } = new List<string>();
 
 }

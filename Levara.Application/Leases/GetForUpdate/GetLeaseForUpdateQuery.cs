@@ -9,4 +9,7 @@ public class GetLeaseForUpdateQuery : Query<GetLeaseForUpdateQueryResponse>
     [Required]
     [Range(1, int.MaxValue)]
     public int? Id { get; set; }
+
+    [Range(1, int.MaxValue)]
+    public int? OwnerId { get; set; }
 }

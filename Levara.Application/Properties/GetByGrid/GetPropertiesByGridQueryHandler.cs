@@ -16,13 +16,18 @@ public class GetPropertiesByGridQueryHandler : IQueryHandler<GetPropertiesByGrid
     public async Task<OperationResult<PagedList<GetPropertiesByGridQueryResponse>>> Handle(GetPropertiesByGridQuery query)
     {
 
-        var propertyQuery = _propertyRepository.GetAllWithAddress()
-                                               .Where(p => p.OwnerId == query.OwnerId!.Value)
-                                               .OrderByDescending(p => p.CreatedDate)
-                                               .Select(p => new GetPropertiesByGridQueryResponse(p));
+        var propertyQuery = _propertyRepository.GetAllWithAddress();
 
-        var response = await _propertyRepository.ToListPagedAsync(propertyQuery, query.PageNumber!.Value, query.PageSize!.Value);
+        if (query.OwnerId.HasValue)
+            propertyQuery = propertyQuery.Where(p => p.OwnerId == query.OwnerId!.Value);
 
+        if (query.PropertyId.HasValue)
+            propertyQuery = propertyQuery.Where(p => p.Id == query.PropertyId!.Value);
+
+        var responseQuery = propertyQuery.OrderByDescending(p => p.CreatedDate)
+                                         .Select(p => new GetPropertiesByGridQueryResponse(p));
+
+        var response = await _propertyRepository.ToListPagedAsync(responseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 
         return OperationResult<PagedList<GetPropertiesByGridQueryResponse>>.SuccessResult(response);
 

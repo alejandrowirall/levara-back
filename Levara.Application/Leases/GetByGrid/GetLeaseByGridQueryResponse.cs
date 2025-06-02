@@ -1,7 +1,6 @@
 ﻿
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace Levara.Application.Leases.GetByGrid;
 
@@ -15,14 +14,14 @@ public class GetLeaseByGridQueryResponse
         PropertyId = lease.PropertyId;
         Frequency = lease.Frequency;
         Price = lease.Amount;
-        DateTo=lease.DateTo;
+        DateTo = lease.DateTo;
         DateFrom = lease.DateFrom;
         PropertyAddress = $"{lease.Property.Address.Street} {lease.Property.Address.Number} {lease.Property.Address.City} {lease.Property.Address.PostalCode}";
         OwnerName = $"{lease.Owner.Name} {lease.Owner.Surname}";
         OwnerMail = lease.Owner.Email;
         OwnerPhone = lease.Owner.MobilePhone;
-        Status=lease.StatusLease;
-        TenantFullName= $"{lease.Tenant.Name} {lease.Tenant.Surname}";
+        Status = lease.Status;
+        TenantFullName = $"{lease.Tenant.Name} {lease.Tenant.Surname}";
     }
     public int Id { get; }
 

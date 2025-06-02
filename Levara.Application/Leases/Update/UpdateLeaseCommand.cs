@@ -12,19 +12,25 @@ public class UpdateLeaseCommand : Command<UpdateLeaseCommandResponse>
     public int? Id {  get; set; }
 
     [Range(1, int.MaxValue)]
-    public int OwnerId { get; set; }
+    public int? OwnerId { get; set; }
 
+    [Required]
     [Range(1, int.MaxValue)]
-    public int TenantId { get; set; }
+    public int? TenantId { get; set; }
 
-    [Range(1, int.MaxValue)]
-    public int PropertyId { get; set; }
+    [Required]
+    public FrequencyType? Frequency { get; set; }
 
-    public FrequencyType Frequency { get; set; }
+    [Required]
+    public DateTime? DateFrom { get; set; }
 
-    public DateTime DateFrom { get; set; }
-    public DateTime DateTo { get; set; }
-    public decimal Price { get; set; }
-    public LeaseStatus LeaseStatus { get; set; }
+    [Required]
+    public DateTime? DateTo { get; set; }
+
+    [Required]
+    public decimal? Price { get; set; }
+
+    [Required]
+    public LeaseStatus? Status { get; set; }
     public List<string>? MatchTags { get; set; }
 }

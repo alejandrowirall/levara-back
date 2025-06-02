@@ -1,4 +1,5 @@
-﻿using Levara.Domain.Contexts;
+﻿using Levara.DAL.Repositories;
+using Levara.Domain.Contexts;
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
@@ -11,13 +12,16 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
 {
     private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAddressRepository _addressRepository;
     private readonly IPropertyRepository _propertyRepository;
     public UpdatePropertyCommandHandler(IUserContext userContext,
         IUnitOfWork unitOfWork,
+        IAddressRepository addressRepository,
         IPropertyRepository propertyRepository) 
     {
         _userContext = userContext;
         _unitOfWork = unitOfWork;
+        _addressRepository = addressRepository;
         _propertyRepository = propertyRepository;
     }
     public async Task<OperationResult<UpdatePropertyCommandResponse>> Handle(UpdatePropertyCommand command)
@@ -39,19 +43,21 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
         property.Address.State = command.State!;
         property.Address.PostalCode = command.PostalCode!;
         property.Price = command.Price!;
-        property.RoomsQuantity = command.RoomsQuantity.Value;
-        property.BathroomQuantity = command.BathroomQuantity.Value;
-        property.AreaQuantity = command.AreaQuantity.Value;
-        property.HasPool = command.HasPool.Value;
-        property.HasBalcony = command.HasBalcony.Value;
-        property.HasGarage = command.HasGarage.Value;
+        property.RoomsQuantity = command.RoomsQuantity;
+        property.BathroomQuantity = command.BathroomQuantity;
+        property.AreaQuantity = command.AreaQuantity;
+        property.HasPool = command.HasPool;
+        property.HasBalcony = command.HasBalcony;
+        property.HasGarage = command.HasGarage;
         property.DetailDepositAndAdittionalInfo = command.DetailDepositAndAdittionalInfo;
         property.PetsPoliticAndRate = command.PetsPoliticAndRate;
         property.TenantRequirements = command.TenantRequirements;
-        property.AvaliableFrom = command.AvaliableFromDate.Value.ToUniversalTime();
+        property.AvailableFrom = command.AvailableFrom;
         property.Img= command.Img!;
+
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
+            _addressRepository.Update(property.Address);
             _propertyRepository.Update(property);
             return Task.CompletedTask;
         });

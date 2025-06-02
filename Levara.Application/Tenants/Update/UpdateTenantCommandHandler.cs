@@ -9,11 +9,14 @@ namespace Levara.Application.Tenants.Update;
 public class UpdateTenantCommandHandler : ICommandHandler<UpdateTenantCommand, UpdateTenantCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAddressRepository _addressRepository;
     private readonly ITenantRepository _tenantRepository;
     public UpdateTenantCommandHandler(IUnitOfWork unitOfWork,
+        IAddressRepository addressRepository,
         ITenantRepository tenantRepository) 
     {
         _unitOfWork = unitOfWork;
+        _addressRepository = addressRepository;
         _tenantRepository = tenantRepository;
     }
     public async Task<OperationResult<UpdateTenantCommandResponse>> Handle(UpdateTenantCommand command)
@@ -47,6 +50,7 @@ public class UpdateTenantCommandHandler : ICommandHandler<UpdateTenantCommand, U
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {
+            _addressRepository.Update(tenant.Address);
             _tenantRepository.Update(tenant);
             return Task.CompletedTask;
         });

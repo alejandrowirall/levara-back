@@ -46,23 +46,24 @@ public class CreateMaintenanceChargeCommandHandler : ICommandHandler<CreateMaint
             Transaction.CreateMaintenanceCharge(command.PropertyId!.Value,
                                                 command.Amount!.Value,
                                                 0,
-                                                command.Title,
+                                                command.Title!,
                                                 nextRunningBalance,
-                                                nextEntityRunningBalance);
+                                                nextEntityRunningBalance,
+                                                command.Date);
 
         Maintenance newMaintenance = new()
         {
             PropertyId = command.PropertyId!.Value,
-            Title = command.Title,
+            Title = command.Title!,
             Status = MaintenanceStatus.Completed,
             TypeId = command.TypeId!.Value,
-            DueDate = command.DueDate!.Value.ToUniversalTime(),
-            Description = command.Description
+            DueDate = command.DueDate!.Value,
+            Description = command.Description!
         };
 
         MaintenanceCharge maintenanceCharge = new()
         {
-            DueDate = command.DueDate!.Value.ToUniversalTime(),
+            DueDate = command.DueDate!.Value,
             Status = MaintenanceChargeStatus.Unpaid,
             Maintenance = newMaintenance,
             Transaction = newTransaction,

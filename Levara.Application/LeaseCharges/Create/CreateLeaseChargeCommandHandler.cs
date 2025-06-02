@@ -45,14 +45,15 @@ public class CreateLeaseChargeCommandHandler : ICommandHandler<CreateLeaseCharge
                 command.LeaseId!.Value,
                 command.Description!,
                 nextRunningBalance,
-                nextEntityRunningBalance);
+                nextEntityRunningBalance,
+                command.Date);
 
         LeaseCharge newLeaseCharge = new()
         {
-            Description = command.Description,
+            Description = command.Description!,
             LeaseId = command.LeaseId!.Value,
             Status = LeaseChargeStatus.Unpaid,
-            DueDate = command.DueDate!.Value.ToUniversalTime(),
+            DueDate = command.DueDate!.Value,
             Transaction = newTransaction
         };
 

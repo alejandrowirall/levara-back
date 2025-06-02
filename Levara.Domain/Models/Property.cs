@@ -38,12 +38,12 @@ public class Property : Entity
    
     public string? TenantRequirements { get; set; }
 
-    public DateTime? AvaliableFrom { get; set; }
+    public DateTime? AvailableFrom { get; set; }
 
     public byte[]? Img { get; set; }
 
     public string OneLineDescription()
     {
-        return $"{Number} - {Address.Street} {Address.Number}, {Address.City}, {Address.State}";
+        return $"{Number} - {Address.Street} {Address.Number}, {Address.City}, {Address.State} {Address.PostalCode}";
     }
 }

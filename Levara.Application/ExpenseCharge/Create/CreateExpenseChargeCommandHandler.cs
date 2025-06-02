@@ -55,12 +55,13 @@ public class CreateExpenseChargeCommandHandler : ICommandHandler<CreateExpenseCh
                                             command.ExpenseId!.Value, 
                                             expense.Name, 
                                             nextRunningBalance, 
-                                            nextEntityRunningBalance);
+                                            nextEntityRunningBalance,
+                                            command.Date);
 
         ExpenseCharge newExpenseCharge = new()
         {
             ExpenseId = command.ExpenseId.Value,
-            DueDate = command.DueDate!.Value.ToUniversalTime(),
+            DueDate = command.DueDate!.Value,
             Status = ExpenseChargeStatus.Unpaid,
             Transaction = newTransaction,
         };

@@ -1,5 +1,4 @@
-﻿using Levara.DAL.Repositories;
-using Levara.Domain.DAL;
+﻿using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
@@ -51,10 +50,10 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         if (plaidtx.Status != PlaidTransactionStatus.Created && plaidtx.Status != PlaidTransactionStatus.NeedReview)
             return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be in state {EnumExtensions.GetEnumDescription(PlaidTransactionStatus.Created)} or {EnumExtensions.GetEnumDescription(PlaidTransactionStatus.NeedReview)}"));
 
-        if (plaidtx.Amount >= 0)
-            return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be less than zero"));
+        //if (plaidtx.Amount >= 0)
+        //    return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be less than zero"));
 
-        if (((-1)*(plaidtx.Amount)) < command.Amount!.Value)
+        if (command.Amount!.Value > Math.Abs(plaidtx.Amount))
             return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, $"The amount must be less than or equal to the Plaid transaction amount"));
 
         if (plaidtx.OwnerBankAccount.OwnerId != command.OwnerId)

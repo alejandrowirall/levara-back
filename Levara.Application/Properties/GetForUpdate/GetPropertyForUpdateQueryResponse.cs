@@ -23,10 +23,12 @@ public class PropertyUpdateQueryResponse
         OwnerId = property.OwnerId;
         Number = property.Number;
         Street = property.Address.Street;
+        StreetNumber = property.Address.Number;
         City = property.Address.City;
         State = property.Address.State;
         PostalCode = property.Address.PostalCode;
-        Price=property.Price;
+        AdditionalLine = property.Address.AdditionalLine;
+        Price = property.Price;
         RoomsQuantity = property.RoomsQuantity;
         BathroomQuantity = property.BathroomQuantity;
         AreaQuantity = property.AreaQuantity;
@@ -36,7 +38,7 @@ public class PropertyUpdateQueryResponse
         DetailDepositAndAdittionalInfo = property.DetailDepositAndAdittionalInfo;
         PetsPoliticAndRate = property.PetsPoliticAndRate;
         TenantRequirements = property.TenantRequirements;
-        AvaliableFrom = property.AvaliableFrom;
+        AvailableFrom = property.AvailableFrom;
     }
     public int Id { get; }
 
@@ -45,6 +47,8 @@ public class PropertyUpdateQueryResponse
     public int Number { get; }
 
     public string Street { get; }
+
+    public int StreetNumber { get; set; }
 
     public string? AdditionalLine { get; }
 
@@ -56,6 +60,8 @@ public class PropertyUpdateQueryResponse
 
     public decimal? Price { get; set; }
 
+    public DateTime? AvailableFrom { get; set; }
+
     public int? RoomsQuantity { get; set; }
     public int? BathroomQuantity { get; set; }
 
@@ -65,13 +71,11 @@ public class PropertyUpdateQueryResponse
 
     public bool? HasBalcony { get; set; }
     public bool? HasGarage { get; set; }
-    
-    public string? DetailDepositAndAdittionalInfo { get; set; }
-   
-    public string? PetsPoliticAndRate { get; set; }
-    
-    public string? TenantRequirements { get; set; }
 
-    public DateTime? AvaliableFrom { get; set; }
+    public string? DetailDepositAndAdittionalInfo { get; set; }
+
+    public string? PetsPoliticAndRate { get; set; }
+
+    public string? TenantRequirements { get; set; }
 
 }

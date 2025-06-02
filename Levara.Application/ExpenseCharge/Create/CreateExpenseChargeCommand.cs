@@ -13,6 +13,8 @@ namespace Levara.Application.ExpenseCharges.Create
         [Range(0, double.MaxValue)]
         public decimal? Amount { get; set; }
 
+        public DateTime Date { get; set; }
+
         [Required]
         public DateTime? DueDate { get; set; }
 

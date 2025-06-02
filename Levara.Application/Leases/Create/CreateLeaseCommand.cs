@@ -10,18 +10,28 @@ public class CreateLeaseCommand : Command<CreateLeaseCommandResponse>
     [Range(1, int.MaxValue)]
     public int? OwnerId { get; set; }
 
+    [Required]
     [Range(1, int.MaxValue)]
     public int? TenantId { get; set; }
 
+    [Required]
     [Range(1, int.MaxValue)]
     public int? PropertyId { get; set; }
 
-    public FrequencyType Frequency { get; set; }
+    [Required]
+    public FrequencyType? Frequency { get; set; }
 
-    public DateTime DateFrom { get; set; }
-    public DateTime DateTo { get; set; }
+    [Required]
+    public DateTime? DateFrom { get; set; }
+
+    [Required]
+    public DateTime? DateTo { get; set; }
+
+    [Required]
+    [Range(0, double.MaxValue)]
     public decimal? Price { get; set; }
 
-    public LeaseStatus LeaseStatus { get; set; }
+    [Required]
+    public LeaseStatus? Status { get; set; }
 
 }

@@ -16,7 +16,7 @@ public class GetLeaseByGridQueryHandler : IQueryHandler<GetLeaseByGridQuery, Pag
     public async Task<OperationResult<PagedList<GetLeaseByGridQueryResponse>>> Handle(GetLeaseByGridQuery query)
     {
 
-        var leaseQuery = _leaseRepository.GetAllLeases();
+        var leaseQuery = _leaseRepository.GetAllFull();
 
         if (query.OwnerId.HasValue)
             leaseQuery = leaseQuery.Where(l => l.OwnerId == query.OwnerId!.Value);

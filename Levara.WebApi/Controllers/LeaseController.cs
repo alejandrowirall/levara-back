@@ -10,6 +10,7 @@ using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Levara.WebApi.Controllers
 {
@@ -54,6 +55,12 @@ namespace Levara.WebApi.Controllers
         [HttpGet("Create")]
         public async Task<IActionResult> Create([FromQuery] GetLeaseForCreateQuery query )
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
@@ -92,6 +99,12 @@ namespace Levara.WebApi.Controllers
         [HttpGet("Update")]
         public async Task<IActionResult> Update([FromQuery] GetLeaseForUpdateQuery query)
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
