@@ -1,7 +1,4 @@
-﻿
-using Levara.Domain.DAL;
-using Levara.Domain.DAL.Repositories;
-using Levara.Domain.Models;
+﻿using Levara.Domain.DAL.Repositories;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Domain.Models;
 using Levara.Shared.Results;
@@ -13,14 +10,15 @@ namespace Levara.Application.Plaid.GetLinkToken;
 
 public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLinkTokenQueryResponse>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IOwnerRepository _ownerRepository;
     private readonly HttpClient _httpClient;
     private readonly string _apikey;
     private readonly string _secret;
 
-    public GetLinkTokenQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config) 
+    public GetLinkTokenQueryHandler(IOwnerRepository ownerRepository,
+        IOptions<RemoteServicesConfig> config)
     {
-        _unitOfWork = unitOfWork;
+        _ownerRepository = ownerRepository;
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(config.Value.BaseAdressUrl);
         _apikey = config.Value.ApiKey;
@@ -29,18 +27,22 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
     }
     public async Task<OperationResult<GetLinkTokenQueryResponse>> Handle(GetLinkTokenQuery query)
     {
+        var owner = await _ownerRepository.FirstOrDefaultAsync(o => o.Id == query.OwnerId!.Value);
+        if (owner == null)
+            return OperationResult<GetLinkTokenQueryResponse>.ErrorResult(new ErrorDetails(404, $"Owner with id {query.OwnerId!.Value} not found"));
 
-        var url= _httpClient.BaseAddress+ $"link/token/create";
+
+        var url = _httpClient.BaseAddress + $"link/token/create";
         var payload = new
         {
             client_id = _apikey,
             secret = _secret,
-            client_name = query.ClientName,
+            client_name = owner.Email,
             country_codes = new[] { "US" },
             language = "en",
             user = new
             {
-                client_user_id =query.ClientId
+                client_user_id = owner.Id.ToString()
             },
             products = new[] { "auth", "transactions" }
         };
@@ -65,8 +67,6 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
             // Manejo de errores adicional si es necesario
             throw new Exception($"An error occurred while creating the link token: {ex.Message}", ex);
         }
-
-
 
     }
 }

@@ -2,6 +2,7 @@
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Models;
+using Levara.Shared.Extensions;
 
 namespace Levara.Application.Plaid.GetForUpdate;
 
@@ -49,19 +50,18 @@ public class PliadTransactionCharge
 {
     public PliadTransactionCharge(TransactionApplication transactionApplication)
     {
-        Address address = transactionApplication.Payment.Property.Address;
-
         Id = transactionApplication.Payment.Id;
         PlaidId = transactionApplication.Payment.PlaidTransactionId!.Value;
         TransactionId = transactionApplication.ChargeTransactionId;
         TransactionType = transactionApplication.ChargeTransaction.Type;
         Description = transactionApplication.ChargeTransaction.Description;
         Amount = transactionApplication.ChargeTransaction.Amount;
-
-        StatusDescription = string.Empty;
+        StatusDescription = EnumExtensions.GetEnumDescription(transactionApplication.ChargeTransaction.Status);
+        DueDate = transactionApplication.ChargeTransaction.DueDate!.Value;
         PropertyId = transactionApplication.Payment.PropertyId;
-        PropertyDescription = $"{transactionApplication.Payment.Property.Number} - {address.Street} {address.Number}, {address.City}, {address.State}";
+        PropertyDescription = transactionApplication.Payment.Property.OneLineDescription();
     }
+
     public int Id { get; set; }
     public int PlaidId { get; set; }
     public int TransactionId { get; set; }

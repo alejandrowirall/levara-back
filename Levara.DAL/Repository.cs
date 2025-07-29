@@ -39,6 +39,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         return await query.FirstOrDefaultAsync();
     }
 
+    public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        return filter == null ? await _dbSet.FirstOrDefaultAsync() : await _dbSet.FirstOrDefaultAsync(filter);
+    }
+
     public async Task<PagedList<T>> ToListPagedAsync<T>(IQueryable<T> query, int pageNumber, int pageSize)
     {
         int count = await query.CountAsync();
@@ -131,6 +136,18 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         entity.Deleted = true;
 
         _dbSet.Update(entity);
+    }
+
+    public void Delete(List<TEntity> entities)
+    {
+        foreach (var entity in entities)
+        {
+            entity.LastEditedDate = DateTime.UtcNow;
+            entity.LastEditorId = _userContext.Id;
+            entity.Deleted = true;
+        }
+
+        _dbSet.UpdateRange(entities);
     }
 
     public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null)

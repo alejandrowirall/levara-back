@@ -5,15 +5,15 @@ namespace Levara.Domain.Enum;
 
 public enum TransactionStatus
 {
-    [Description("Incoming")]
-    Incoming = 1,
+    [Description("Unpaid")]
+    Unpaid = 1,
 
-    [Description("Verified")]
-    Verified = 2,
+    [Description("PartiallyPaid")]
+    PartiallyPaid = 2,
 
-    [Description("Dismiss")]
-    dismiss = 3,
+    [Description("Paid")]
+    Paid = 3,
 
-    [Description("Pending Verification")]
-    PendingVerification = 4
+    [Description("Confirmed")]
+    Confirmed = 4,
 }

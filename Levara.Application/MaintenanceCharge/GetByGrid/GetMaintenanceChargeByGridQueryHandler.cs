@@ -18,16 +18,16 @@ public class GetMaintenanceChargeByGridQueryHandler : IQueryHandler<GetMaintenan
         var maintenanceChargeQuery = _maintenanceChargeRepository.GetAllFull();
 
         if (query.PropertyId.HasValue)
-            maintenanceChargeQuery = maintenanceChargeQuery.Where(t => t.Maintenance.PropertyId == query.PropertyId!.Value);
+            maintenanceChargeQuery = maintenanceChargeQuery.Where(mc => mc.Maintenance.PropertyId == query.PropertyId!.Value);
 
         if (query.OwnerId.HasValue)
             maintenanceChargeQuery = maintenanceChargeQuery.Where(t => t.Maintenance.Property.OwnerId == query.OwnerId!.Value);
 
-        if (query.Statuses != null && query.Statuses.Any())
-            maintenanceChargeQuery = maintenanceChargeQuery.Where(t => query.Statuses.Contains(t.Status));
+        if (query.Statuses != null && query.Statuses.Length != 0)
+            maintenanceChargeQuery = maintenanceChargeQuery.Where(mc => query.Statuses.Contains(mc.Transaction.Status));
 
-        var responseQuery = maintenanceChargeQuery.OrderByDescending(e => e.CreatedDate)
-                                                  .Select(e => new GetMaintenanceChargeByGridQueryResponse(e));
+        var responseQuery = maintenanceChargeQuery.OrderByDescending(mc => mc.CreatedDate)
+                                                  .Select(mc => new GetMaintenanceChargeByGridQueryResponse(mc));
 
         var response = await _maintenanceChargeRepository.ToListPagedAsync(responseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 

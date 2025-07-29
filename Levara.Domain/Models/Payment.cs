@@ -27,7 +27,9 @@ public class Payment : Entity
 
     public decimal RunningBalance { get; set; }
 
-    public decimal? BankAccountBalance { get; set; }
+    public decimal? BankAccountRunningBalance { get; set; }
+
+    public decimal? LeaseRunningBalance { get; set; }
 
     public TransactionType Type { get; set; }
 

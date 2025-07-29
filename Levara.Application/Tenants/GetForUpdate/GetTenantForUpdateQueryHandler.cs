@@ -26,7 +26,7 @@ public class GetTenantForUpdateQueryHandler : IQueryHandler<GetTenantForUpdateQu
 
         TenantUpdateQueryResponse? tenant = await _tenantRepository.FirstOrDefaultAsync(tenantQuery);
         if (tenant == null)
-            return OperationResult<GetTenantForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+            return OperationResult<GetTenantForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, $"No tenant found with id {query.Id!.Value}"));
 
         GetTenantForUpdateQueryResponse response = new(tenant, 
                                                        EnumExtensions.ToListModel<PersonType>((int)tenant.PersonType), 

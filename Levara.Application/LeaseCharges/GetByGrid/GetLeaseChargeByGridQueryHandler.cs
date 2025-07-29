@@ -19,19 +19,19 @@ public class GetLeaseChargeByGridQueryHandler : IQueryHandler<GetLeaseChargeByGr
         var leaseChargeQuery = _leaseChargeRepository.GetAllFull();
 
         if(query.PropertyId.HasValue)
-            leaseChargeQuery = leaseChargeQuery.Where(t => t.Lease.PropertyId == query.PropertyId!.Value);
+            leaseChargeQuery = leaseChargeQuery.Where(lc => lc.Lease.PropertyId == query.PropertyId!.Value);
 
         if (query.OwnerId.HasValue)
-            leaseChargeQuery = leaseChargeQuery.Where(t => t.Lease.OwnerId == query.OwnerId!.Value);
+            leaseChargeQuery = leaseChargeQuery.Where(lc => lc.Lease.OwnerId == query.OwnerId!.Value);
 
-        if (query.Statuses != null && query.Statuses.Any())
-            leaseChargeQuery = leaseChargeQuery.Where(t => query.Statuses.Contains(t.Status));
+        if (query.Statuses != null && query.Statuses.Length != 0)
+            leaseChargeQuery = leaseChargeQuery.Where(lc => query.Statuses.Contains(lc.Transaction.Status));
 
-        if (query.Ids != null && query.Ids.Any())
-            leaseChargeQuery = leaseChargeQuery.Where(t => query.Ids.Contains(t.Id));
+        if (query.Ids != null && query.Ids.Length != 0)
+            leaseChargeQuery = leaseChargeQuery.Where(lc => query.Ids.Contains(lc.Id));
 
-        var responseQuery = leaseChargeQuery.OrderByDescending(p => p.CreatedDate)
-                                            .Select(p => new GetLeaseChargeByGridQueryResponse(p));
+        var responseQuery = leaseChargeQuery.OrderByDescending(lc => lc.CreatedDate)
+                                            .Select(lc => new GetLeaseChargeByGridQueryResponse(lc));
 
         var response = await _leaseChargeRepository.ToListPagedAsync(responseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 

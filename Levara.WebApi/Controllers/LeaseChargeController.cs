@@ -68,7 +68,14 @@ namespace Levara.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateLeaseChargeCommand command)
         {
-            
+            if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+            {
+                command.OwnerId = _userContext.OwnerId!;
+            }
+
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
             {

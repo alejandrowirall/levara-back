@@ -13,42 +13,33 @@ public class CreateMaintenanceChargeCommandHandler : ICommandHandler<CreateMaint
     private readonly ITransactionRepository _transactionRepository;
     private readonly IMaintenanceChargeRepository _maintenanceChargeRepository;
     private readonly IMaintenanceRepository _maintenanceRepository;
+    private readonly IPropertyRepository _propertyRepository;
     public CreateMaintenanceChargeCommandHandler(IUnitOfWork unitOfWork,
         ITransactionRepository transactionRepository, 
         IMaintenanceChargeRepository maintenanceChargeRepository,
-        IMaintenanceRepository maintenanceRepository) 
+        IMaintenanceRepository maintenanceRepository,
+        IPropertyRepository propertyRepository) 
     {
         _unitOfWork = unitOfWork;
         _transactionRepository = transactionRepository;
         _maintenanceChargeRepository = maintenanceChargeRepository;
         _maintenanceRepository = maintenanceRepository;
+        _propertyRepository = propertyRepository;
     }
     public async Task<OperationResult<CreateMaintenanceChargeCommandResponse>> Handle(CreateMaintenanceChargeCommand command)
     {
-        var lastTransactionQuery = _transactionRepository.GetAll()
-                                                         .Where(t => t.PropertyId == command.PropertyId!.Value)
-                                                         .OrderByDescending(t => t.CreatedDate);
+        if (!await _propertyRepository.AnyAsync(p => p.OwnerId == command.OwnerId!.Value &&
+                                                     p.Id == command.PropertyId!.Value))
+            return OperationResult<CreateMaintenanceChargeCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Property with id {command.PropertyId!.Value} for Owner with id {command.OwnerId!.Value}"));
 
-        Transaction? lastTransaction = await _transactionRepository.FirstOrDefaultAsync(lastTransactionQuery);
-        if (lastTransaction == null)
-            return OperationResult<CreateMaintenanceChargeCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Transaction with propertyId {command.PropertyId!.Value}"));
-
-        decimal nextRunningBalance = 0;
-        decimal nextEntityRunningBalance = 0;
-
-        if (lastTransaction != null)
-        {
-            nextEntityRunningBalance = lastTransaction.EntityRunningBalance - command.Amount!.Value;
-            nextRunningBalance = lastTransaction.RunningBalance - command.Amount!.Value;
-        }
+        decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(command.PropertyId!.Value);
 
         Transaction newTransaction = 
-            Transaction.CreateMaintenanceCharge(command.PropertyId!.Value,
+            MaintenanceCharge.CreateTransaction(command.PropertyId!.Value,
                                                 command.Amount!.Value,
-                                                0,
                                                 command.Title!,
-                                                nextRunningBalance,
-                                                nextEntityRunningBalance,
+                                                currentPropertyRunningBalance,
+                                                command.DueDate!.Value,
                                                 command.Date);
 
         Maintenance newMaintenance = new()
@@ -63,8 +54,6 @@ public class CreateMaintenanceChargeCommandHandler : ICommandHandler<CreateMaint
 
         MaintenanceCharge maintenanceCharge = new()
         {
-            DueDate = command.DueDate!.Value,
-            Status = MaintenanceChargeStatus.Unpaid,
             Maintenance = newMaintenance,
             Transaction = newTransaction,
         };
@@ -72,9 +61,6 @@ public class CreateMaintenanceChargeCommandHandler : ICommandHandler<CreateMaint
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {  
             await _maintenanceRepository.AddAsync(newMaintenance);
-            await _unitOfWork.SaveChangesAsync();
-
-            newTransaction.EntityId = newMaintenance.Id;
             await _transactionRepository.AddAsync(newTransaction);
             await _maintenanceChargeRepository.AddAsync(maintenanceCharge);
         });

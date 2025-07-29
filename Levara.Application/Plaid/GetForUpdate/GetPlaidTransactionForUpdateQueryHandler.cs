@@ -1,5 +1,4 @@
 ﻿
-using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
@@ -12,26 +11,13 @@ namespace Levara.Application.Plaid.GetForUpdate;
 
 public class GetPlaidTransactionForUpdateQueryHandler : IQueryHandler<GetPlaidTransactionForUpdateQuery, GetPlaidTransactionForUpdateQueryResponse>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IPlaidRepository _plaidRepository;
-
     private readonly ITransactionApplicationRepository _transactionApplicationRepository;
-    private readonly IExpenseChargeRepository _expenseChargeRepository;
-    private readonly ILeaseChargeRepository _leaseChargeRepository;
-    private readonly IMaintenanceChargeRepository _maintenanceChargeRepository;
-    public GetPlaidTransactionForUpdateQueryHandler(IUnitOfWork unitOfWork,
-        IPlaidRepository plaidRepository,
-        ITransactionApplicationRepository transactionApplicationRepository,
-        IExpenseChargeRepository expenseChargeRepository,
-        ILeaseChargeRepository leaseChargeRepository,
-        IMaintenanceChargeRepository maintenanceChargeRepository)
+    public GetPlaidTransactionForUpdateQueryHandler(IPlaidRepository plaidRepository,
+        ITransactionApplicationRepository transactionApplicationRepository)
     {
-        _unitOfWork = unitOfWork;
         _plaidRepository = plaidRepository;
         _transactionApplicationRepository = transactionApplicationRepository;
-        _expenseChargeRepository = expenseChargeRepository;
-        _leaseChargeRepository = leaseChargeRepository;
-        _maintenanceChargeRepository = maintenanceChargeRepository;
     }
     public async Task<OperationResult<GetPlaidTransactionForUpdateQueryResponse>> Handle(GetPlaidTransactionForUpdateQuery query)
     {
@@ -79,62 +65,11 @@ public class GetPlaidTransactionForUpdateQueryHandler : IQueryHandler<GetPlaidTr
             return OperationResult<GetPlaidTransactionForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, $"Not found Transaction Application by PlaidTransactionId {plaidTx.Id}"));
 
         PliadTransactionCharge pliadTransactionCharge = new(transactionApplication);
-        await SetChargeLease(pliadTransactionCharge);
-        await SetChargeExpense(pliadTransactionCharge);
-        await SetChargeMaintenance(pliadTransactionCharge);
 
         GetPlaidTransactionForUpdateQueryResponse response = new(pliadTransactionUpdate,
                                                                  [new() { Id = (int)plaidTx.Status, Text = EnumExtensions.GetEnumDescription(plaidTx.Status) }],
                                                                  pliadTransactionCharge);
 
         return OperationResult<GetPlaidTransactionForUpdateQueryResponse>.SuccessResult(response);
-    }
-
-    private async Task SetChargeLease(PliadTransactionCharge pliadTransactionCharge)
-    {
-        if (pliadTransactionCharge.TransactionType != TransactionType.Lease)
-            return;
-
-
-        var leaseChargeQuery = _leaseChargeRepository.GetAll().Where(lc => pliadTransactionCharge.TransactionId == lc.TransactionId);
-
-        var leaseCharge = await _leaseChargeRepository.FirstOrDefaultAsync(leaseChargeQuery);
-        if (leaseCharge == null)
-            return;
-
-        pliadTransactionCharge.StatusDescription = EnumExtensions.GetEnumDescription(leaseCharge.Status);
-        pliadTransactionCharge.DueDate = leaseCharge.DueDate;
-    }
-
-    private async Task SetChargeExpense(PliadTransactionCharge pliadTransactionCharge)
-    {
-        if (pliadTransactionCharge.TransactionType != TransactionType.Expense)
-            return;
-
-
-        var expenseChargeQuery = _expenseChargeRepository.GetAll().Where(ec => pliadTransactionCharge.TransactionId == ec.TransactionId);
-
-        var expenseCharge = await _expenseChargeRepository.FirstOrDefaultAsync(expenseChargeQuery);
-        if (expenseCharge == null)
-            return;
-
-        pliadTransactionCharge.StatusDescription = EnumExtensions.GetEnumDescription(expenseCharge.Status);
-        pliadTransactionCharge.DueDate = expenseCharge.DueDate;
-    }
-
-    private async Task SetChargeMaintenance(PliadTransactionCharge pliadTransactionCharge)
-    {
-        if (pliadTransactionCharge.TransactionType != TransactionType.Maintenance)
-            return;
-
-
-        var maintenanceChargeQuery = _maintenanceChargeRepository.GetAll().Where(mc => pliadTransactionCharge.TransactionId == mc.TransactionId);
-
-        var maintenanceCharge = await _maintenanceChargeRepository.FirstOrDefaultAsync(maintenanceChargeQuery);
-        if (maintenanceCharge == null)
-            return;
-
-        pliadTransactionCharge.StatusDescription = EnumExtensions.GetEnumDescription(maintenanceCharge.Status);
-        pliadTransactionCharge.DueDate = maintenanceCharge.DueDate;
     }
 }

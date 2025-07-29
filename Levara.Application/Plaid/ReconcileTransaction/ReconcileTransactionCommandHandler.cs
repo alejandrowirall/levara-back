@@ -12,23 +12,17 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPlaidRepository _plaidRepository;
-    private readonly IExpenseChargeRepository _expenseChargeRepository;
-    private readonly ILeaseChargeRepository _leaseChargeRepository;
-    private readonly IMaintenanceChargeRepository _maintenanceChargeRepository;
+    private readonly ITransactionRepository _transactionRepository;
     private readonly IPlaidReconciliationRepository _plaidReconciliationRepository;
 
     public ReconcileTransactionCommandHandler(IUnitOfWork unitOfWork,
         IPlaidRepository plaidRepository,
-        IExpenseChargeRepository expenseChargeRepository,
-        ILeaseChargeRepository leaseChargeRepository,
-        IMaintenanceChargeRepository maintenanceChargeRepository,
+        ITransactionRepository transactionRepository,
         IPlaidReconciliationRepository plaidReconciliationRepository)
     {
         _unitOfWork = unitOfWork;
         _plaidRepository = plaidRepository;
-        _expenseChargeRepository = expenseChargeRepository;
-        _leaseChargeRepository = leaseChargeRepository;
-        _maintenanceChargeRepository = maintenanceChargeRepository;
+        _transactionRepository = transactionRepository;
         _plaidReconciliationRepository = plaidReconciliationRepository;
     }
 
@@ -44,11 +38,7 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         if (plaidtx.Status != PlaidTransactionStatus.Created)
             return OperationResult<ReconcileTransactionCommandResponse>.ErrorResult(new ErrorDetails(400, $"Plaid transaction must be in state {EnumExtensions.GetEnumDescription(PlaidTransactionStatus.Created)}"));
 
-        List<PlaidReconciliation> reconciliations = new();
-
-        await ReconcileLeaseTransaction(plaidtx, reconciliations);
-        await ReconcileMaintenanceTransaction(plaidtx, reconciliations);
-        await ReconcileExpenseTransaction(plaidtx, reconciliations);
+        List<PlaidReconciliation> reconciliations = await ReconcileTransaction(plaidtx);
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
@@ -67,96 +57,40 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         return OperationResult<ReconcileTransactionCommandResponse>.SuccessResult(new ReconcileTransactionCommandResponse(plaidtx.Id));
     }
 
-    private async Task ReconcileLeaseTransaction(PlaidTransaction plaidtx,
-        List<PlaidReconciliation> reconciliations)
+    private async Task<List<PlaidReconciliation>> ReconcileTransaction(PlaidTransaction plaidtx)
     {
+        List<PlaidReconciliation> reconciliations = [];
+
         int ownerId = plaidtx.OwnerBankAccount.OwnerId;
         decimal plaidtxAmount = plaidtx.Amount;
 
         int plaidYear = plaidtx.Date.Year;
         int plaidMonth = plaidtx.Date.Month;
 
-        var leaseChargeQuery = _leaseChargeRepository.GetAllFull().Where(lc =>
-            lc.Lease.Property.OwnerId == ownerId &&
-            lc.Status == LeaseChargeStatus.Unpaid &&
-            (lc.Transaction.Amount == plaidtxAmount || lc.Transaction.Amount == ((-1) * plaidtxAmount)) &&
-            lc.Transaction.Date.Year == plaidYear &&
-            lc.Transaction.Date.Month == plaidMonth);
+        var transactionQuery = _transactionRepository.GetAllFull().Where(t =>
+            t.Property.OwnerId == ownerId &&
+            t.SubType == TransactionSubType.Charge &&
+            t.Status == TransactionStatus.Unpaid &&
+            t.Date.Year == plaidYear &&
+            t.Date.Month == plaidMonth &&
+            (t.Amount == plaidtxAmount || t.Amount == ((-1) * plaidtxAmount)));
 
-        var leaseCharges = await _leaseChargeRepository.ToListAsync(leaseChargeQuery);
-        if (leaseCharges.Count() == 0)
-            return;
+        var transactions = await _transactionRepository.ToListAsync(transactionQuery);
+        if (!transactions.Any())
+            return reconciliations;
 
-        foreach (var leaseCharge in leaseCharges)
+        
+
+        foreach (var transaction in transactions)
         {
             PlaidReconciliation reconciliation = new()
             {
-                TransactionId = leaseCharge.TransactionId,
+                TransactionId = transaction.Id,
                 PlaidTransactionId = plaidtx.Id
             };
             reconciliations.Add(reconciliation);
         }
-    }
 
-    private async Task ReconcileMaintenanceTransaction(PlaidTransaction plaidtx,
-        List<PlaidReconciliation> reconciliations)
-    {
-        int ownerId = plaidtx.OwnerBankAccount.OwnerId;
-        decimal plaidtxAmount = plaidtx.Amount;
-
-        int plaidYear = plaidtx.Date.Year;
-        int plaidMonth = plaidtx.Date.Month;
-
-        var maintenanceChargeQuery = _maintenanceChargeRepository.GetAllFull().Where(mc =>
-            mc.Maintenance.Property.OwnerId == ownerId &&
-            mc.Status == MaintenanceChargeStatus.Unpaid &&
-            (mc.Transaction.Amount == plaidtxAmount || mc.Transaction.Amount == ((-1) * plaidtxAmount)) &&
-            mc.Transaction.Date.Year == plaidYear &&
-            mc.Transaction.Date.Month == plaidMonth);
-
-        var maintenanceCharges = await _maintenanceChargeRepository.ToListAsync(maintenanceChargeQuery);
-        if (maintenanceCharges.Count() == 0)
-            return;
-
-        foreach (var maintenanceCharge in maintenanceCharges)
-        {
-            PlaidReconciliation reconciliation = new()
-            {
-                TransactionId = maintenanceCharge.TransactionId,
-                PlaidTransactionId = plaidtx.Id
-            };
-            reconciliations.Add(reconciliation);
-        }
-    }
-
-    private async Task ReconcileExpenseTransaction(PlaidTransaction plaidtx,
-        List<PlaidReconciliation> reconciliations)
-    {
-        int ownerId = plaidtx.OwnerBankAccount.OwnerId;
-        decimal plaidtxAmount = plaidtx.Amount;
-
-        int plaidYear = plaidtx.Date.Year;
-        int plaidMonth = plaidtx.Date.Month;
-
-        var expenseChargeQuery = _expenseChargeRepository.GetAllFull().Where(ec =>
-            ec.Transaction.Property.OwnerId == ownerId &&
-            ec.Status == ExpenseChargeStatus.Unpaid &&
-            (ec.Transaction.Amount == plaidtxAmount || ec.Transaction.Amount == ((-1) * plaidtxAmount)) &&
-            ec.Transaction.Date.Year == plaidYear &&
-            ec.Transaction.Date.Month == plaidMonth);
-
-        var expenseCharges = await _expenseChargeRepository.ToListAsync(expenseChargeQuery);
-        if (expenseCharges.Count() == 0)
-            return;
-
-        foreach (var expenseCharge in expenseCharges)
-        {
-            PlaidReconciliation reconciliation = new()
-            {
-                TransactionId = expenseCharge.TransactionId,
-                PlaidTransactionId = plaidtx.Id
-            };
-            reconciliations.Add(reconciliation);
-        }
+        return reconciliations;
     }
 }

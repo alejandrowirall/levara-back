@@ -3,6 +3,7 @@ using Levara.Application.Leases.Delete;
 using Levara.Application.Leases.GetByGrid;
 using Levara.Application.Leases.GetForCreate;
 using Levara.Application.Leases.GetForUpdate;
+using Levara.Application.Leases.GetTransactionByGrid;
 using Levara.Application.Leases.Update;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
@@ -10,7 +11,6 @@ using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Levara.WebApi.Controllers
 {
@@ -33,11 +33,38 @@ namespace Levara.WebApi.Controllers
         [HttpGet ("GetByGrid")]
         public async Task<IActionResult> GetByGrid([FromQuery] GetLeaseByGridQuery query)
         {
-            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+            if (_userContext.IsAdmin && (!query.OwnerId.HasValue && !query.TenantId.HasValue))
                 return BadRequest();
 
             if (_userContext.IsOwner)
                 query.OwnerId = _userContext.OwnerId!;
+
+            if (_userContext.IsTenant)
+                query.TenantId = _userContext.TenantId!;
+
+            var response = await _queryBus.Ask(query);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("transaction")]
+        [AuthorizeAnyRoles(Roles.Admin, Roles.Owner, Roles.Tenant)]
+        public async Task<IActionResult> GetLeaseTransactionByGrid([FromQuery] GetLeaseTransactionByGridQuery query)
+        {
+            if (_userContext.IsAdmin && !query.TenantId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsTenant)
+            {
+                query.TenantId = _userContext.TenantId!;
+            }
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)

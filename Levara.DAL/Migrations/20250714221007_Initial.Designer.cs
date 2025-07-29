@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Levara.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250526214426_Initial")]
+    [Migration("20250714221007_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -611,9 +611,6 @@ namespace Levara.DAL.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("ExpenseId")
                         .HasColumnType("integer");
 
@@ -621,9 +618,6 @@ namespace Levara.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("LastEditorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransactionId")
@@ -759,9 +753,6 @@ namespace Levara.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime>("LastEditedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -769,9 +760,6 @@ namespace Levara.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("LeaseId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransactionId")
@@ -893,9 +881,6 @@ namespace Levara.DAL.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime>("LastEditedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -903,9 +888,6 @@ namespace Levara.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("MaintenanceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransactionId")
@@ -1397,7 +1379,7 @@ namespace Levara.DAL.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
-                    b.Property<decimal?>("BankAccountBalance")
+                    b.Property<decimal?>("BankAccountRunningBalance")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
@@ -1425,6 +1407,10 @@ namespace Levara.DAL.Migrations
 
                     b.Property<int?>("LeaseId")
                         .HasColumnType("integer");
+
+                    b.Property<decimal?>("LeaseRunningBalance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<int?>("OwnerBankAccountId")
                         .HasColumnType("integer");
@@ -1721,11 +1707,8 @@ namespace Levara.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("EntityRunningBalance")
-                        .HasColumnType("numeric");
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("LastEditedDate")
                         .HasColumnType("timestamp with time zone");
@@ -1733,11 +1716,20 @@ namespace Levara.DAL.Migrations
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("LeaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("LeaseRunningBalance")
+                        .HasColumnType("numeric");
+
                     b.Property<int>("PropertyId")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("RunningBalance")
                         .HasColumnType("numeric");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<int>("SubType")
                         .HasColumnType("integer");
@@ -1746,6 +1738,8 @@ namespace Levara.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LeaseId");
 
                     b.HasIndex("PropertyId");
 
@@ -2393,11 +2387,17 @@ namespace Levara.DAL.Migrations
 
             modelBuilder.Entity("Levara.Domain.Models.Transaction", b =>
                 {
+                    b.HasOne("Levara.Domain.Models.Lease", "Lease")
+                        .WithMany()
+                        .HasForeignKey("LeaseId");
+
                     b.HasOne("Levara.Domain.Models.Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Lease");
 
                     b.Navigation("Property");
                 });

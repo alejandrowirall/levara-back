@@ -1,5 +1,4 @@
-﻿
-using Levara.Domain.DAL;
+﻿using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
@@ -13,47 +12,41 @@ public class CreateLeaseChargeCommandHandler : ICommandHandler<CreateLeaseCharge
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITransactionRepository _transactionRepository;
     private readonly ILeaseChargeRepository _leaseChargeRepository;
+    private readonly IPropertyRepository _propertyRepository;
     public CreateLeaseChargeCommandHandler(IUnitOfWork unitOfWork,
         ITransactionRepository transactionRepository, 
-        ILeaseChargeRepository leaseChargeRepository)
+        ILeaseChargeRepository leaseChargeRepository,
+        IPropertyRepository propertyRepository)
     {
         _unitOfWork = unitOfWork;
         _transactionRepository = transactionRepository;
         _leaseChargeRepository = leaseChargeRepository;
+        _propertyRepository = propertyRepository;
     }
     public async Task<OperationResult<CreateLeaseChargeCommandResponse>> Handle(CreateLeaseChargeCommand command)
     {
+        if (!await _propertyRepository.AnyAsync(p => p.OwnerId == command.OwnerId!.Value &&
+                                                     p.Id == command.PropertyId!.Value))
+            return OperationResult<CreateLeaseChargeCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Property with id {command.PropertyId!.Value} for Owner with id {command.OwnerId!.Value}"));
 
-        var lastTxQuery = _transactionRepository.GetAll()
-                                                .Where(t => t.PropertyId == command.PropertyId)
-                                                .OrderByDescending(t => t.CreatedDate);
-
-        var lastTx = await _transactionRepository.FirstOrDefaultAsync(lastTxQuery);
-
-        decimal nextRunningBalance = 0;
-        decimal nextEntityRunningBalance = 0;
-
-        if (lastTx != null)
-        {
-            nextEntityRunningBalance = lastTx.EntityRunningBalance - command.Amount!.Value;
-            nextRunningBalance = lastTx.RunningBalance - command.Amount!.Value;
-        }
+        // Obtener balances actuales
+        decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(command.PropertyId!.Value);
+        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(command.LeaseId!.Value);
 
         Transaction newTransaction =
-            Transaction.CreateLeaseCharge(command.PropertyId!.Value,
+            LeaseCharge.CreateTransaction(command.PropertyId!.Value,
                 command.Amount!.Value,
                 command.LeaseId!.Value,
                 command.Description!,
-                nextRunningBalance,
-                nextEntityRunningBalance,
+                currentPropertyRunningBalance,
+                currentLeaseRunningBalance,
+                command.DueDate!.Value,
                 command.Date);
 
         LeaseCharge newLeaseCharge = new()
         {
             Description = command.Description!,
             LeaseId = command.LeaseId!.Value,
-            Status = LeaseChargeStatus.Unpaid,
-            DueDate = command.DueDate!.Value,
             Transaction = newTransaction
         };
 

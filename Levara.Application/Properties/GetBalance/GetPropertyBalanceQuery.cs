@@ -8,10 +8,10 @@ namespace Levara.Application.Properties.GetBalance
     {
 
         [Range(1, int.MaxValue)]
-        public int? IdOwner { get; set; }
+        public int? OwnerId { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
-        public int? IdProperty { get; set; }
+        public int? PropertyId { get; set; }
     }
 }

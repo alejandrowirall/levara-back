@@ -18,7 +18,10 @@ namespace Levara.DAL.DbContext.EntityConfigurations
             builder.Property(e => e.RunningBalance)
                    .HasPrecision(18, 2);
 
-            builder.Property(e => e.BankAccountBalance)
+            builder.Property(e => e.BankAccountRunningBalance)
+                   .HasPrecision(18, 2);
+
+            builder.Property(e => e.LeaseRunningBalance)
                    .HasPrecision(18, 2);
 
             builder.HasOne(o => o.Property)

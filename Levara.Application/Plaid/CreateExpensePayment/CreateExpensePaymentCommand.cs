@@ -14,7 +14,7 @@ public class CreateExpensePaymentCommand : Command<CreateExpensePaymentCommandRe
     public int? OwnerId { get; set; }
 
     [Range(1, int.MaxValue)]
-    public int? ExpenseChargeId { get; set; }
+    public int? TransactionId { get; set; }
 
     [Required]
     [Range(1, double.MaxValue)]

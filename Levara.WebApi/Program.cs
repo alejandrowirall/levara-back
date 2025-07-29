@@ -21,7 +21,8 @@ try
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
                        .AllowAnyHeader()
-                       .WithExposedHeaders(new string[] { "Token-Expired" });
+                       .WithExposedHeaders(new string[] { "Token-Expired" })
+                       .SetPreflightMaxAge(TimeSpan.FromHours(1));
             });
     });
 

@@ -12,11 +12,11 @@ public class GetExpenseChargeByGridQueryResponse
         Id = expenseCharge.Id;
         TransactionId = expenseCharge.TransactionId;
         Transaction = expenseCharge.Transaction;
-        DueDate = expenseCharge.DueDate;
+        DueDate = expenseCharge.Transaction.DueDate ?? DateTime.MinValue;
         ExpenseId = expenseCharge.ExpenseId;
         Lease = expenseCharge.Expense;
-        Status = expenseCharge.Status;
-        StatusDescription = EnumExtensions.GetEnumDescription(expenseCharge.Status);
+        Status = expenseCharge.Transaction.Status;
+        StatusDescription = EnumExtensions.GetEnumDescription(expenseCharge.Transaction.Status);
     }
 
     public int Id { get; set; }
@@ -25,6 +25,6 @@ public class GetExpenseChargeByGridQueryResponse
     public DateTime DueDate { get; set; }
     public int ExpenseId { get; set; }
     public Expense Lease { get; set; }
-    public ExpenseChargeStatus Status { get; set; }
+    public TransactionStatus Status { get; set; }
     public string StatusDescription { get; set; }
 }

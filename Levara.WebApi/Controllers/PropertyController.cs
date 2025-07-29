@@ -138,7 +138,7 @@ namespace Levara.WebApi.Controllers
         public async Task<IActionResult> GetBalance([FromQuery] GetPropertyBalanceQuery query)
         {
             if (_userContext.IsOwner)
-                query.IdOwner = _userContext.OwnerId!;
+                query.OwnerId = _userContext.OwnerId!;
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)

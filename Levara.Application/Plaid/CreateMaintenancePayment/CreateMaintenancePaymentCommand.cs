@@ -14,7 +14,7 @@ public class CreateMaintenancePaymentCommand : Command<CreateMaintenancePaymentC
     public int? OwnerId { get; set; }
 
     [Range(1, int.MaxValue)]
-    public int? MaintenanceChargeId { get; set; }
+    public int? TransactionId { get; set; }
 
     [Required]
     [Range(0, double.MaxValue)]

@@ -28,5 +28,35 @@ namespace Levara.DAL.Repositories
             return GetAll().Include(bt => bt.OwnerBankAccount)
                            .Include(bt => bt.Property).ThenInclude(p => p.Address);
         }
+
+        public async Task<decimal> GetLastPropertyPaymentRunningBalanceAsync(int propertyId)
+        {
+            var lastPropertyPayment = await GetAll()
+                                             .Where(p => p.PropertyId == propertyId)
+                                             .OrderByDescending(p => p.CreatedDate)
+                                             .FirstOrDefaultAsync();
+
+            return lastPropertyPayment?.RunningBalance ?? 0;
+        }
+
+        public async Task<decimal> GetLastBankAccountRunningBalanceAsync(int ownerBankAccountId)
+        {
+            var lastBankAccountPayment = await GetAll()
+                                                .Where(p => p.OwnerBankAccountId == ownerBankAccountId)
+                                                .OrderByDescending(p => p.CreatedDate)
+                                                .FirstOrDefaultAsync();
+
+            return lastBankAccountPayment?.BankAccountRunningBalance ?? 0;
+        }
+
+        public async Task<decimal> GetLastLeasePaymentRunningBalanceAsync(int leaseId)
+        {
+            var lastLeasePayment = await GetAll()
+                                        .Where(p => p.LeaseId == leaseId)
+                                        .OrderByDescending(p => p.CreatedDate)
+                                        .FirstOrDefaultAsync();
+
+            return lastLeasePayment?.LeaseRunningBalance ?? 0;
+        }
     }
 }

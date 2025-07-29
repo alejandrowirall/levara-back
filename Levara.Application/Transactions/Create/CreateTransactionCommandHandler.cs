@@ -8,6 +8,7 @@ using Levara.Shared.Results;
 
 namespace Levara.Application.Transactions.Create;
 
+[Obsolete("This handler is deprecated. Use specific transaction factory methods instead.")]
 public class CreateTransactionCommandHandler : ICommandHandler<CreateTransactionCommand, CreateTransactionCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -20,26 +21,15 @@ public class CreateTransactionCommandHandler : ICommandHandler<CreateTransaction
     }
     public async Task<OperationResult<CreateTransactionCommandResponse>> Handle(CreateTransactionCommand command)
     {
-        //Debo obtener la ultima transaccion de la propiedad para poder luego actualizar el running balance
-        //Y el entity Running Balance
-        var lastTransaction = _transactionRepository.GetAll()
-        .Where(t => t.PropertyId == command.PropertyId) // Filtra por la propiedad
-        .OrderByDescending(t => t.CreatedDate) // Ordena por fecha de creación descendente
-        .FirstOrDefault();
-
-        decimal nextRunningBalance = 0;
-        decimal nextEntityRunningBalance = 0;
-
-        if (lastTransaction != null)
-        {
-            if (command.SubType == TransactionSubType.Charge) {
-                nextEntityRunningBalance = lastTransaction.EntityRunningBalance - command.Amount;
-                nextRunningBalance = lastTransaction.RunningBalance - command.Amount;
-            }
-            else {
-                nextEntityRunningBalance = lastTransaction.EntityRunningBalance + command.Amount;
-                nextRunningBalance = lastTransaction.RunningBalance + command.Amount;
-            }
+        // OBSOLETE: This handler uses deprecated EntityId and EntityRunningBalance properties
+        // Use specific transaction factory methods instead (CreateLeaseCharge, CreateLeasePayment, etc.)
+        decimal nextRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(command.PropertyId);
+        
+        if (command.SubType == TransactionSubType.Charge) {
+            nextRunningBalance = nextRunningBalance - command.Amount;
+        }
+        else {
+            nextRunningBalance = nextRunningBalance + command.Amount;
         }
 
         Transaction transaction = new()
@@ -47,12 +37,12 @@ public class CreateTransactionCommandHandler : ICommandHandler<CreateTransaction
             Type = command.Type,
             SubType = command.SubType,
             PropertyId = command.PropertyId,
-            EntityId =command.EntityId,
+            LeaseId = null, // OBSOLETE: EntityId property removed, use LeaseId for lease transactions
             Amount=command.Amount,
             Date= command.Date.ToUniversalTime(),
             Description= command.Description, 
             RunningBalance=nextRunningBalance,
-            EntityRunningBalance=nextEntityRunningBalance
+            LeaseRunningBalance = null // OBSOLETE: EntityRunningBalance renamed to LeaseRunningBalance
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>

@@ -15,7 +15,7 @@ namespace Levara.Application.ExpenseCharges.GetByGrid
         [Range(1, int.MaxValue)]
         public int? PropertyId { get; set; }
 
-        public ExpenseChargeStatus[]? Statuses { get; set; }
+        public TransactionStatus[]? Statuses { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]

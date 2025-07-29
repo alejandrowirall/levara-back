@@ -525,37 +525,6 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    SubType = table.Column<int>(type: "integer", nullable: false),
-                    PropertyId = table.Column<int>(type: "integer", nullable: false),
-                    EntityId = table.Column<int>(type: "integer", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    RunningBalance = table.Column<decimal>(type: "numeric", nullable: false),
-                    EntityRunningBalance = table.Column<decimal>(type: "numeric", nullable: false),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatorId = table.Column<int>(type: "integer", nullable: true),
-                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Properties_PropertyId",
-                        column: x => x.PropertyId,
-                        principalTable: "Properties",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -568,7 +537,8 @@ namespace Levara.DAL.Migrations
                     LeaseId = table.Column<int>(type: "integer", nullable: true),
                     OwnerBankAccountId = table.Column<int>(type: "integer", nullable: true),
                     RunningBalance = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
-                    BankAccountBalance = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
+                    BankAccountRunningBalance = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
+                    LeaseRunningBalance = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     PaymentMethod = table.Column<int>(type: "integer", nullable: false),
                     PlaidTransactionId = table.Column<int>(type: "integer", nullable: true),
@@ -604,15 +574,51 @@ namespace Levara.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    SubType = table.Column<int>(type: "integer", nullable: false),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    LeaseId = table.Column<int>(type: "integer", nullable: true),
+                    Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    RunningBalance = table.Column<decimal>(type: "numeric", nullable: false),
+                    LeaseRunningBalance = table.Column<decimal>(type: "numeric", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<int>(type: "integer", nullable: true),
+                    LastEditorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Leases_LeaseId",
+                        column: x => x.LeaseId,
+                        principalTable: "Leases",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Transactions_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExpenseCharges",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TransactionId = table.Column<int>(type: "integer", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ExpenseId = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -671,9 +677,7 @@ namespace Levara.DAL.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Description = table.Column<string>(type: "text", nullable: false),
                     TransactionId = table.Column<int>(type: "integer", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LeaseId = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -731,9 +735,7 @@ namespace Levara.DAL.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TransactionId = table.Column<int>(type: "integer", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     MaintenanceId = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastEditedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -1185,6 +1187,11 @@ namespace Levara.DAL.Migrations
                 column: "PaymentTransactionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Transactions_LeaseId",
+                table: "Transactions",
+                column: "LeaseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_PropertyId",
                 table: "Transactions",
                 column: "PropertyId");
@@ -1257,19 +1264,19 @@ namespace Levara.DAL.Migrations
                 name: "MaintenanceTypes");
 
             migrationBuilder.DropTable(
+                name: "PlaidTransaction");
+
+            migrationBuilder.DropTable(
                 name: "Leases");
 
             migrationBuilder.DropTable(
-                name: "PlaidTransaction");
+                name: "OwnerBankAccounts");
 
             migrationBuilder.DropTable(
                 name: "Properties");
 
             migrationBuilder.DropTable(
                 name: "Tenants");
-
-            migrationBuilder.DropTable(
-                name: "OwnerBankAccounts");
 
             migrationBuilder.DropTable(
                 name: "Owners");

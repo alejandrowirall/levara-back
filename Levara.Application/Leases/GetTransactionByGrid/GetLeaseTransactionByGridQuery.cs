@@ -1,21 +1,19 @@
 ﻿
-using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Queries;
 using System.ComponentModel.DataAnnotations;
 
-namespace Levara.Application.MaintenancesCharges.GetByGrid
+namespace Levara.Application.Leases.GetTransactionByGrid
 {
-    public class GetMaintenanceChargeByGridQuery : Query<PagedList<GetMaintenanceChargeByGridQueryResponse>>
+    public class GetLeaseTransactionByGridQuery : Query<PagedList<GetLeaseTransactionByGridQueryResponse>>
     {
-        [Range(1, int.MaxValue)]
-        public int? OwnerId { get; set; }
-
 
         [Range(1, int.MaxValue)]
-        public int? PropertyId { get; set; }
+        public int? TenantId { get; set; }
 
-        public TransactionStatus[]? Statuses { get; set; }
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int? LeaseId { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]

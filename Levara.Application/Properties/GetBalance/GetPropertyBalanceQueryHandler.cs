@@ -18,24 +18,24 @@ public class GetOwnerBalanceQueryHandler : IQueryHandler<GetPropertyBalanceQuery
     public async Task<OperationResult<GetPropertyBalanceQueryResponse>> Handle(GetPropertyBalanceQuery query)
     {
         var propertyQuery =  _propertyRepository.GetAllWithAddress()
-                                                .Where(p => p.Id == query.IdProperty!.Value && p.OwnerId == query.IdOwner!.Value);
+                                                .Where(p => p.Id == query.PropertyId!.Value && p.OwnerId == query.OwnerId!.Value);
 
-        if (query.IdOwner.HasValue)
-            propertyQuery = propertyQuery.Where(p => p.OwnerId == query.IdOwner!.Value);
+        if (query.OwnerId.HasValue)
+            propertyQuery = propertyQuery.Where(p => p.OwnerId == query.OwnerId!.Value);
 
         var property = await _propertyRepository.FirstOrDefaultAsync(propertyQuery);
         if (property == null)
-            return OperationResult<GetPropertyBalanceQueryResponse>.ErrorResult(new ErrorDetails(404, $"Property with id {query.IdProperty!.Value} not found."));
+            return OperationResult<GetPropertyBalanceQueryResponse>.ErrorResult(new ErrorDetails(404, $"Property with id {query.PropertyId!.Value} not found."));
 
 
         var propertyBalance = await _paymentRepository.GetAll()
-                                                   .Where(p => p.PropertyId == query.IdProperty!.Value)
+                                                   .Where(p => p.PropertyId == query.PropertyId!.Value)
                                                    .OrderByDescending(p => p.CreatedDate)
                                                    .Select(p => p.RunningBalance)
                                                    .FirstOrDefaultAsync();
 
         var lastPaymentsQuery = _paymentRepository.GetAllWithOwnerBankAccount()
-                                                  .Where(p => p.PropertyId == query.IdProperty!.Value)
+                                                  .Where(p => p.PropertyId == query.PropertyId!.Value)
                                                   .OrderByDescending(bt => bt.Date)
                                                   .Take(3);
 

@@ -14,7 +14,7 @@ public class CreateLeasePaymentCommand : Command<CreateLeasePaymentCommandRespon
     public int? OwnerId { get; set; }
 
     [Range(1, int.MaxValue)]
-    public int? LeaseChargeId { get; set; }
+    public int? TransactionId { get; set; }
 
     [Required]
     [Range(1, double.MaxValue)]

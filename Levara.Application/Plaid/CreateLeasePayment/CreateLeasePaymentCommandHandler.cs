@@ -1,11 +1,11 @@
-﻿using Levara.Domain.DAL;
+﻿using Levara.DAL.Repositories;
+using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
-using Levara.Shared.Results;
 using Levara.Shared.Extensions;
-using Microsoft.EntityFrameworkCore;
+using Levara.Shared.Results;
 
 namespace Levara.Application.Plaid.CreateLeasePayment;
 
@@ -61,7 +61,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
 
         plaidtx.Status = PlaidTransactionStatus.RelevantTransaction;
 
-        if (command.LeaseChargeId.HasValue)
+        if (command.TransactionId.HasValue)
             return await GenerateLeasePaymentWithCharge(plaidtx, command);
 
 
@@ -73,29 +73,15 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
     {
 
         var leaseQuery = _leaseRepository.GetAll()
-                                            .Where(e => e.Id == command.CreateLeaseCharge!.LeaseId!.Value);
+                                         .Where(e => e.Id == command.CreateLeaseCharge!.LeaseId!.Value);
 
         var lease = await _leaseRepository.FirstOrDefaultAsync(leaseQuery);
         if (lease == null)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Lease with id: {command.CreateLeaseCharge!.LeaseId!.Value}"));
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == lease.PropertyId)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(lease.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
+        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(command.CreateLeaseCharge!.LeaseId!.Value);
 
         Payment newPayment = new()
         {
@@ -105,53 +91,43 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = lease.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance + command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance + command.Amount!.Value,
+            LeaseId = command.CreateLeaseCharge!.LeaseId!.Value,
+            LeaseRunningBalance = leasePaymentRunningBalance + command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Lease,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == lease.PropertyId)
-           .OrderByDescending(o => o.Id);
-
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-
-        decimal currentRunningBalance = 0;
-        decimal currentEntityRunningBalance = 0;
-
-        if (lastTx != null)
-        {
-            currentRunningBalance = lastTx.RunningBalance;
-            currentEntityRunningBalance = lastTx.EntityRunningBalance;
-            
-        }
+        decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(lease.PropertyId);
+        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(command.CreateLeaseCharge!.LeaseId!.Value);
 
         Transaction newLeaseChargeTx =
-            Transaction.CreateLeaseCharge(lease.PropertyId,
+            LeaseCharge.CreateTransaction(lease.PropertyId,
                                           command.Amount!.Value,
                                           command.CreateLeaseCharge!.LeaseId!.Value,
                                           command.CreateLeaseCharge!.Description,
-                                          currentRunningBalance,
-                                          currentEntityRunningBalance,
+                                          currentPropertyRunningBalance,
+                                          currentLeaseRunningBalance,
+                                          DateTime.UtcNow,
                                           plaidtx.Date);
+
+        newLeaseChargeTx.Status = TransactionStatus.Paid;
 
         LeaseCharge newLeaseCharge = new()
         {
             Transaction = newLeaseChargeTx,
             Description = command.CreateLeaseCharge!.Description,
             LeaseId = lease.Id,
-            DueDate = DateTime.UtcNow,
-            Status = LeaseChargeStatus.Paid,
         };
 
         Transaction newLeasePaymentTx =
-            Transaction.CreateLeasePayment(lease.PropertyId,
+            LeasePayment.CreateTransaction(lease.PropertyId,
                                            command.Amount!.Value,
                                            command.CreateLeaseCharge!.LeaseId!.Value,
                                            command.CreateLeaseCharge!.Description,
                                            newLeaseChargeTx.RunningBalance,
-                                           newLeaseChargeTx.EntityRunningBalance,
+                                           newLeaseChargeTx.LeaseRunningBalance!.Value,
                                            plaidtx.Date);
 
         TransactionApplication txAppl = new()
@@ -196,19 +172,19 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         CreateLeasePaymentCommand command)
     {
         var leaseChargeQuery = _leaseChargeRepository.GetAllFull()
-                                                       .Where(b => b.Id == command.LeaseChargeId);
+                                                     .Where(b => b.TransactionId == command.TransactionId);
 
         LeaseCharge? leaseCharge = await _leaseChargeRepository.FirstOrDefaultAsync(leaseChargeQuery);
         if (leaseCharge == null)
-            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found lease charge with id: {command.LeaseChargeId}"));
+            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found lease charge with TransactionId: {command.TransactionId}"));
 
         if (leaseCharge.Lease.OwnerId != command.OwnerId)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge does not belong to a lease of the owner"));
 
-        if (leaseCharge.Status == LeaseChargeStatus.Paid)
+        if (leaseCharge.Transaction.Status == TransactionStatus.Paid)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge must not be in paid status"));
 
-        if (leaseCharge.Status == LeaseChargeStatus.Unpaid)
+        if (leaseCharge.Transaction.Status == TransactionStatus.Unpaid)
             return await GenerateLeasePaymentFromUnpaid(plaidtx, leaseCharge, command);
 
         return await GenerateLeasePaymentFromPartpaid(plaidtx, leaseCharge, command);
@@ -220,23 +196,9 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
 
     {
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == leaseCharge.Transaction.PropertyId)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
+        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(leaseCharge.LeaseId);
 
         Payment newPayment = new()
         {
@@ -246,26 +208,23 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance + command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance + command.Amount!.Value,
+            LeaseId = leaseCharge.LeaseId,
+            LeaseRunningBalance = leasePaymentRunningBalance + command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Lease,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == leaseCharge.Transaction.PropertyId)
-           .OrderByDescending(o => o.CreatedDate);
+        decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
+        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(leaseCharge.LeaseId);
 
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-        if (lastTx == null)
-            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
-
-        Transaction tx = Transaction.CreateLeasePayment(leaseCharge.Transaction.PropertyId,
+        Transaction tx = LeasePayment.CreateTransaction(leaseCharge.Transaction.PropertyId,
                                                         command.Amount!.Value,
                                                         leaseCharge.LeaseId,
                                                         leaseCharge.Description,
-                                                        lastTx.RunningBalance,
-                                                        lastTx.EntityRunningBalance,
+                                                        currentPropertyRunningBalance,
+                                                        currentLeaseRunningBalance,
                                                         plaidtx.Date);
 
         TransactionApplication txAppl = new()
@@ -282,13 +241,15 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             Transaction = tx,
         };
 
-        leaseCharge.Status = leaseCharge.Transaction.Amount == txAppl.AppliedAmount ? LeaseChargeStatus.Paid : LeaseChargeStatus.Partpaid;
+        leaseCharge.Transaction.Status = leaseCharge.Transaction.Amount == txAppl.AppliedAmount ? TransactionStatus.Paid : TransactionStatus.PartiallyPaid;
+
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _paymentRepository.AddAsync(newPayment);
             await _transactionRepository.AddAsync(tx);
             await _transactionApplicationRepository.AddAsync(txAppl);
+            _transactionRepository.Update(leaseCharge.Transaction);
             _leaseChargeRepository.Update(leaseCharge);
             await _leasePaymentRepository.AddAsync(leasePayment);
             _plaidRepository.Update(plaidtx);
@@ -310,23 +271,9 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
     {
 
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == leaseCharge.Transaction.PropertyId)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
+        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(leaseCharge.LeaseId);
 
         Payment newPayment = new()
         {
@@ -336,32 +283,26 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance + command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance + command.Amount!.Value,
+            LeaseId = leaseCharge.LeaseId,
+            LeaseRunningBalance = leasePaymentRunningBalance + command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Lease,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == leaseCharge.Transaction.PropertyId)
-           .OrderByDescending(o => o.Id);
+        decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
+        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(leaseCharge.LeaseId);
 
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-        if (lastTx == null)
-            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
-
-        Transaction tx = Transaction.CreateLeasePayment(leaseCharge.Transaction.PropertyId,
+        Transaction tx = LeasePayment.CreateTransaction(leaseCharge.Transaction.PropertyId,
                                                         command.Amount!.Value,
                                                         leaseCharge.LeaseId,
                                                         leaseCharge.Description,
-                                                        lastTx.RunningBalance,
-                                                        lastTx.EntityRunningBalance,
+                                                        currentPropertyRunningBalance,
+                                                        currentLeaseRunningBalance,
                                                         plaidtx.Date);
 
-        var currentTotalAmountTxAp = await _transactionApplicationRepository.GetAll()
-                                                                            .Where(ta => ta.ChargeTransactionId == leaseCharge.TransactionId)
-                                                                            .Select(ta => ta.AppliedAmount)
-                                                                            .SumAsync();
+        var currentTotalAmountTxAp = await _transactionApplicationRepository.GetTotalAppliedAmountByChargeTransactionAsync(leaseCharge.TransactionId);
 
         decimal newTotalAmountTxAp = currentTotalAmountTxAp + command.Amount!.Value;
 
@@ -383,13 +324,14 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         };
 
 
-        leaseCharge.Status = leaseCharge.Transaction.Amount == newTotalAmountTxAp ? LeaseChargeStatus.Paid : LeaseChargeStatus.Partpaid;
+        leaseCharge.Transaction.Status = leaseCharge.Transaction.Amount == newTotalAmountTxAp ? TransactionStatus.Paid : TransactionStatus.PartiallyPaid;
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _paymentRepository.AddAsync(newPayment);
             await _transactionRepository.AddAsync(tx);
             await _transactionApplicationRepository.AddAsync(txAppl);
+            _transactionRepository.Update(leaseCharge.Transaction);
             _leaseChargeRepository.Update(leaseCharge);
             await _leasePaymentRepository.AddAsync(leasePayment);
             _plaidRepository.Update(plaidtx);

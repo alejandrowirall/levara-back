@@ -1,11 +1,11 @@
-﻿using Levara.Domain.DAL;
+﻿using Levara.DAL.Repositories;
+using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Extensions;
 using Levara.Shared.Results;
-using Microsoft.EntityFrameworkCore;
 
 namespace Levara.Application.Plaid.CreateExpensePayment;
 
@@ -61,7 +61,7 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
 
         plaidtx.Status = PlaidTransactionStatus.RelevantTransaction;
 
-        if (command.ExpenseChargeId.HasValue)
+        if (command.TransactionId.HasValue)
            return await GenerateExpensePaymentWithCharge(plaidtx, command);
 
 
@@ -79,23 +79,8 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         if(expense == null)
             return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == command.CreateExpenseCharge!.PropertyId!.Value)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(command.CreateExpenseCharge!.PropertyId!.Value);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
 
         Payment newPayment = new()
         {
@@ -105,51 +90,35 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = command.CreateExpenseCharge!.PropertyId!.Value,
             RunningBalance = runningBalance - command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance - command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance - command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Expense,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == command.CreateExpenseCharge!.PropertyId!.Value)
-           .OrderByDescending(o => o.Id);
-
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-
-        decimal currentRunningBalance = 0;
-        decimal currentEntityRunningBalance = 0;
-
-        if (lastTx != null)
-        {
-            currentRunningBalance = lastTx.RunningBalance;
-            currentEntityRunningBalance = lastTx.EntityRunningBalance;   
-        }
+        decimal currentRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(command.CreateExpenseCharge!.PropertyId!.Value);
 
         Transaction newExpenseChargeTx =
-            Transaction.CreateExpenseCharge(command.CreateExpenseCharge!.PropertyId!.Value,
+            ExpenseCharge.CreateTransaction(command.CreateExpenseCharge!.PropertyId!.Value,
                                             command.Amount!.Value,
-                                            expense.Id,
                                             expense.Name,
                                             currentRunningBalance,
-                                            currentEntityRunningBalance,
+                                            DateTime.UtcNow,
                                             plaidtx.Date);
+
+        newExpenseChargeTx.Status = TransactionStatus.Paid;
 
         ExpenseCharge newExpenseCharge = new()
         {
             Transaction = newExpenseChargeTx,
             ExpenseId = expense.Id,
-            DueDate = DateTime.UtcNow,
-            Status = ExpenseChargeStatus.Paid,
         };
 
         Transaction newExpensePaymentTx =
-            Transaction.CreateExpensePayment(command.CreateExpenseCharge!.PropertyId!.Value,
+            ExpensePayment.CreateTransaction(command.CreateExpenseCharge!.PropertyId!.Value,
                                              command.Amount!.Value,
-                                             expense.Id,
                                              expense.Name,
                                              newExpenseChargeTx.RunningBalance,
-                                             newExpenseChargeTx.EntityRunningBalance,
                                              plaidtx.Date);
 
         TransactionApplication txAppl = new()
@@ -194,19 +163,19 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         CreateExpensePaymentCommand command)
     {
         var expenseChargeQuery = _expenseChargeRepository.GetAllFull()
-                                                         .Where(b => b.Id == command.ExpenseChargeId);
+                                                         .Where(b => b.TransactionId == command.TransactionId);
 
         ExpenseCharge? expenseCharge = await _expenseChargeRepository.FirstOrDefaultAsync(expenseChargeQuery);
         if (expenseCharge == null)
-            return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+            return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found expense charge with TransactionId: {command.TransactionId}"));
 
         if (expenseCharge.Transaction.Property.OwnerId != command.OwnerId)
             return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge does not belong to a property of the owner"));
 
-        if (expenseCharge.Status == ExpenseChargeStatus.Paid)
+        if (expenseCharge.Transaction.Status == TransactionStatus.Paid)
             return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge must not be in paid status"));
 
-        if (expenseCharge.Status == ExpenseChargeStatus.Unpaid)
+        if (expenseCharge.Transaction.Status == TransactionStatus.Unpaid)
             return await GenerateExpensePaymentFromUnpaid(plaidtx, expenseCharge, command);
 
         return await GenerateExpensePaymentFromPartpaid(plaidtx, expenseCharge, command);
@@ -218,23 +187,8 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
 
     {
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == expenseCharge.Transaction.PropertyId)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(expenseCharge.Transaction.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
 
         Payment newPayment = new()
         {
@@ -244,26 +198,18 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = expenseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance - command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance - command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Expense,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == expenseCharge.Transaction.PropertyId)
-           .OrderByDescending(o => o.CreatedDate);
+        decimal currentRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(expenseCharge.Transaction.PropertyId);
 
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-        if (lastTx == null)
-            return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
-
-        Transaction tx = Transaction.CreateExpensePayment(expenseCharge.Transaction.PropertyId,
+        Transaction tx = ExpensePayment.CreateTransaction(expenseCharge.Transaction.PropertyId,
                                                           command.Amount!.Value,
-                                                          expenseCharge.ExpenseId,
                                                           expenseCharge.Expense.Name,
-                                                          lastTx.RunningBalance,
-                                                          lastTx.EntityRunningBalance,
+                                                          currentRunningBalance,
                                                           plaidtx.Date);
 
         TransactionApplication txAppl = new()
@@ -280,13 +226,14 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
             Transaction = tx,
         };
 
-        expenseCharge.Status = expenseCharge.Transaction.Amount == txAppl.AppliedAmount ? ExpenseChargeStatus.Paid : ExpenseChargeStatus.Partpaid;
+        expenseCharge.Transaction.Status = expenseCharge.Transaction.Amount == txAppl.AppliedAmount ? TransactionStatus.Paid : TransactionStatus.PartiallyPaid;
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _paymentRepository.AddAsync(newPayment);
             await _transactionRepository.AddAsync(tx);
             await _transactionApplicationRepository.AddAsync(txAppl);
+            _transactionRepository.Update(expenseCharge.Transaction);
             _expenseChargeRepository.Update(expenseCharge);
             await _expensePaymentRepository.AddAsync(expensePayment);
             _plaidRepository.Update(plaidtx);
@@ -308,23 +255,8 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
     {
 
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == expenseCharge.Transaction.PropertyId)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(expenseCharge.Transaction.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
 
         Payment newPayment = new()
         {
@@ -334,32 +266,21 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = expenseCharge.Transaction.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance - command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance - command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Expense,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == expenseCharge.Transaction.PropertyId)
-           .OrderByDescending(o => o.Id);
+        decimal currentRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(expenseCharge.Transaction.PropertyId);
 
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-        if (lastTx == null)
-            return OperationResult<CreateExpensePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
-
-        Transaction tx = Transaction.CreateExpensePayment(expenseCharge.Transaction.PropertyId,
+        Transaction tx = ExpensePayment.CreateTransaction(expenseCharge.Transaction.PropertyId,
                                                           command.Amount!.Value,
-                                                          expenseCharge.ExpenseId,
                                                           expenseCharge.Expense.Name,
-                                                          lastTx.RunningBalance,
-                                                          lastTx.EntityRunningBalance,
+                                                          currentRunningBalance,
                                                           plaidtx.Date);
 
-        var currentTotalAmountTxAp = await _transactionApplicationRepository.GetAll()
-                                                                            .Where(ta => ta.ChargeTransactionId == expenseCharge.TransactionId)
-                                                                            .Select(ta => ta.AppliedAmount)
-                                                                            .SumAsync();
+        var currentTotalAmountTxAp = await _transactionApplicationRepository.GetTotalAppliedAmountByChargeTransactionAsync(expenseCharge.TransactionId);
 
         decimal newTotalAmountTxAp = currentTotalAmountTxAp + command.Amount!.Value;
 
@@ -381,13 +302,14 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
         };
 
 
-        expenseCharge.Status = expenseCharge.Transaction.Amount == newTotalAmountTxAp ? ExpenseChargeStatus.Paid : ExpenseChargeStatus.Partpaid;
+        expenseCharge.Transaction.Status = expenseCharge.Transaction.Amount == newTotalAmountTxAp ? TransactionStatus.Paid : TransactionStatus.PartiallyPaid;
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _paymentRepository.AddAsync(newPayment);
             await _transactionRepository.AddAsync(tx);
             await _transactionApplicationRepository.AddAsync(txAppl);
+            _transactionRepository.Update(expenseCharge.Transaction);
             _expenseChargeRepository.Update(expenseCharge);
             await _expensePaymentRepository.AddAsync(expensePayment);
             _plaidRepository.Update(plaidtx);

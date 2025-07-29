@@ -21,4 +21,11 @@ public class TransactionApplicationRepository : Repository<TransactionApplicatio
                        .Include(ta => ta.PaymentTransaction);
     }
 
+    public async Task<decimal> GetTotalAppliedAmountByChargeTransactionAsync(int chargeTransactionId)
+    {
+        return await GetAll()
+                     .Where(ta => ta.ChargeTransactionId == chargeTransactionId)
+                     .SumAsync(ta => ta.AppliedAmount);
+    }
+
 }

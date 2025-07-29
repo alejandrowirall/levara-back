@@ -17,7 +17,7 @@ namespace Levara.Application.LeaseCharges.GetByGrid
         [Range(1, int.MaxValue)]
         public int? PropertyId { get; set; }
 
-        public LeaseChargeStatus[]? Statuses { get; set; }
+        public TransactionStatus[]? Statuses { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]

@@ -36,11 +36,11 @@ namespace Levara.WebApi.Controllers
         [HttpGet("dashboard")]
         public async Task<IActionResult> GetDashboard([FromQuery] GetOwnerDashboardQuery query)
         {
-            if (_userContext.IsAdmin && !query.Id.HasValue)
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
                 return BadRequest();
 
             if(_userContext.IsOwner)
-                query.Id = _userContext.OwnerId!;
+                query.OwnerId = _userContext.OwnerId!;
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)

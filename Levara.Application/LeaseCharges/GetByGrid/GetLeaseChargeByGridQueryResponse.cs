@@ -12,11 +12,11 @@ public class GetLeaseChargeByGridQueryResponse
         Id = leaseCharge.Id;
         TransactionId = leaseCharge.TransactionId;
         Transaction = leaseCharge.Transaction;
-        DueDate = leaseCharge.DueDate;
+        DueDate = leaseCharge.Transaction.DueDate ?? DateTime.MinValue;
         LeaseId = leaseCharge.LeaseId;
         Lease = leaseCharge.Lease;
-        Status = leaseCharge.Status;
-        StatusDescription = EnumExtensions.GetEnumDescription(leaseCharge.Status);
+        Status = leaseCharge.Transaction.Status;
+        StatusDescription = EnumExtensions.GetEnumDescription(leaseCharge.Transaction.Status);
     }
 
     public int Id { get; set; }
@@ -29,6 +29,6 @@ public class GetLeaseChargeByGridQueryResponse
 
     public Lease Lease { get; set; }
 
-    public LeaseChargeStatus Status { get; set; }
+    public TransactionStatus Status { get; set; }
     public string StatusDescription { get; set; }
 }

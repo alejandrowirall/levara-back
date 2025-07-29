@@ -19,16 +19,16 @@ public class GetExpenseChargeByGridQueryHandler : IQueryHandler<GetExpenseCharge
         var expenseChargeQuery = _expenseChargeRepository.GetAllFull();
 
         if (query.PropertyId.HasValue)
-            expenseChargeQuery = expenseChargeQuery.Where(t => t.Transaction.PropertyId == query.PropertyId!.Value);
+            expenseChargeQuery = expenseChargeQuery.Where(ec => ec.Transaction.PropertyId == query.PropertyId!.Value);
 
         if (query.OwnerId.HasValue)
-            expenseChargeQuery = expenseChargeQuery.Where(t => t.Transaction.Property.OwnerId == query.OwnerId!.Value);
+            expenseChargeQuery = expenseChargeQuery.Where(ec => ec.Transaction.Property.OwnerId == query.OwnerId!.Value);
 
         if (query.Statuses != null && query.Statuses.Any())
-            expenseChargeQuery = expenseChargeQuery.Where(t => query.Statuses.Contains(t.Status));
+            expenseChargeQuery = expenseChargeQuery.Where(ec => query.Statuses.Contains(ec.Transaction.Status));
 
-        var responseQuery = expenseChargeQuery.OrderByDescending(e => e.CreatedDate)
-                                              .Select(e => new GetExpenseChargeByGridQueryResponse(e));
+        var responseQuery = expenseChargeQuery.OrderByDescending(ec => ec.CreatedDate)
+                                              .Select(ec => new GetExpenseChargeByGridQueryResponse(ec));
 
         var response = await _expenseChargeRepository.ToListPagedAsync(responseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 

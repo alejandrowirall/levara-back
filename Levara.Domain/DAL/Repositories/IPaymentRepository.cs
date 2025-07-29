@@ -9,4 +9,10 @@ public interface IPaymentRepository : IRepository<Payment>
     IQueryable<Payment> GetAllWithProperty();
 
     IQueryable<Payment> GetAllFull();
+
+    Task<decimal> GetLastPropertyPaymentRunningBalanceAsync(int propertyId);
+
+    Task<decimal> GetLastBankAccountRunningBalanceAsync(int ownerBankAccountId);
+
+    Task<decimal> GetLastLeasePaymentRunningBalanceAsync(int leaseId);
 }

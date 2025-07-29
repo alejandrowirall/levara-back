@@ -39,6 +39,12 @@ namespace Levara.WebApi.Controllers
         [HttpGet("GetLinkToken")]
         public async Task<IActionResult> GetLinkToken([FromQuery] GetLinkTokenQuery query)
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {

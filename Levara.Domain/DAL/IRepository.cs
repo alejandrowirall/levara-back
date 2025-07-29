@@ -10,6 +10,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<IEnumerable<T>> ToListAsync<T>(IQueryable<T> query);
     Task<T?> FirstOrDefaultAsync<T>(IQueryable<T> query);
+    Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>>? filter = null);
     Task<PagedList<T>> ToListPagedAsync<T>(IQueryable<T> query, int pageNumber, int pageSize);
     Task<CursorPagedList<TEntity>> ToListCursorAsync(IQueryable<TEntity> query, int pageSize, int? cursor = null);
     Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> filter, int pageNumber, int pageSize);
@@ -18,6 +19,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     void Update(TEntity entity);
     void Update(List<TEntity> entities);
     void Delete(TEntity entity);
+    void Delete(List<TEntity> entities);
     Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null);
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null);
 }

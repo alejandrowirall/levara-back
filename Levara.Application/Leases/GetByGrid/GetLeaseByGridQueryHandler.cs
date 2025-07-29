@@ -9,9 +9,12 @@ namespace Levara.Application.Leases.GetByGrid;
 public class GetLeaseByGridQueryHandler : IQueryHandler<GetLeaseByGridQuery, PagedList<GetLeaseByGridQueryResponse>>
 {
     private readonly ILeaseRepository _leaseRepository;
-    public GetLeaseByGridQueryHandler(ILeaseRepository leaseRepository) 
+    private readonly ITransactionRepository _transactionRepository;
+    
+    public GetLeaseByGridQueryHandler(ILeaseRepository leaseRepository, ITransactionRepository transactionRepository) 
     {
         _leaseRepository = leaseRepository;
+        _transactionRepository = transactionRepository;
     }
     public async Task<OperationResult<PagedList<GetLeaseByGridQueryResponse>>> Handle(GetLeaseByGridQuery query)
     {
@@ -32,6 +35,13 @@ public class GetLeaseByGridQueryHandler : IQueryHandler<GetLeaseByGridQuery, Pag
 
         var response = await _leaseRepository.ToListPagedAsync(leaseQueryResponse, query.PageNumber!.Value, query.PageSize!.Value);
 
+        var leaseIds = response.Items.Select(r => r.Id).ToList();
+        var leaseBalances = await _transactionRepository.GetLastLeaseRunningBalancesAsync(leaseIds);
+
+        foreach (var item in response.Items)
+        {
+            item.Balance = leaseBalances.GetValueOrDefault(item.Id, 0);
+        }
 
         return OperationResult<PagedList<GetLeaseByGridQueryResponse>>.SuccessResult(response);
 

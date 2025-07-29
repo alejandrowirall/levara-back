@@ -5,7 +5,6 @@ using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Extensions;
 using Levara.Shared.Results;
-using Microsoft.EntityFrameworkCore;
 
 namespace Levara.Application.Plaid.CreateMaintenancePayment;
 
@@ -61,7 +60,7 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
 
         plaidtx.Status = PlaidTransactionStatus.RelevantTransaction;
 
-        if (command.MaintenanceChargeId.HasValue)
+        if (command.TransactionId.HasValue)
             return await GenerateMaintenancePaymentWithCharge(plaidtx, command);
 
 
@@ -72,23 +71,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         CreateMaintenancePaymentCommand command)
     {
 
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == command.CreateMaintenance!.PropertyId!.Value)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(command.CreateMaintenance!.PropertyId!.Value);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
 
         Payment newPayment = new()
         {
@@ -98,27 +82,13 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = command.CreateMaintenance!.PropertyId!.Value,
             RunningBalance = runningBalance - command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance - command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance - command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Maintenance,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == command.CreateMaintenance!.PropertyId!.Value)
-           .OrderByDescending(o => o.Id);
-
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-
-        decimal currentRunningBalance = 0;
-        decimal currentEntityRunningBalance = 0;
-
-        if (lastTx != null)
-        {
-            currentRunningBalance = lastTx.RunningBalance;
-            currentEntityRunningBalance = lastTx.EntityRunningBalance;
-            
-        }
+        decimal currentRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(command.CreateMaintenance!.PropertyId!.Value);
 
         Maintenance newMaintenance = new()
         {
@@ -131,28 +101,27 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         };
 
         Transaction newMaintenanceChargeTx =
-            Transaction.CreateMaintenanceCharge(command.CreateMaintenance!.PropertyId!.Value,
+            MaintenanceCharge.CreateTransaction(command.CreateMaintenance!.PropertyId!.Value,
                                                 command.Amount!.Value,
-                                                0,
                                                 newMaintenance.Title,
                                                 currentRunningBalance,
-                                                currentEntityRunningBalance);
+                                                DateTime.UtcNow,
+                                                plaidtx.Date);
+
+        newMaintenanceChargeTx.Status = TransactionStatus.Paid;
 
         MaintenanceCharge newMaintenanceCharge = new()
         {
             Transaction = newMaintenanceChargeTx,
             Maintenance = newMaintenance,
-            DueDate = DateTime.UtcNow,
-            Status = MaintenanceChargeStatus.Paid,
         };
 
-        Transaction newMaintenancePaymentTx = 
-            Transaction.CreateMaintenancePayment(command.CreateMaintenance!.PropertyId!.Value,
-                                                command.Amount!.Value,
-                                                0,
-                                                newMaintenance.Title,
-                                                newMaintenanceChargeTx.RunningBalance,
-                                                newMaintenanceChargeTx.EntityRunningBalance);
+        Transaction newMaintenancePaymentTx =
+            MaintenancePayment.CreateTransaction(command.CreateMaintenance!.PropertyId!.Value,
+                                                 command.Amount!.Value,
+                                                 newMaintenance.Title,
+                                                 newMaintenanceChargeTx.RunningBalance,
+                                                 plaidtx.Date);
 
         TransactionApplication txAppl = new()
         {
@@ -176,10 +145,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
 
             await _paymentRepository.AddAsync(newPayment);
 
-            newMaintenanceChargeTx.EntityId = newMaintenance.Id;
             await _transactionRepository.AddAsync(newMaintenanceChargeTx);
 
-            newMaintenancePaymentTx.EntityId = newMaintenance.Id;
             await _transactionRepository.AddAsync(newMaintenancePaymentTx);
 
             await _transactionApplicationRepository.AddAsync(txAppl);
@@ -203,19 +170,19 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         CreateMaintenancePaymentCommand command)
     {
         var maintenanceChargeQuery = _maintenanceChargeRepository.GetAllFull()
-                                                                 .Where(b => b.Id == command.MaintenanceChargeId);
+                                                                 .Where(b => b.TransactionId == command.TransactionId);
 
         MaintenanceCharge? maintenanceCharge = await _maintenanceChargeRepository.FirstOrDefaultAsync(maintenanceChargeQuery);
         if (maintenanceCharge == null)
-            return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+            return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found maintenance charge with TransactionId: {command.TransactionId}"));
 
         if (maintenanceCharge.Maintenance.Property.OwnerId != command.OwnerId)
             return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge does not belong to a property of the owner"));
 
-        if (maintenanceCharge.Status == MaintenanceChargeStatus.Paid)
+        if (maintenanceCharge.Transaction.Status == TransactionStatus.Paid)
             return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge must not be in paid status"));
 
-        if (maintenanceCharge.Status == MaintenanceChargeStatus.Unpaid)
+        if (maintenanceCharge.Transaction.Status == TransactionStatus.Unpaid)
             return await GenerateMaintenancePaymentFromUnpaid(plaidtx, maintenanceCharge, command);
 
         return await GenerateMaintenancePaymentFromPartpaid(plaidtx, maintenanceCharge, command);
@@ -226,24 +193,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
        CreateMaintenancePaymentCommand command)
     {
 
-
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                         .Where(b => b.PropertyId == maintenanceCharge.Maintenance.PropertyId)
-                                                         .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(maintenanceCharge.Maintenance.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
 
         Payment newPayment = new()
         {
@@ -253,26 +204,18 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = maintenanceCharge.Maintenance.PropertyId,
             RunningBalance = runningBalance - command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance - command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance - command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Maintenance,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == maintenanceCharge.Maintenance.PropertyId)
-           .OrderByDescending(o => o.CreatedDate);
+        decimal currentRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(maintenanceCharge.Maintenance.PropertyId);
 
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-        if (lastTx == null)
-            return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
-
-        Transaction tx = Transaction.CreateMaintenancePayment(maintenanceCharge.Maintenance.PropertyId,
+        Transaction tx = MaintenancePayment.CreateTransaction(maintenanceCharge.Maintenance.PropertyId,
                                                               command.Amount!.Value,
-                                                              maintenanceCharge.MaintenanceId,
                                                               maintenanceCharge.Maintenance.Title,
-                                                              lastTx.RunningBalance,
-                                                              lastTx.EntityRunningBalance,
+                                                              currentRunningBalance,
                                                               plaidtx.Date);
 
         TransactionApplication txAppl = new()
@@ -289,13 +232,14 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
             Transaction = tx,
         };
 
-        maintenanceCharge.Status = maintenanceCharge.Transaction.Amount == txAppl.AppliedAmount ? MaintenanceChargeStatus.Paid : MaintenanceChargeStatus.Partpaid;
+        maintenanceCharge.Transaction.Status = maintenanceCharge.Transaction.Amount == txAppl.AppliedAmount ? TransactionStatus.Paid : TransactionStatus.PartiallyPaid;
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _paymentRepository.AddAsync(newPayment);
             await _transactionRepository.AddAsync(tx);
             await _transactionApplicationRepository.AddAsync(txAppl);
+            _transactionRepository.Update(maintenanceCharge.Transaction);
             _maintenanceChargeRepository.Update(maintenanceCharge);
             await _maintenancePaymentRepository.AddAsync(maintenancePayment);
             _plaidRepository.Update(plaidtx);
@@ -316,24 +260,8 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         CreateMaintenancePaymentCommand command)
     {
 
-
-        var lastPropertyPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.PropertyId == maintenanceCharge.Maintenance.PropertyId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal runningBalance = 0;
-        Payment? lastPropertyPayment = await _paymentRepository.FirstOrDefaultAsync(lastPropertyPaymentQuery);
-        if (lastPropertyPayment != null)
-            runningBalance = lastPropertyPayment.RunningBalance;
-
-        var lastBankAccPaymentQuery = _paymentRepository.GetAll()
-                                                        .Where(b => b.OwnerBankAccountId == plaidtx.OwnerBankAccountId)
-                                                        .OrderByDescending(o => o.CreatedDate);
-
-        decimal bankAccountBalance = 0;
-        Payment? lastBankAccPayment = await _paymentRepository.FirstOrDefaultAsync(lastBankAccPaymentQuery);
-        if (lastBankAccPayment != null)
-            bankAccountBalance = lastBankAccPayment.BankAccountBalance!.Value;
+        decimal runningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(maintenanceCharge.Maintenance.PropertyId);
+        decimal bankAccountRunningBalance = await _paymentRepository.GetLastBankAccountRunningBalanceAsync(plaidtx.OwnerBankAccountId);
 
         Payment newPayment = new()
         {
@@ -343,33 +271,22 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
             OwnerBankAccountId = plaidtx.OwnerBankAccountId,
             PropertyId = maintenanceCharge.Maintenance.PropertyId,
             RunningBalance = runningBalance + command.Amount!.Value,
-            BankAccountBalance = bankAccountBalance + command.Amount!.Value,
+            BankAccountRunningBalance = bankAccountRunningBalance + command.Amount!.Value,
             PlaidTransactionId = plaidtx.Id,
             Type = TransactionType.Maintenance,
             PaymentMethod = PaymentMethod.BankTransfer,
         };
 
-        var txQuery = _transactionRepository.GetAll()
-           .Where(b => b.PropertyId == maintenanceCharge.Maintenance.PropertyId)
-           .OrderByDescending(o => o.Id);
+        decimal currentRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(maintenanceCharge.Maintenance.PropertyId);
 
-        Transaction? lastTx = await _transactionRepository.FirstOrDefaultAsync(txQuery);
-        if (lastTx == null)
-            return OperationResult<CreateMaintenancePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
-
-        Transaction tx = Transaction.CreateMaintenancePayment(maintenanceCharge.Maintenance.PropertyId,
+        Transaction tx = MaintenancePayment.CreateTransaction(maintenanceCharge.Maintenance.PropertyId,
                                                               command.Amount!.Value,
-                                                              maintenanceCharge.MaintenanceId,
                                                               maintenanceCharge.Maintenance.Title,
-                                                              lastTx.RunningBalance,
-                                                              lastTx.EntityRunningBalance,
+                                                              currentRunningBalance,
                                                               plaidtx.Date);
 
 
-        var currentTotalAmountTxAp = await _transactionApplicationRepository.GetAll()
-                                                                            .Where(ta => ta.ChargeTransactionId == maintenanceCharge.TransactionId)
-                                                                            .Select(ta => ta.AppliedAmount)
-                                                                            .SumAsync();
+        var currentTotalAmountTxAp = await _transactionApplicationRepository.GetTotalAppliedAmountByChargeTransactionAsync(maintenanceCharge.TransactionId);
 
         decimal newTotalAmountTxAp = currentTotalAmountTxAp + command.Amount!.Value;
 
@@ -391,13 +308,14 @@ public class CreateMaintenancePaymentCommandHandler : ICommandHandler<CreateMain
         };
 
 
-        maintenanceCharge.Status = maintenanceCharge.Transaction.Amount == newTotalAmountTxAp ? MaintenanceChargeStatus.Paid : MaintenanceChargeStatus.Partpaid;
+        maintenanceCharge.Transaction.Status = maintenanceCharge.Transaction.Amount == newTotalAmountTxAp ? TransactionStatus.Paid : TransactionStatus.PartiallyPaid;
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
             await _paymentRepository.AddAsync(newPayment);
             await _transactionRepository.AddAsync(tx);
             await _transactionApplicationRepository.AddAsync(txAppl);
+            _transactionRepository.Update(maintenanceCharge.Transaction);
             _maintenanceChargeRepository.Update(maintenanceCharge);
             await _maintenancePaymentRepository.AddAsync(maintenancePayment);
             _plaidRepository.Update(plaidtx);

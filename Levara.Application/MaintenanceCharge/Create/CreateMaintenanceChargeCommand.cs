@@ -5,6 +5,8 @@ namespace Levara.Application.MaintenancesCharges.Create;
 
 public class CreateMaintenanceChargeCommand : Command<CreateMaintenanceChargeCommandResponse>
 {
+    [Range(1, int.MaxValue)]
+    public int? OwnerId { get; set; }
 
     [Required]
     [Range(1, int.MaxValue)]

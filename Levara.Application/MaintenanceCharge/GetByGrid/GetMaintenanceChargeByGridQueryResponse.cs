@@ -12,11 +12,11 @@ public class GetMaintenanceChargeByGridQueryResponse
         Id = maintenanceCharge.Id;
         TransactionId = maintenanceCharge.TransactionId;
         Transaction = maintenanceCharge.Transaction;
-        DueDate = maintenanceCharge.DueDate;
+        DueDate = maintenanceCharge.Transaction.DueDate ?? DateTime.MinValue;
         MaintenanceId = maintenanceCharge.MaintenanceId;
         Lease = maintenanceCharge.Maintenance;
-        Status = maintenanceCharge.Status;
-        StatusDescription = EnumExtensions.GetEnumDescription(maintenanceCharge.Status);
+        Status = maintenanceCharge.Transaction.Status;
+        StatusDescription = EnumExtensions.GetEnumDescription(maintenanceCharge.Transaction.Status);
     }
 
     public int Id { get; set; }
@@ -25,6 +25,6 @@ public class GetMaintenanceChargeByGridQueryResponse
     public DateTime DueDate { get; set; }
     public int MaintenanceId { get; set; }
     public Maintenance Lease { get; set; }
-    public MaintenanceChargeStatus Status { get; set; }
+    public TransactionStatus Status { get; set; }
     public string StatusDescription { get; set; }
 }

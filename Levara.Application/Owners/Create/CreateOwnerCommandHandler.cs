@@ -29,7 +29,7 @@ public class CreateOwnerCommandHandler : ICommandHandler<CreateOwnerCommand, Cre
     public async Task<OperationResult<CreateOwnerCommandResponse>> Handle(CreateOwnerCommand command)
     {
         if (await _ownerRepository.AnyAsync(o => o.IdentificationType == command.IdentificationType && o.Identification == command.Identification))
-            return OperationResult<CreateOwnerCommandResponse>.ErrorResult(new ErrorDetails(400, "Errores"));
+            return OperationResult<CreateOwnerCommandResponse>.ErrorResult(new ErrorDetails(400, "A owner with the same identification type and number already exists."));
 
         Owner owner = new()
         {
