@@ -25,7 +25,7 @@ public class ScheduleJobsCommandHandler : ICommandHandler<ScheduleJobsCommand, S
     }
     public async Task<OperationResult<ScheduleJobsCommandResponse>> Handle(ScheduleJobsCommand command)
     {
-        var query = _ownerBankAccountRepository.GetAll().Select(account => new PlaidBankAccountSyncJobCreated(Guid.NewGuid(), account.Id, null) { OwnerId = account.OwnerId });
+        var query = _ownerBankAccountRepository.GetAll().Select(account => new PlaidBankAccountSyncCreated(Guid.NewGuid(), account.Id, null) { OwnerId = account.OwnerId });
 
         var events = await _ownerBankAccountRepository.ToListAsync(query);
 

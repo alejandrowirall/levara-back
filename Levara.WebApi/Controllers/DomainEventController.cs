@@ -2,7 +2,8 @@
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
-using Levara.Domain.Models;
+using Levara.Domain.Events;
+
 using Levara.Shared.Domain.Bus.Events;
 using Levara.Shared.Infrastructure.Bus.Events;
 using Levara.WebApi.Infrastructure.Attributes;
@@ -45,40 +46,23 @@ namespace Levara.WebApi.Controllers
 
             var domainEvent = _domainEventJsonDeserializer.Deserialize(request.Detail.GetRawText());
 
+            if (domainEvent.IsJob())
+                return await ProcessJob(domainEvent);
+
             var domainEventDb = await _domainEventRepository.GetAll()
                                                             .FirstOrDefaultAsync(de => de.EventId == domainEvent.EventId);
 
-            if (domainEventDb != null && domainEventDb.Status == DomainEventStatus.Processed)
+            if (domainEventDb == null)
+                return NotFound();
+
+            if (domainEventDb.Status == DomainEventStatus.Processed)
                 return Ok();
 
-            if (domainEventDb != null && domainEventDb.Status == DomainEventStatus.Created)
+            if (domainEventDb.Status == DomainEventStatus.Created)
             {
                 domainEventDb.Status = DomainEventStatus.Processing;
-                await _unitOfWork.ExecuteAsTransactionAsync(async () =>
-                {
-                    _domainEventRepository.Update(domainEventDb);
-                    await _unitOfWork.SaveChangesAsync();
-                });
-            }
-
-            if (domainEventDb == null)
-            {
-                domainEventDb = new DomainEvent
-                {
-                    EventId = domainEvent.EventId,
-                    Name = domainEvent.Name,
-                    Status = DomainEventStatus.Processing,
-                    OccurredOn = domainEvent.OccurredOn,
-                    EntityId = domainEvent.EntityId,
-                    Data = domainEvent.Data
-                };
-                await _unitOfWork.ExecuteAsTransactionAsync(async () =>
-                {
-                    await _domainEventRepository.AddAsync(domainEventDb);
-                    await _unitOfWork.SaveChangesAsync();
-                });
-
-                //domainEvent.EventId = domainEventDb.EventId;
+                _domainEventRepository.Update(domainEventDb);
+                await _unitOfWork.SaveChangesAsync();
             }
 
             var response = await _domainEventConsumer.Consume(domainEvent);
@@ -89,11 +73,8 @@ namespace Levara.WebApi.Controllers
             {
 
                 domainEventDb.Status = DomainEventStatus.Failed;
-                await _unitOfWork.ExecuteAsTransactionAsync(async () =>
-                {
-                    _domainEventRepository.Update(domainEventDb);
-                    await _unitOfWork.SaveChangesAsync();
-                });
+                _domainEventRepository.Update(domainEventDb);
+                await _unitOfWork.SaveChangesAsync();
 
                 return new ObjectResult(response)
                 {
@@ -102,11 +83,26 @@ namespace Levara.WebApi.Controllers
             }
 
             domainEventDb.Status = DomainEventStatus.Processed;
-            await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+            _domainEventRepository.Update(domainEventDb);
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> ProcessJob(IDomainEvent domainEvent)
+        {
+
+            var response = await _domainEventConsumer.Consume(domainEvent);
+
+            _logger.LogInformation($"Response string: {JsonConvert.SerializeObject(response)}");
+
+            if (!response.Success)
             {
-                _domainEventRepository.Update(domainEventDb);
-                await _unitOfWork.SaveChangesAsync();
-            });
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
 
             return Ok();
         }

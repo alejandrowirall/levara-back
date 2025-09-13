@@ -157,9 +157,15 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
 
                 events = [.. newTransactions.Select(transaction => new PlaidTransactionCreated(Guid.NewGuid(), transaction.Id))];
                 await _domainEventRepository.AddAsync([.. events]);
+                await _eventBus.PublishAsync([.. events]);
             });
 
-            await _eventBus.PublishAsync([.. events]);
+        }
+        else
+        {
+            _ownerBankAccountRepository.Update(account_Token);
+            await _unitOfWork.SaveChangesAsync();
+
         }
 
         var responseFunction = new GetTransactionsOwnerQueryFromPlaidResponse(allTransactions.Count);

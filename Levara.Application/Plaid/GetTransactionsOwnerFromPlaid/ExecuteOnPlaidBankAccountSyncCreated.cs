@@ -5,16 +5,16 @@ using Levara.Shared.Results;
 
 namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 
-public class ExecuteOnPlaidBankAccountSyncJobCreated : IDomainEventSubscriber<PlaidBankAccountSyncJobCreated>
+public class ExecuteOnPlaidBankAccountSyncCreated : IDomainEventSubscriber<PlaidBankAccountSyncCreated>
 {
     private readonly IQueryBus _queryBus;
 
-    public ExecuteOnPlaidBankAccountSyncJobCreated(IQueryBus queryBus) 
+    public ExecuteOnPlaidBankAccountSyncCreated(IQueryBus queryBus) 
     {
         _queryBus = queryBus;
     }
 
-    public async Task<OperationResult<bool>> On(PlaidBankAccountSyncJobCreated domainEvent)
+    public async Task<OperationResult<bool>> On(PlaidBankAccountSyncCreated domainEvent)
     {
         GetTransactionsOwnerFromPlaidQuery query = new ()
         {

@@ -14,10 +14,4 @@ public class PlaidBankAccountSyncJobCreated : DomainEvent
     {
     }
 
-    public int OwnerId
-    {
-        get => Data.ContainsKey(nameof(OwnerId)) ? Convert.ToInt32(Data[nameof(OwnerId)]) : 0;
-        set => Data[nameof(OwnerId)] = value;
-    }
-    
 }
