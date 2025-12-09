@@ -11,7 +11,7 @@ public class UpdateTransactionOwnerCommandHandler : ICommandHandler<UpdateTransa
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPlaidRepository _plaidRepository;
     public UpdateTransactionOwnerCommandHandler(IUnitOfWork unitOfWork,
-        IPlaidRepository plaidRepository) 
+        IPlaidRepository plaidRepository)
     {
         _unitOfWork = unitOfWork;
         _plaidRepository = plaidRepository;
@@ -20,23 +20,19 @@ public class UpdateTransactionOwnerCommandHandler : ICommandHandler<UpdateTransa
     {
         
         var plaidTxQuery = _plaidRepository.GetAll()
-                                         .Where(o => o.Id == command.Id!);
+                                           .Where(p => p.Id == command.PlaidId! && 
+                                                       p.OwnerBankAccount.OwnerId == command.OwnerId!);
 
         PlaidTransaction? plaidtx = await _plaidRepository.FirstOrDefaultAsync(plaidTxQuery);
         if (plaidtx == null)
             return OperationResult<UpdateTransactionOwnerCommandResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        plaidtx.Id = command.Id.Value;
         plaidtx.Status = command.Status!;
         
-        
-        //TODO
-        //HACER INSERT DE BANK TRANSACTION
-        await _unitOfWork.ExecuteAsTransactionAsync(() =>
+        await _unitOfWork.ExecuteAsTransactionAsync( () =>
         {
             _plaidRepository.Update(plaidtx);
             return Task.CompletedTask;
-
         });
 
         var response = new UpdateTransactionOwnerCommandResponse

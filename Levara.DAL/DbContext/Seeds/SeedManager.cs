@@ -28,13 +28,12 @@ public class SeedManager
 
     private SeedBase[] GetSeeds()
     {
-        return new SeedBase[6] {
+        return new List<SeedBase> {
             new RoleSeed(),
             new OwnerSeed(),
-            new TenantSeed(),
             new AdminSeed(),
-            new LeaseSeed(),
-            new TransactionSeed()
-        };
+            new MaintananceTypeSeed(),
+            new ExpenseSeed(),
+        }.ToArray();
     }
 }

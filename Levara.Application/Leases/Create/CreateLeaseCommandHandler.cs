@@ -1,7 +1,6 @@
 ﻿
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
-using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Results;
@@ -13,7 +12,7 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILeaseRepository _leaseRepository;
     public CreateLeaseCommandHandler(IUnitOfWork unitOfWork,
-        ILeaseRepository leaseRepository) 
+        ILeaseRepository leaseRepository)
     {
         _unitOfWork = unitOfWork;
         _leaseRepository = leaseRepository;
@@ -24,22 +23,22 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
         {
             OwnerId = command.OwnerId!.Value,
             PropertyId = command.PropertyId!.Value,
+            Frequency = command.Frequency!.Value,
             TenantId = command.TenantId!.Value,
-            DateFrom= command.DateFrom.ToUniversalTime(),
-            DateTo= command.DateTo.ToUniversalTime(),
-
-            Amount =command.Price!.Value,
-            StatusLease= LeaseStatus.UploadDocumentation
+            DateFrom = command.DateFrom!.Value,
+            DateTo = command.DateTo!.Value,
+            Amount = command.Price!.Value,
+            Status = command.Status!.Value,
 
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-          await _leaseRepository.AddAsync(lease);
+            await _leaseRepository.AddAsync(lease);
 
         });
 
-        CreateLeaseCommandResponse response = new ()
+        CreateLeaseCommandResponse response = new()
         {
             Id = lease.Id
         };

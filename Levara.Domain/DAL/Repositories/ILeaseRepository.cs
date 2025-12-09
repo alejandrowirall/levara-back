@@ -4,5 +4,5 @@ namespace Levara.Domain.DAL.Repositories;
 
 public interface ILeaseRepository : IRepository<Lease>
 {
-    IQueryable<Lease> GetAllLeases();
+    IQueryable<Lease> GetAllFull();
 }

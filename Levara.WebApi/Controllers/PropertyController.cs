@@ -1,5 +1,6 @@
 ﻿using Levara.Application.Properties.Create;
 using Levara.Application.Properties.Delete;
+using Levara.Application.Properties.GetBalance;
 using Levara.Application.Properties.GetByGrid;
 using Levara.Application.Properties.GetForCreate;
 using Levara.Application.Properties.GetForUpdate;
@@ -122,6 +123,24 @@ namespace Levara.WebApi.Controllers
         public async Task<IActionResult> Delete([FromRoute] DeletePropertyCommand command)
         {
             var response = await _commandBus.Dispatch(command);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("balance")]
+        public async Task<IActionResult> GetBalance([FromQuery] GetPropertyBalanceQuery query)
+        {
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
+            var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
                 return new ObjectResult(response)

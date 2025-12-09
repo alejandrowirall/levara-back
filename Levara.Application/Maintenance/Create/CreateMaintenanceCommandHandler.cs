@@ -37,7 +37,7 @@ public class CreateMaintenanceCommandHandler : ICommandHandler<CreateMaintenance
             Title = command.Title,
             Status = command.Status,
             TypeId = command.TypeId,
-            DueDate = command.DueDate,
+            DueDate = command.DueDateFromDate.Value.ToUniversalTime(),
             Description = command.Description
         };
 

@@ -20,7 +20,9 @@ try
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .WithExposedHeaders(new string[] { "Token-Expired" })
+                       .SetPreflightMaxAge(TimeSpan.FromHours(1));
             });
     });
 
@@ -32,6 +34,8 @@ try
     builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
     builder.Services.AddSwaggerGen(c =>
     {
+        c.CustomSchemaIds(type => type.FullName);
+
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Levara WebApi", Version = "v1" });
 
         // Definir el esquema de seguridad
@@ -44,24 +48,48 @@ try
             Scheme = "Bearer"
         });
 
+        // Esquema de seguridad para API Key
+        c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+        {
+            Description = "API Key Authorization header. Example: 'X-API-KEY: {apiKey}'",
+            Name = "X-API-KEY", // Nombre del header donde se espera la API Key
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "ApiKey"
+        });
+
         // Requiere el token para todas las operaciones
         c.AddSecurityRequirement(new OpenApiSecurityRequirement()
         {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
+                new OpenApiSecurityScheme
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme = "Bearer",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    BearerFormat = "JWT" // Esto es opcional, pero puede indicar que se espera un JWT
                 },
-                Scheme = "Bearer",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                BearerFormat = "JWT" // Esto es opcional, pero puede indicar que se espera un JWT
+                new List<string>()
             },
-            new List<string>()
-        }
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    },
+                    Scheme = "ApiKey",
+                    Name = "X-API-KEY",
+                    In = ParameterLocation.Header
+                },
+                new List<string>()
+            }
         });
     }); ;
 
@@ -83,11 +111,13 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseCors(AllowAnyOrigin);
+
+    app.UseLevaraApiKey();
+
     app.UseAuthentication();
 
     app.UseAuthorization();
-
-    app.UseCors(AllowAnyOrigin);
 
     app.UseLevaraLogger();
     app.UseLevaraException();

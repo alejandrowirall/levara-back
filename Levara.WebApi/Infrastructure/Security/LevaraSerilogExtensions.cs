@@ -36,6 +36,7 @@ public static class LevaraSerilogExtensions
                .MinimumLevel.Is(minimumLevel)
                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", minimumLevel == LogEventLevel.Warning ? LogEventLevel.Information : minimumLevel)
                .MinimumLevel.Override("Levara.WebApi.Infrastructure.Middlewares", minimumLevel == LogEventLevel.Warning ? LogEventLevel.Information : minimumLevel)
+               .MinimumLevel.Override("Levara.WebApi.Controllers", minimumLevel == LogEventLevel.Warning ? LogEventLevel.Information : minimumLevel)
                //.WriteTo.Async(a => a
                //            .PostgreSQL(
                //                connectionString: configuration["DatabaseConfiguration:ConnectionString"].ToString(),

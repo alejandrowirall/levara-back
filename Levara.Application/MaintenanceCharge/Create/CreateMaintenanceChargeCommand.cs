@@ -1,25 +1,34 @@
-﻿
-using Levara.Application.Transactions.Create;
-using Levara.Domain.Enum;
-using Levara.Domain.Models;
-using Levara.Shared.Domain.Bus.Commands;
+﻿using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 
-namespace Levara.Application.MaintenancesCharges.Create
+namespace Levara.Application.MaintenancesCharges.Create;
+
+public class CreateMaintenanceChargeCommand : Command<CreateMaintenanceChargeCommandResponse>
 {
-    public class CreateMaintenanceChargeCommand : Command<CreateMaintenanceChargeCommandResponse>
-    {
+    [Range(1, int.MaxValue)]
+    public int? OwnerId { get; set; }
 
-        public int PropertyId { get; set; }
-       
-        public int EntityId { get; set; }
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int? PropertyId { get; set; }
 
-        public decimal Amount { get; set; }
-        public DateTime Date { get; set; }
-        public string Description { get; set; }
-        public int MaintenanceId { get; set; }
+    [Required]
+    [Range(0, double.MaxValue)]
+    public decimal? Amount { get; set; }
 
+    public DateTime? Date { get; set; }
 
-    }
+    [Required]
+    public DateTime? DueDate { get; set; }
+
+    [Required]
+    public string? Title { get; set; }
+
+    [Required]
+    public string? Description { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int? TypeId { get; set; }
+
 }

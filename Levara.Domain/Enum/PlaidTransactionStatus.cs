@@ -5,6 +5,9 @@ namespace Levara.Domain.Enum;
 
 public enum PlaidTransactionStatus
 {
+    [Description("Created")]
+    Created = 0,
+
     [Description("NeedReview")]
     NeedReview = 1,
 

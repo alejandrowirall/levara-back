@@ -1,9 +1,6 @@
-﻿using Levara.Application.LeasesCharges.Create;
-using Levara.Application.LeasesCharges.GetByGrid;
-using Levara.Application.LeasesCharges.GetForCreate;
-using Levara.Application.Transactions.Create;
-using Levara.Application.Transactions.GetByGrid;
-using Levara.Application.Transactions.GetForCreate;
+﻿using Levara.Application.LeaseCharges.Create;
+using Levara.Application.LeaseCharges.GetByGrid;
+using Levara.Application.LeaseCharges.GetForCreate;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Commands;
@@ -71,7 +68,14 @@ namespace Levara.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateLeaseChargeCommand command)
         {
-            
+            if (_userContext.IsAdmin && !command.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+            {
+                command.OwnerId = _userContext.OwnerId!;
+            }
+
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
             {

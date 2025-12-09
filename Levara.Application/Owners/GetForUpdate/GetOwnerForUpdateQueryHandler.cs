@@ -26,7 +26,7 @@ public class GetOwnerForUpdateQueryHandler : IQueryHandler<GetOwnerForUpdateQuer
 
         OwnerUpdateQueryResponse? owner = await _ownerRepository.FirstOrDefaultAsync(ownerQuery);
         if (owner == null)
-            return OperationResult<GetOwnerForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+            return OperationResult<GetOwnerForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, $"No owner found with id {query.Id!.Value}"));
 
         GetOwnerForUpdateQueryResponse response = new(owner, 
                                                       EnumExtensions.ToListModel<PersonType>((int)owner.PersonType), 

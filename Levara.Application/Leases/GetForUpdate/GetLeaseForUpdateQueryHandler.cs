@@ -1,5 +1,4 @@
-﻿using Levara.Domain.Contexts;
-using Levara.Domain.DAL.Repositories;
+﻿using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Domain.Models;
@@ -10,30 +9,44 @@ namespace Levara.Application.Leases.GetForUpdate;
 
 public class GetLeaseForUpdateQueryHandler : IQueryHandler<GetLeaseForUpdateQuery, GetLeaseForUpdateQueryResponse>
 {
-    private readonly IUserContext _userContext;
     private readonly ILeaseRepository _leaseRepository;
-    public GetLeaseForUpdateQueryHandler(IUserContext userContext,
-        ILeaseRepository leaseRepository) 
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IPropertyRepository _propertyRepository;
+    public GetLeaseForUpdateQueryHandler(ILeaseRepository leaseRepository,
+        ITenantRepository tenantRepository,
+        IPropertyRepository propertyRepository)
     {
-        _userContext = userContext;
         _leaseRepository = leaseRepository;
+        _tenantRepository = tenantRepository;
+        _propertyRepository = propertyRepository;
     }
     public async Task<OperationResult<GetLeaseForUpdateQueryResponse>> Handle(GetLeaseForUpdateQuery query)
     {
-        var leaseQuery = _leaseRepository.GetAllLeases()
-                                               .Where(p => p.Id == query.Id!.Value)
-                                               .Select(p => new LeaseUpdateQueryResponse(p));
+        var leaseResponseQuery = _leaseRepository.GetAllFull().Where(l => l.Id == query.Id!.Value &&
+                                                                          l.Property.OwnerId == query.OwnerId!.Value)
+                                                              .Select(l => new LeaseUpdateQueryResponse(l));
 
-        LeaseUpdateQueryResponse? property = await _leaseRepository.FirstOrDefaultAsync(leaseQuery);
-        if (property == null)
-            return OperationResult<GetLeaseForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+        var leaseResponse = await _leaseRepository.FirstOrDefaultAsync(leaseResponseQuery);
+        if (leaseResponse == null)
+            return OperationResult<GetLeaseForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, "Lease not found or does not belong to the specified owner."));
 
-        if (_userContext.IsOwner && property.OwnerId != _userContext.OwnerId!.Value)
-            return OperationResult<GetLeaseForUpdateQueryResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this property."));
 
-        List<ListModel> listModels = EnumExtensions.ToListModel<LeaseStatus>();
-        GetLeaseForUpdateQueryResponse response = new(property, listModels);
-        
+        IEnumerable<ListModel> leaseStatuses = EnumExtensions.ToListModel<LeaseStatus>();
+        IEnumerable<ListModel> frequencyTypes = EnumExtensions.ToListModel<FrequencyType>();
+
+        var propertyQuery = _propertyRepository.GetAllWithAddress()
+                                               .Where(p => p.OwnerId == query.OwnerId!.Value)
+                                               .Select(p => new ListModel { Id = p.Id, Text = p.OneLineDescription() });
+
+        IEnumerable<ListModel> properties = await _propertyRepository.ToListAsync(propertyQuery);
+
+        var tenantQuery = _tenantRepository.GetAllWithAddress()
+                                           .Select(t => new ListModel { Id = t.Id, Text = t.OneLineDescription() });
+
+        IEnumerable<ListModel> tenants = await _tenantRepository.ToListAsync(tenantQuery);
+
+        var response = new GetLeaseForUpdateQueryResponse(leaseResponse, properties, tenants, leaseStatuses, frequencyTypes);
+
         return OperationResult<GetLeaseForUpdateQueryResponse>.SuccessResult(response);
 
     }

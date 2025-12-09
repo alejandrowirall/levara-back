@@ -26,7 +26,7 @@ public class GetOwnerDashboardQueryHandler : IQueryHandler<GetOwnerDashboardQuer
     }
     public async Task<OperationResult<GetOwnerDashboardQueryResponse>> Handle(GetOwnerDashboardQuery query)
     {
-        var owner = await _ownerRepository.GetByIdAsync(query.Id!.Value);
+        var owner = await _ownerRepository.GetByIdAsync(query.OwnerId!.Value);
         if (owner == null)
             return OperationResult<GetOwnerDashboardQueryResponse>.ErrorResult(new ErrorDetails(404, "Owner not found."));
 
@@ -38,7 +38,7 @@ public class GetOwnerDashboardQueryHandler : IQueryHandler<GetOwnerDashboardQuer
         var properties = await _propertyRepository.ToListAsync(propertyQuery);
 
         var ownerBankAccountQuery = _ownerBankAccountRepository.GetAll()
-                                                               .Where(oba => oba.OwnerId == query.Id!.Value)
+                                                               .Where(oba => oba.OwnerId == query.OwnerId!.Value)
                                                                .OrderByDescending(oba => oba.Id)
                                                                .Select(oba => new OwnerBankAccountGrid(oba));
 

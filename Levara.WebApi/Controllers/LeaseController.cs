@@ -3,6 +3,7 @@ using Levara.Application.Leases.Delete;
 using Levara.Application.Leases.GetByGrid;
 using Levara.Application.Leases.GetForCreate;
 using Levara.Application.Leases.GetForUpdate;
+using Levara.Application.Leases.GetTransactionByGrid;
 using Levara.Application.Leases.Update;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
@@ -32,11 +33,38 @@ namespace Levara.WebApi.Controllers
         [HttpGet ("GetByGrid")]
         public async Task<IActionResult> GetByGrid([FromQuery] GetLeaseByGridQuery query)
         {
-            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+            if (_userContext.IsAdmin && (!query.OwnerId.HasValue && !query.TenantId.HasValue))
                 return BadRequest();
 
             if (_userContext.IsOwner)
                 query.OwnerId = _userContext.OwnerId!;
+
+            if (_userContext.IsTenant)
+                query.TenantId = _userContext.TenantId!;
+
+            var response = await _queryBus.Ask(query);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("transaction")]
+        [AuthorizeAnyRoles(Roles.Admin, Roles.Owner, Roles.Tenant)]
+        public async Task<IActionResult> GetLeaseTransactionByGrid([FromQuery] GetLeaseTransactionByGridQuery query)
+        {
+            if (_userContext.IsAdmin && !query.TenantId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsTenant)
+            {
+                query.TenantId = _userContext.TenantId!;
+            }
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)
@@ -54,6 +82,12 @@ namespace Levara.WebApi.Controllers
         [HttpGet("Create")]
         public async Task<IActionResult> Create([FromQuery] GetLeaseForCreateQuery query )
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {
@@ -92,6 +126,12 @@ namespace Levara.WebApi.Controllers
         [HttpGet("Update")]
         public async Task<IActionResult> Update([FromQuery] GetLeaseForUpdateQuery query)
         {
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.OwnerId = _userContext.OwnerId!;
+
             var response = await _queryBus.Ask(query);
             if (!response.Success)
             {

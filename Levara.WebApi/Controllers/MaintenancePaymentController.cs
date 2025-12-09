@@ -1,13 +1,14 @@
 ﻿
-using Levara.Application.MaintenancesPayments.Create;
-using Levara.Application.MaintenancesPayments.GetByGrid;
-using Levara.Application.MaintenancesPayments.GetForCreate;
+using Levara.Application.MaintenancePayments.Create;
+using Levara.Application.MaintenancePayments.GetByGrid;
+using Levara.Application.MaintenancePayments.GetForCreate;
 using Levara.Domain.Authentication;
 using Levara.Domain.Contexts;
 using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.WebApi.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Levara.WebApi.Controllers
 {
@@ -69,7 +70,14 @@ namespace Levara.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMaintenancePaymentCommand command)
         {
-            
+            if (_userContext.IsAdmin && (!command.OwnerId.HasValue))
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+            {
+                command.OwnerId = _userContext.OwnerId!;
+            }
+
             var response = await _commandBus.Dispatch(command);
             if (!response.Success)
             {

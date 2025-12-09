@@ -1,5 +1,6 @@
 ﻿using Levara.Application.Owners.Create;
 using Levara.Application.Owners.Delete;
+using Levara.Application.Owners.GetBalance;
 using Levara.Application.Owners.GetByGrid;
 using Levara.Application.Owners.GetDashboard;
 using Levara.Application.Owners.GetForCreate;
@@ -35,11 +36,32 @@ namespace Levara.WebApi.Controllers
         [HttpGet("dashboard")]
         public async Task<IActionResult> GetDashboard([FromQuery] GetOwnerDashboardQuery query)
         {
-            if (_userContext.IsAdmin && !query.Id.HasValue)
+            if (_userContext.IsAdmin && !query.OwnerId.HasValue)
                 return BadRequest();
 
             if(_userContext.IsOwner)
-                query.Id = _userContext.Id!;
+                query.OwnerId = _userContext.OwnerId!;
+
+            var response = await _queryBus.Ask(query);
+            if (!response.Success)
+            {
+                return new ObjectResult(response)
+                {
+                    StatusCode = response.Error!.StatusCode
+                };
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("balance")]
+        public async Task<IActionResult> GetBalance([FromQuery] GetOwnerBalanceQuery query)
+        {
+            if (_userContext.IsAdmin && !query.Id.HasValue)
+                return BadRequest();
+
+            if (_userContext.IsOwner)
+                query.Id = _userContext.OwnerId!;
 
             var response = await _queryBus.Ask(query);
             if (!response.Success)

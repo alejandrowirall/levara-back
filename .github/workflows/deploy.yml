@@ -18,19 +18,19 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0' # Cambia según tu versión de .NET Core
+        dotnet-version: '8.0.x' # Cambia según tu versión de .NET Core
 
     # Restaurar dependencias
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Levara.WebApi/Levara.WebApi.csproj
 
     # Construir el proyecto
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build Levara.WebApi/Levara.WebApi.csproj --configuration Release --no-restore
 
     # Publicar el proyecto
     - name: Publish
-      run: dotnet publish -c Release -o output
+      run: dotnet publish Levara.WebApi/Levara.WebApi.csproj -c Release -o output
 
     # Empaquetar para AWS Lambda
     - name: Package for AWS Lambda

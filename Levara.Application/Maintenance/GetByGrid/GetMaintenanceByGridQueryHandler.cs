@@ -16,10 +16,13 @@ public class GetMaintenanceByGridQueryHandler : IQueryHandler<GetMaintenanceByGr
     public async Task<OperationResult<PagedList<GetMaintenanceByGridQueryResponse>>> Handle(GetMaintenanceByGridQuery query)
     {
 
-        var maintananceQuery = _maintenanceRepository.GetAll()
-                                               .Where(t => t.PropertyId == query.PropertyId!.Value || (t.Property.OwnerId == query.OwnerId!.Value))
-                                               .OrderByDescending(p => p.CreatedDate)
-                                               .Select(p => new GetMaintenanceByGridQueryResponse(p));
+        var maintananceQuery = _maintenanceRepository.GetAllWithMaintananceType()
+                                .Where(t => (query.PropertyId.HasValue && t.PropertyId == query.PropertyId.Value) ||
+                                (query.OwnerId.HasValue && t.Property.OwnerId == query.OwnerId.Value))
+                                .OrderByDescending(p => p.CreatedDate)
+                                .Select(p => new GetMaintenanceByGridQueryResponse(p));
+
+    
 
         var response = await _maintenanceRepository.ToListPagedAsync(maintananceQuery, query.PageNumber!.Value, query.PageSize!.Value);
 

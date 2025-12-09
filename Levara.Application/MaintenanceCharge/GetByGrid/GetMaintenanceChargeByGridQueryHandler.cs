@@ -1,5 +1,4 @@
-﻿
-using Levara.Domain.DAL.Repositories;
+﻿using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Results;
@@ -8,22 +7,29 @@ namespace Levara.Application.MaintenancesCharges.GetByGrid;
 
 public class GetMaintenanceChargeByGridQueryHandler : IQueryHandler<GetMaintenanceChargeByGridQuery, PagedList<GetMaintenanceChargeByGridQueryResponse>>
 {
-    private readonly ITransactionRepository _transactionRepository;
     private readonly IMaintenanceChargeRepository _maintenanceChargeRepository;
-    public GetMaintenanceChargeByGridQueryHandler(ITransactionRepository transactionRepository, IMaintenanceChargeRepository maintenanceChargeRepository) 
+    public GetMaintenanceChargeByGridQueryHandler(IMaintenanceChargeRepository maintenanceChargeRepository) 
     {
-        _transactionRepository = transactionRepository;
         _maintenanceChargeRepository = maintenanceChargeRepository;
     }
     public async Task<OperationResult<PagedList<GetMaintenanceChargeByGridQueryResponse>>> Handle(GetMaintenanceChargeByGridQuery query)
     {
 
-        var transactionQuery = _maintenanceChargeRepository.GetAll()
-                                               .Where(t => t.Maintenance.PropertyId == query.PropertyId!.Value || (t.Maintenance.Property.OwnerId == query.OwnerId!.Value))
-                                               .OrderByDescending(p => p.CreatedDate)
-                                               .Select(p => new GetMaintenanceChargeByGridQueryResponse(p));
+        var maintenanceChargeQuery = _maintenanceChargeRepository.GetAllFull();
 
-        var response = await _transactionRepository.ToListPagedAsync(transactionQuery, query.PageNumber!.Value, query.PageSize!.Value);
+        if (query.PropertyId.HasValue)
+            maintenanceChargeQuery = maintenanceChargeQuery.Where(mc => mc.Maintenance.PropertyId == query.PropertyId!.Value);
+
+        if (query.OwnerId.HasValue)
+            maintenanceChargeQuery = maintenanceChargeQuery.Where(t => t.Maintenance.Property.OwnerId == query.OwnerId!.Value);
+
+        if (query.Statuses != null && query.Statuses.Length != 0)
+            maintenanceChargeQuery = maintenanceChargeQuery.Where(mc => query.Statuses.Contains(mc.Transaction.Status));
+
+        var responseQuery = maintenanceChargeQuery.OrderByDescending(mc => mc.CreatedDate)
+                                                  .Select(mc => new GetMaintenanceChargeByGridQueryResponse(mc));
+
+        var response = await _maintenanceChargeRepository.ToListPagedAsync(responseQuery, query.PageNumber!.Value, query.PageSize!.Value);
 
 
         return OperationResult<PagedList<GetMaintenanceChargeByGridQueryResponse>>.SuccessResult(response);

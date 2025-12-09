@@ -1,7 +1,6 @@
 ﻿
 using Levara.Shared.Domain.Bus.Commands;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 
 namespace Levara.Application.Properties.Create
 {
@@ -46,30 +45,22 @@ namespace Levara.Application.Properties.Create
         public bool? HasPool { get; set; }
 
         public bool? HasBalcony { get; set; }
+
         public bool? HasGarage { get; set; }
+
         [Length(1, 800)]
         public string? DetailDepositAndAdittionalInfo {  get; set; }
+
         [Length(1, 800)]
         public string? PetsPoliticAndRate  { get; set; }
+
         [Length(1, 800)]
         public string? TenantRequirements { get; set; }
 
-        public string AvaliableFrom { get; set; }
+        public DateTime? AvailableFrom { get; set; }
 
-        public DateTime? AvaliableFromDate
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(AvaliableFrom))
-                    return null;
+        public byte[]? Img { get; set; }
+       
 
-                if (DateTime.TryParseExact(AvaliableFrom, "yyyy/dd/MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
-                {
-                    return parsedDate;
-                }
-
-                return null; // O lanzar una excepción 
-            }
-        }
     }
 }

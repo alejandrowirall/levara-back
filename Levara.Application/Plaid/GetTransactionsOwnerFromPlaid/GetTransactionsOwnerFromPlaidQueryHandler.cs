@@ -1,21 +1,18 @@
-﻿
-using Levara.Application.Leases.GetForUpdate;
-using Levara.Application.Leases.Update;
-using Levara.Application.OwnersBankAccounts.GetForUpdate;
-using Levara.Application.Plaid.GetPublicToken;
-using Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
+﻿using Levara.DAL;
+using Levara.DAL.Repositories;
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
+using Levara.Domain.Events;
 using Levara.Domain.Models;
 using Levara.ExternalService.Plaid;
+using Levara.Shared.Domain.Bus.Events;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Domain.Models;
 using Levara.Shared.Results;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Transactions;
 
 namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 
@@ -27,7 +24,14 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
     private readonly string _secret;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
     private readonly IPlaidRepository _plaidRepository;
-    public GetTransactionsOwnerFromPlaidQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, IOwnerBankAccountRepository ownerBankAccountRepository, IPlaidRepository plaidRepository) 
+    private readonly IDomainEventRepository _domainEventRepository;
+    private readonly IEventBus _eventBus;//PlaidTransactionCreated
+    public GetTransactionsOwnerFromPlaidQueryHandler(IUnitOfWork unitOfWork, 
+        IOptions<RemoteServicesConfig> config, 
+        IOwnerBankAccountRepository ownerBankAccountRepository, 
+        IPlaidRepository plaidRepository,
+        IDomainEventRepository domainEventRepository,
+        IEventBus eventBus) 
     {
         _unitOfWork = unitOfWork;
         _httpClient = new HttpClient();
@@ -36,13 +40,19 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
         _secret = config.Value.Secret;
         _ownerBankAccountRepository = ownerBankAccountRepository;
         _plaidRepository = plaidRepository;
+        _domainEventRepository = domainEventRepository;
+        _eventBus = eventBus;
     }
     public async Task<OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>> Handle(GetTransactionsOwnerFromPlaidQuery query)
     {
         var bankAccountQuery = _ownerBankAccountRepository.GetAll()
-                                               .Where(p => p.OwnerId == query.ownerId);
+                                                          .Where(ba => ba.Id == query.BankAccountId!.Value && 
+                                                                       ba.OwnerId == query.OwnerId!.Value);
 
-        OwnerBankAccount account_Token = await _ownerBankAccountRepository.FirstOrDefaultAsync<OwnerBankAccount>(bankAccountQuery);
+        OwnerBankAccount? account_Token = await _ownerBankAccountRepository.FirstOrDefaultAsync(bankAccountQuery);
+        if (account_Token == null)
+            return OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
+
         var startDate = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd"); // Ayer
         var endDate = DateTime.UtcNow.ToString("yyyy-MM-dd");             // Hoy
         const int maxCount = 500; // Máximo permitido
@@ -117,8 +127,8 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
             TransactionId = transaction.TransactionId, // Asumiendo que existe un campo equivalente en ExternalService.Plaid.Added
             Date = DateTime.Parse(transaction.Date).ToUniversalTime(),                  // Mapea al campo de tipo DateTime
             Description = transaction.Name,    // Mapea la descripción
-            Amount = transaction.Amount,              // Mapea el monto
-            Status = Domain.Enum.PlaidTransactionStatus.NeedReview,    // Traduce el estado (requiere método adicional)
+            Amount = (decimal)transaction.Amount,              // Mapea el monto
+            Status = Domain.Enum.PlaidTransactionStatus.Created,    // Traduce el estado (requiere método adicional)
             OwnerBankAccountId= account_Token.Id
         }).ToList();
 
@@ -134,17 +144,30 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
                         .Where(pt => !existingTransactionIds.Contains(pt.TransactionId))
                         .ToList();
 
-        await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+        if (newTransactions.Count > 0)
         {
-            foreach(var transaction in newTransactions)
-            { 
-                await _plaidRepository.AddAsync(transaction);
+            IEnumerable<PlaidTransactionCreated> events = new List<PlaidTransactionCreated>();
 
-            }
-        });
-            
-       
-        _ownerBankAccountRepository.Update(account_Token);
+            await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+            {
+                await _plaidRepository.AddAsync(newTransactions);
+                await _unitOfWork.SaveChangesAsync();
+
+                _ownerBankAccountRepository.Update(account_Token);
+
+                events = [.. newTransactions.Select(transaction => new PlaidTransactionCreated(Guid.NewGuid(), transaction.Id))];
+                await _domainEventRepository.AddAsync([.. events]);
+                await _eventBus.PublishAsync([.. events]);
+            });
+
+        }
+        else
+        {
+            _ownerBankAccountRepository.Update(account_Token);
+            await _unitOfWork.SaveChangesAsync();
+
+        }
+
         var responseFunction = new GetTransactionsOwnerQueryFromPlaidResponse(allTransactions.Count);
        
         return OperationResult<GetTransactionsOwnerQueryFromPlaidResponse>.SuccessResult(responseFunction);

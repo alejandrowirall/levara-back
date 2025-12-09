@@ -91,20 +91,20 @@ public class OwnerSeed : SeedBase
 
             allOwnersToAdd.Add(owner);
 
-            OwnerBankAccount ownerBankAccount = new()
-            {
-                Id = i,
-                BankName = "Chase",
-                AccountNumberMasked = $"****{1233 + i}",
-                PlaidAccountId = $"account-abc{122 + i}",
-                OwnerId = owner.Id,
-                CreatorId = 1,
-                CreatedDate = datatimeApp,
-                LastEditorId = 1,
-                LastEditedDate = datatimeApp,
-            };
+            //OwnerBankAccount ownerBankAccount = new()
+            //{
+            //    Id = i,
+            //    BankName = "Chase",
+            //    AccountNumberMasked = $"****{1233 + i}",
+            //    PlaidAccountId = $"account-abc{122 + i}",
+            //    OwnerId = owner.Id,
+            //    CreatorId = 1,
+            //    CreatedDate = datatimeApp,
+            //    LastEditorId = 1,
+            //    LastEditedDate = datatimeApp,
+            //};
 
-            allOwnersBankAccounts.Add(ownerBankAccount);
+            //allOwnersBankAccounts.Add(ownerBankAccount);
 
             userClaims.Add(
                 new IdentityUserClaim<int>
@@ -120,75 +120,75 @@ public class OwnerSeed : SeedBase
 
         List<Property> allproperties = new();
 
-        foreach (var owner in allOwnersToAdd)
-        {
-            for (int i = 1; i < 11; i++)
-            {
-                Address propertyAddress = new()
-                {
-                    Id = allAddresssToAdd.Count() + 1,
-                    Street = "Madison Ave",
-                    Number = 1660,
-                    AdditionalLine = null,
-                    City = "New York",
-                    State = "New York",
-                    PostalCode = "10029",
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                };
+        //foreach (var owner in allOwnersToAdd)
+        //{
+        //    for (int i = 1; i < 11; i++)
+        //    {
+        //        Address propertyAddress = new()
+        //        {
+        //            Id = allAddresssToAdd.Count() + 1,
+        //            Street = "Madison Ave",
+        //            Number = 1660,
+        //            AdditionalLine = null,
+        //            City = "New York",
+        //            State = "New York",
+        //            PostalCode = "10029",
+        //            CreatorId = 1,
+        //            CreatedDate = datatimeApp,
+        //            LastEditorId = 1,
+        //            LastEditedDate = datatimeApp,
+        //        };
 
-                allAddresssToAdd.Add(propertyAddress);
+        //        allAddresssToAdd.Add(propertyAddress);
 
-                Property property = new()
-                {
-                    Id = allproperties.Count() + 1,
-                    Number = i,
-                    OwnerId = owner.Id,
-                    AddressId = propertyAddress.Id,
-                    Price = 100000 * i,
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                };
+        //        Property property = new()
+        //        {
+        //            Id = allproperties.Count() + 1,
+        //            Number = i,
+        //            OwnerId = owner.Id,
+        //            AddressId = propertyAddress.Id,
+        //            Price = 100000 * i,
+        //            CreatorId = 1,
+        //            CreatedDate = datatimeApp,
+        //            LastEditorId = 1,
+        //            LastEditedDate = datatimeApp,
+        //        };
 
-                allproperties.Add(property);
+        //        allproperties.Add(property);
 
-                PropertyNotification propertyNotification = new()
-                {
-                    Id = propertyNotifications.Count + rentPaymentNotifications.Count + 1,
-                    Property = $"Property {property.Number}",
-                    Date = datatimeApp.AddDays(-i),
-                    Detail = i % 2 == 0 ? "End date to renewal" : "General maintenance scheduled",
-                    ReceiverId = owner.ApplicationUserId!.Value,
-                    Link = "/owner",
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                    Type = NotificationType.Property
-                };
-                propertyNotifications.Add(propertyNotification);
+        //        PropertyNotification propertyNotification = new()
+        //        {
+        //            Id = propertyNotifications.Count + rentPaymentNotifications.Count + 1,
+        //            Property = $"Property {property.Number}",
+        //            Date = datatimeApp.AddDays(-i),
+        //            Detail = i % 2 == 0 ? "End date to renewal" : "General maintenance scheduled",
+        //            ReceiverId = owner.ApplicationUserId!.Value,
+        //            Link = "/owner",
+        //            CreatorId = 1,
+        //            CreatedDate = datatimeApp,
+        //            LastEditorId = 1,
+        //            LastEditedDate = datatimeApp,
+        //            Type = NotificationType.Property
+        //        };
+        //        propertyNotifications.Add(propertyNotification);
 
-                RentPaymentNotification rentPaymentNotification = new()
-                {
-                    Id = propertyNotifications.Count + rentPaymentNotifications.Count + 1,
-                    Property = $"Property {property.Number}",
-                    DueDate = datatimeApp.AddMonths(-i),
-                    Status = i % 2 == 0 ? "Overdue" : "Paid",
-                    ReceiverId = owner.ApplicationUserId!.Value,
-                    Link = "/owner",
-                    CreatorId = 1,
-                    CreatedDate = datatimeApp,
-                    LastEditorId = 1,
-                    LastEditedDate = datatimeApp,
-                    Type = NotificationType.RentPayment
-                };
-                rentPaymentNotifications.Add(rentPaymentNotification);
-            }
-        }
+        //        RentPaymentNotification rentPaymentNotification = new()
+        //        {
+        //            Id = propertyNotifications.Count + rentPaymentNotifications.Count + 1,
+        //            Property = $"Property {property.Number}",
+        //            DueDate = datatimeApp.AddMonths(-i),
+        //            Status = i % 2 == 0 ? "Overdue" : "Paid",
+        //            ReceiverId = owner.ApplicationUserId!.Value,
+        //            Link = "/owner",
+        //            CreatorId = 1,
+        //            CreatedDate = datatimeApp,
+        //            LastEditorId = 1,
+        //            LastEditedDate = datatimeApp,
+        //            Type = NotificationType.RentPayment
+        //        };
+        //        rentPaymentNotifications.Add(rentPaymentNotification);
+        //    }
+        //}
 
         
 
@@ -197,13 +197,15 @@ public class OwnerSeed : SeedBase
 
         this.modelBuilder.Entity<Address>().HasData(allAddresssToAdd);
         this.modelBuilder.Entity<Owner>().HasData(allOwnersToAdd);
-        this.modelBuilder.Entity<OwnerBankAccount>().HasData(allOwnersBankAccounts);
+
+        if(allOwnersBankAccounts.Count > 0)
+            this.modelBuilder.Entity<OwnerBankAccount>().HasData(allOwnersBankAccounts);
 
         this.modelBuilder.Entity<IdentityUserClaim<int>>().HasData(userClaims);
         
-        this.modelBuilder.Entity<Property>().HasData(allproperties);
+        //this.modelBuilder.Entity<Property>().HasData(allproperties);
 
-        this.modelBuilder.Entity<PropertyNotification>().HasData(propertyNotifications);
-        this.modelBuilder.Entity<RentPaymentNotification>().HasData(rentPaymentNotifications);
+        //this.modelBuilder.Entity<PropertyNotification>().HasData(propertyNotifications);
+        //this.modelBuilder.Entity<RentPaymentNotification>().HasData(rentPaymentNotifications);
     }
 }

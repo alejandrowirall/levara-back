@@ -1,7 +1,6 @@
 ﻿
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
-using Levara.Shared.Domain.Bus.Commands;
 using Levara.Shared.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,28 +8,39 @@ namespace Levara.Application.Leases.GetForUpdate;
 
 public class GetLeaseForUpdateQueryResponse
 {
-    public GetLeaseForUpdateQueryResponse(LeaseUpdateQueryResponse property, List<ListModel> leaseStatus)
+    public GetLeaseForUpdateQueryResponse(LeaseUpdateQueryResponse lease,
+        IEnumerable<ListModel> properties,
+        IEnumerable<ListModel> tenants,
+        IEnumerable<ListModel> leaseStatuses,
+        IEnumerable<ListModel> frequencyTypes)
     {
-        Property = property;
-        LeaseStatus = leaseStatus;
+        Lease = lease;
+        Properties = properties;
+        Tenants = tenants;
+        LeaseStatuses = leaseStatuses;
+        FrequencyTypes = frequencyTypes;
     }
 
-    public LeaseUpdateQueryResponse Property { get; }
-    public List<ListModel> LeaseStatus { get; }
+    public LeaseUpdateQueryResponse Lease { get; }
+    public IEnumerable<ListModel> Properties { get; }
+    public IEnumerable<ListModel> Tenants { get; }
+    public IEnumerable<ListModel> LeaseStatuses { get; }
+    public IEnumerable<ListModel> FrequencyTypes { get; }
 }
 
 public class LeaseUpdateQueryResponse
 {
     public LeaseUpdateQueryResponse(Lease lease)
     {
-        OwnerId = lease.OwnerId!;
-        PropertyId = lease.PropertyId!;
-        TenantId = lease.TenantId!;
-        DateFrom = lease.DateFrom!;
-        DateTo = lease.DateTo!;
-        Price = lease.Amount!;
-        StatusLease=lease.StatusLease;
-
+        OwnerId = lease.OwnerId;
+        PropertyId = lease.PropertyId;
+        Frequency = lease.Frequency;
+        TenantId = lease.TenantId;
+        DateFrom = lease.DateFrom;
+        DateTo = lease.DateTo;
+        Price = lease.Amount;
+        Status = lease.Status;
+        MatchTags = lease.MatchTags;
 
     }
     [Range(1, int.MaxValue)]
@@ -48,6 +58,8 @@ public class LeaseUpdateQueryResponse
     public DateTime DateTo { get; set; }
     public decimal Price { get; set; }
 
-    public LeaseStatus? StatusLease { get; set; }
+    public LeaseStatus Status { get; set; }
+
+    public List<string>? MatchTags { get; set; }
 
 }

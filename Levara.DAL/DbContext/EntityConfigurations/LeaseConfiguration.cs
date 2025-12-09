@@ -19,14 +19,19 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                    .WithMany()
                    .HasForeignKey(o => o.OwnerId)
                    .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasOne(o => o.Property)
                   .WithMany()
                   .HasForeignKey(o => o.PropertyId)
                   .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasOne(o => o.Tenant)
                   .WithMany()
                   .HasForeignKey(o => o.TenantId)
                   .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Property(n => n.MatchTags)
+                   .HasColumnType("text[]");
 
             builder.ToTable("Leases")
                    .HasQueryFilter(c => !c.Deleted);

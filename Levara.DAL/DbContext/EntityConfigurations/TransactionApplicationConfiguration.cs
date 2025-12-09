@@ -25,6 +25,11 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                    .HasForeignKey(o => o.PaymentTransactionId)
                    .OnDelete(DeleteBehavior.NoAction);
 
+            builder.HasOne(o => o.Payment)
+                  .WithMany()
+                  .HasForeignKey(o => o.PaymentId)
+                  .OnDelete(DeleteBehavior.NoAction);
+
             builder.ToTable("TransactionApplications")
                    .HasQueryFilter(c => !c.Deleted);
         }
