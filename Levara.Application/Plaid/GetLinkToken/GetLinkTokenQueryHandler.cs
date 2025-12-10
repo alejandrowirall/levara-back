@@ -14,6 +14,8 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
     private readonly HttpClient _httpClient;
     private readonly string _apikey;
     private readonly string _secret;
+    private readonly string _redirect_url;
+    private readonly string _webhook;
 
     public GetLinkTokenQueryHandler(IOwnerRepository ownerRepository,
         IOptions<RemoteServicesConfig> config)
@@ -23,6 +25,8 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
         _httpClient.BaseAddress = new Uri(config.Value.BaseAdressUrl);
         _apikey = config.Value.ApiKey;
         _secret = config.Value.Secret;
+        _redirect_url = config.Value.Redirect_URL;
+        _webhook = config.Value.Webhook;
 
     }
     public async Task<OperationResult<GetLinkTokenQueryResponse>> Handle(GetLinkTokenQuery query)
@@ -33,6 +37,8 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
 
 
         var url = _httpClient.BaseAddress + $"link/token/create";
+        
+        // Build the payload dynamically based on available query parameters
         var payload = new
         {
             client_id = _apikey,
@@ -44,11 +50,23 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
             {
                 client_user_id = owner.Id.ToString()
             },
-            products = new[] { "auth", "transactions" }
+            products = new[] { "auth", "transactions" },
+            webhook = _webhook,
+            access_token = query.AccessToken,
+            link_customization_name = query.LinkCustomizationName,
+            redirect_uri = _redirect_url,
+            update = new
+            {
+                account_selection_enabled = true
+            }
         };
+
         try
         {
-            var jsonPayload = JsonConvert.SerializeObject(payload);
+            var jsonPayload = JsonConvert.SerializeObject(payload, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(url, content);
