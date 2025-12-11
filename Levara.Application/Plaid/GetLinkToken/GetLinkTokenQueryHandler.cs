@@ -23,7 +23,7 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
         _ownerRepository = ownerRepository;
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(config.Value.BaseAdressUrl);
-        _httpClient.DefaultRequestHeaders.Add("Plaid-Version", "2020-09-14");
+       // _httpClient.DefaultRequestHeaders.Add("Plaid-Version", "2020-09-14");
         _apikey = config.Value.ApiKey;
         _secret = config.Value.Secret;
         _redirect_url = config.Value.Redirect_URL;
