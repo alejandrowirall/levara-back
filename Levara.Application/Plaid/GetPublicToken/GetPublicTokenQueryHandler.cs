@@ -1,10 +1,12 @@
 ﻿
+using Levara.Application.Plaid.GetLinkToken;
 using Levara.Domain.DAL;
 using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Domain.Models;
 using Levara.Shared.Results;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
@@ -17,14 +19,16 @@ public class GetPublicTokenQueryHandler : IQueryHandler<GetPublicTokenQuery, Get
     private readonly HttpClient _httpClient;
     private readonly string _apikey;
     private readonly string _secret;
+    private readonly ILogger<GetPublicTokenQueryHandler> _logger;
 
-    public GetPublicTokenQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config) 
+    public GetPublicTokenQueryHandler(IUnitOfWork unitOfWork, IOptions<RemoteServicesConfig> config, ILogger<GetPublicTokenQueryHandler> logger) 
     {
         _unitOfWork = unitOfWork;
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(config.Value.BaseAdressUrl);
         _apikey = config.Value.ApiKey;
         _secret = config.Value.Secret;
+        _logger = logger;
 
     }
     public async Task<OperationResult<GetPublicTokenQueryResponse>> Handle(GetPublicTokenQuery query)
@@ -47,6 +51,7 @@ public class GetPublicTokenQueryHandler : IQueryHandler<GetPublicTokenQuery, Get
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<GetPublicTokenQueryResponse>(responseContent);
+                _logger.LogError("PLAID PUBLIC Token:" + result);
                 return OperationResult<GetPublicTokenQueryResponse>.SuccessResult(result);
             }
             var errorContent = await response.Content.ReadAsStringAsync();

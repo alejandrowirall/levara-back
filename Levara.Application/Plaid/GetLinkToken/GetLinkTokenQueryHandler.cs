@@ -2,6 +2,7 @@
 using Levara.Shared.Domain.Bus.Queries;
 using Levara.Shared.Domain.Models;
 using Levara.Shared.Results;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
@@ -16,9 +17,10 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
     private readonly string _secret;
     private readonly string _redirect_url;
     private readonly string _webhook;
+    private readonly ILogger<GetLinkTokenQueryHandler> _logger;
 
     public GetLinkTokenQueryHandler(IOwnerRepository ownerRepository,
-        IOptions<RemoteServicesConfig> config)
+        IOptions<RemoteServicesConfig> config, ILogger<GetLinkTokenQueryHandler> logger)
     {
         _ownerRepository = ownerRepository;
         _httpClient = new HttpClient();
@@ -28,6 +30,7 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
         _secret = config.Value.Secret;
         _redirect_url = config.Value.Redirect_URL;
         _webhook = config.Value.Webhook;
+        _logger = logger;
 
     }
     public async Task<OperationResult<GetLinkTokenQueryResponse>> Handle(GetLinkTokenQuery query)
@@ -75,6 +78,7 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<GetLinkTokenQueryResponse>(responseContent);
+                _logger.LogError("PLAID LINK Token:"+ result);
                 return OperationResult<GetLinkTokenQueryResponse>.SuccessResult(result);
             }
             var errorContent = await response.Content.ReadAsStringAsync();
