@@ -51,7 +51,7 @@ public class GetPublicTokenQueryHandler : IQueryHandler<GetPublicTokenQuery, Get
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<GetPublicTokenQueryResponse>(responseContent);
-                _logger.LogError("PLAID PUBLIC Token:" + result);
+                _logger.LogError("PLAID PUBLIC Token:: {Result}", JsonConvert.SerializeObject(result));
                 return OperationResult<GetPublicTokenQueryResponse>.SuccessResult(result);
             }
             var errorContent = await response.Content.ReadAsStringAsync();

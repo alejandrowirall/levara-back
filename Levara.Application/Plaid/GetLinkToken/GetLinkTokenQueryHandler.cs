@@ -78,7 +78,7 @@ public class GetLinkTokenQueryHandler : IQueryHandler<GetLinkTokenQuery, GetLink
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<GetLinkTokenQueryResponse>(responseContent);
-                _logger.LogError("PLAID LINK Token:"+ result);
+                _logger.LogError("PLAID LINK Token: {Result}", JsonConvert.SerializeObject(result));
                 return OperationResult<GetLinkTokenQueryResponse>.SuccessResult(result);
             }
             var errorContent = await response.Content.ReadAsStringAsync();
