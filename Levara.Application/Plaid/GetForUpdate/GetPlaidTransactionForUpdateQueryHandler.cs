@@ -1,5 +1,4 @@
-﻿
-using Levara.Domain.DAL.Repositories;
+﻿using Levara.Domain.DAL.Repositories;
 using Levara.Domain.Enum;
 using Levara.Domain.Models;
 using Levara.Shared.Domain.Bus.Queries;
@@ -13,11 +12,14 @@ public class GetPlaidTransactionForUpdateQueryHandler : IQueryHandler<GetPlaidTr
 {
     private readonly IPlaidRepository _plaidRepository;
     private readonly ITransactionApplicationRepository _transactionApplicationRepository;
+    private readonly IPlaidReconciliationRepository _plaidReconciliationRepository;
     public GetPlaidTransactionForUpdateQueryHandler(IPlaidRepository plaidRepository,
-        ITransactionApplicationRepository transactionApplicationRepository)
+        ITransactionApplicationRepository transactionApplicationRepository,
+        IPlaidReconciliationRepository plaidReconciliationRepository)
     {
         _plaidRepository = plaidRepository;
         _transactionApplicationRepository = transactionApplicationRepository;
+        _plaidReconciliationRepository = plaidReconciliationRepository;
     }
     public async Task<OperationResult<GetPlaidTransactionForUpdateQueryResponse>> Handle(GetPlaidTransactionForUpdateQuery query)
     {
@@ -29,7 +31,7 @@ public class GetPlaidTransactionForUpdateQueryHandler : IQueryHandler<GetPlaidTr
         if (plaidTx == null)
             return OperationResult<GetPlaidTransactionForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, "Not found"));
 
-        if (plaidTx.Status == PlaidTransactionStatus.RelevantTransaction)
+        if (plaidTx.Status == PlaidTransactionStatus.Reconciled || plaidTx.Status == PlaidTransactionStatus.AutoReconciled)
             return await GetByRelevantTransaction(plaidTx);
 
         PliadTransactionUpdate pliadTransactionUpdate = new(plaidTx);
@@ -44,6 +46,16 @@ public class GetPlaidTransactionForUpdateQueryHandler : IQueryHandler<GetPlaidTr
         if (plaidTx.Status != PlaidTransactionStatus.NeedReview)
         {
             statuses = [.. statuses.Where(s => s.Id != (int)PlaidTransactionStatus.NeedReview)];
+        }
+
+        if (plaidTx.Status != PlaidTransactionStatus.AutoReconciled)
+        {
+            statuses = [.. statuses.Where(s => s.Id != (int)PlaidTransactionStatus.AutoReconciled)];
+        }
+
+        if (plaidTx.Status != PlaidTransactionStatus.Error)
+        {
+            statuses = [.. statuses.Where(s => s.Id != (int)PlaidTransactionStatus.Error)];
         }
 
         GetPlaidTransactionForUpdateQueryResponse response = new(pliadTransactionUpdate,
@@ -64,7 +76,14 @@ public class GetPlaidTransactionForUpdateQueryHandler : IQueryHandler<GetPlaidTr
         if (transactionApplication == null)
             return OperationResult<GetPlaidTransactionForUpdateQueryResponse>.ErrorResult(new ErrorDetails(404, $"Not found Transaction Application by PlaidTransactionId {plaidTx.Id}"));
 
-        PliadTransactionCharge pliadTransactionCharge = new(transactionApplication);
+
+        var plaidReconciliation = 
+            await  _plaidReconciliationRepository.FirstOrDefaultAsync(pr => pr.PlaidTransactionId == plaidTx.Id &&
+                                                                            pr.TransactionId == transactionApplication.ChargeTransactionId &&
+                                                                            (pr.Status == PlaidReconciliationStatus.AutoApplied || 
+                                                                             pr.Status == PlaidReconciliationStatus.UserConfirmed));
+
+        PliadTransactionCharge pliadTransactionCharge = new(transactionApplication, plaidReconciliation?.MatchPercentage);
 
         GetPlaidTransactionForUpdateQueryResponse response = new(pliadTransactionUpdate,
                                                                  [new() { Id = (int)plaidTx.Status, Text = EnumExtensions.GetEnumDescription(plaidTx.Status) }],

@@ -6,20 +6,20 @@ using Levara.Shared.Results;
 
 namespace Levara.Application.Plaid.GetTransactionsOwnerFromPlaid;
 
-public class ExecuteOnPlaidTransactionCreated : IDomainEventSubscriber<PlaidTransactionCreated>
+public class ExecuteOnPlaidBankAccountSyncCompleted : IDomainEventSubscriber<PlaidBankAccountSyncCompleted>
 {
     private readonly ICommandBus _commandBus;
 
-    public ExecuteOnPlaidTransactionCreated(ICommandBus commandBus) 
+    public ExecuteOnPlaidBankAccountSyncCompleted(ICommandBus commandBus) 
     {
         _commandBus = commandBus;
     }
 
-    public async Task<OperationResult<bool>> On(PlaidTransactionCreated domainEvent)
+    public async Task<OperationResult<bool>> On(PlaidBankAccountSyncCompleted domainEvent)
     {
         ReconcileTransactionCommand command = new ()
         {
-            PlaidId = domainEvent.EntityId
+            OwnerBankAccountId = domainEvent.EntityId
         };
 
         var response = await _commandBus.Dispatch(command);

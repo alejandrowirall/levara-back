@@ -17,9 +17,9 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                    .HasForeignKey(o => o.TransactionId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(o => o.Lease)
+            builder.HasOne(o => o.Type)
                    .WithMany()
-                   .HasForeignKey(o => o.LeaseId)
+                   .HasForeignKey(o => o.TypeId)
                    .OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("LeaseCharges")

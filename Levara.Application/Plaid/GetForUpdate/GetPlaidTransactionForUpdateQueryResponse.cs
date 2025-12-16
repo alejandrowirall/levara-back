@@ -48,7 +48,7 @@ public class PliadTransactionUpdate
 
 public class PliadTransactionCharge
 {
-    public PliadTransactionCharge(TransactionApplication transactionApplication)
+    public PliadTransactionCharge(TransactionApplication transactionApplication, decimal? matchPercentage)
     {
         Id = transactionApplication.Payment.Id;
         PlaidId = transactionApplication.Payment.PlaidTransactionId!.Value;
@@ -60,6 +60,7 @@ public class PliadTransactionCharge
         DueDate = transactionApplication.ChargeTransaction.DueDate!.Value;
         PropertyId = transactionApplication.Payment.PropertyId;
         PropertyDescription = transactionApplication.Payment.Property.OneLineDescription();
+        MatchPercentage = matchPercentage;
     }
 
     public int Id { get; set; }
@@ -85,6 +86,7 @@ public class PliadTransactionCharge
     public DateTime DueDate { get; set; }
     public string Description { get; set; }
     public string StatusDescription { get; set; }
+    public decimal? MatchPercentage { get; set; }
     public decimal Amount { get; set; }
 }
 

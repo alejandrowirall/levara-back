@@ -27,8 +27,6 @@ public class CreateExpenseCharge
     [Range(1, int.MaxValue)]
     public int? ExpenseId { get; set; }
 
-    public DateTime? DueDate { get; set; }
-
 
     [Range(1, int.MaxValue)]
     public int? PropertyId { get; set; }

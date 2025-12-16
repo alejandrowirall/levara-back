@@ -39,6 +39,7 @@ public class GetTransactionsByGridQueryHandler : IQueryHandler<GetTransactionsBy
 
 
         var transactionQueryResponse = transactionQuery.OrderByDescending(t => t.Date)
+                                                       .ThenByDescending(t => t.CreatedDate)
                                                        .Select(t => new GetTransactionsByGridQueryResponse(t));
 
         var response = await _transactionRepository.ToListPagedAsync(transactionQueryResponse, query.PageNumber!.Value, query.PageSize!.Value);

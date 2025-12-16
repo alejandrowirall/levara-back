@@ -55,7 +55,7 @@ public class TransactionSeed : SeedBase
             LeaseCharge leaseCharge = new()
             {
                 Id = leaseCharges.Count() + 1,
-                LeaseId = 1,
+                TypeId = 1,
                 TransactionId = leaseChargeTransaction.Id,
                 Description = leaseChargeTransaction.Description,
                 CreatorId = 1,

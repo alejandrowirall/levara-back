@@ -28,15 +28,11 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
             DateFrom = command.DateFrom!.Value,
             DateTo = command.DateTo!.Value,
             Amount = command.Price!.Value,
-            Status = command.Status!.Value,
-
+            Status = command.Status!.Value
         };
 
-        await _unitOfWork.ExecuteAsTransactionAsync(async () =>
-        {
-            await _leaseRepository.AddAsync(lease);
-
-        });
+        await _leaseRepository.AddAsync(lease);
+        await _unitOfWork.SaveChangesAsync();
 
         CreateLeaseCommandResponse response = new()
         {

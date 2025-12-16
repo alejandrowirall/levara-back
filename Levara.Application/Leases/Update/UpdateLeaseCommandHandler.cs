@@ -32,7 +32,6 @@ public class UpdateLeaseCommandHandler : ICommandHandler<UpdateLeaseCommand, Upd
         lease.DateTo = command.DateTo!.Value;
         lease.Amount = command.Price!.Value;
         lease.Status = command.Status!.Value;
-        lease.MatchTags = command.MatchTags;
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {

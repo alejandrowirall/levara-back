@@ -19,10 +19,10 @@ public class GetLeaseChargeByGridQueryHandler : IQueryHandler<GetLeaseChargeByGr
         var leaseChargeQuery = _leaseChargeRepository.GetAllFull();
 
         if(query.PropertyId.HasValue)
-            leaseChargeQuery = leaseChargeQuery.Where(lc => lc.Lease.PropertyId == query.PropertyId!.Value);
+            leaseChargeQuery = leaseChargeQuery.Where(lc => lc.Transaction.PropertyId == query.PropertyId!.Value);
 
         if (query.OwnerId.HasValue)
-            leaseChargeQuery = leaseChargeQuery.Where(lc => lc.Lease.OwnerId == query.OwnerId!.Value);
+            leaseChargeQuery = leaseChargeQuery.Where(lc => lc.Transaction.Lease!.OwnerId == query.OwnerId!.Value);
 
         if (query.Statuses != null && query.Statuses.Length != 0)
             leaseChargeQuery = leaseChargeQuery.Where(lc => query.Statuses.Contains(lc.Transaction.Status));

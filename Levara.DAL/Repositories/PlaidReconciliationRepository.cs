@@ -15,7 +15,11 @@ public class PlaidReconciliationRepository : Repository<PlaidReconciliation>, IP
 
     public IQueryable<PlaidReconciliation> GetAllFull()
     {
-        return GetAll().Include(l => l.PlaidTransaction)
+        return GetAll().Include(l => l.RecurringCharge).ThenInclude(rc => rc.Property).ThenInclude(t => t.Address)
+                       .Include(l => l.RecurringCharge).ThenInclude(rc => rc.LeaseChargeType)
+                       .Include(l => l.RecurringCharge).ThenInclude(rc => rc.MaintenanceType)
+                       .Include(l => l.RecurringCharge).ThenInclude(rc => rc.Expense)
+                       .Include(l => l.PlaidTransaction)
                        .Include(lc => lc.Transaction).ThenInclude(t => t.Property).ThenInclude(t => t.Address);
     }
 }

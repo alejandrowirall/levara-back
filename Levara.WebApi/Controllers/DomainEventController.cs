@@ -71,7 +71,7 @@ namespace Levara.WebApi.Controllers
 
             if (!response.Success)
             {
-
+                _logger.LogError($"Response string: {response.Error?.Message}");
                 domainEventDb.Status = DomainEventStatus.Failed;
                 _domainEventRepository.Update(domainEventDb);
                 await _unitOfWork.SaveChangesAsync();
@@ -81,7 +81,7 @@ namespace Levara.WebApi.Controllers
                     StatusCode = response.Error!.StatusCode
                 };
             }
-
+            
             domainEventDb.Status = DomainEventStatus.Processed;
             _domainEventRepository.Update(domainEventDb);
             await _unitOfWork.SaveChangesAsync();

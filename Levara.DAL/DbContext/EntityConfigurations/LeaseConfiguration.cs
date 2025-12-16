@@ -30,9 +30,6 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                   .HasForeignKey(o => o.TenantId)
                   .OnDelete(DeleteBehavior.NoAction);
 
-            builder.Property(n => n.MatchTags)
-                   .HasColumnType("text[]");
-
             builder.ToTable("Leases")
                    .HasQueryFilter(c => !c.Deleted);
         }

@@ -29,13 +29,12 @@ namespace Levara.WebApi.Infrastructure.Bus.Events
             var snapshot = new SnapshotUserContext();
             snapshot.Initialize(userContext);
 
-            await Task.Delay(2000);
 
             foreach (var @event in events)
             {
                 await _backgroundQueue.EnqueueAsync(async (cancellationToken, scope) =>
                 {
-
+                    await Task.Delay(2000);
                     IDomainEventConsumer _domainEventConsumer = scope.ServiceProvider.GetService<IDomainEventConsumer>();
                     ILogger<InMemoryEventBus> _logger = scope.ServiceProvider.GetService<ILogger<InMemoryEventBus>>();
                     IUnitOfWork _unitOfWork = scope.ServiceProvider.GetService<IUnitOfWork>();
@@ -95,6 +94,7 @@ namespace Levara.WebApi.Infrastructure.Bus.Events
 
             if (!response.Success)
             {
+                _logger.LogError($"Response string: {response.Error?.Message}");
 
                 domainEventDb.Status = DomainEventStatus.Failed;
                 await _unitOfWork.ExecuteAsTransactionAsync(async () =>

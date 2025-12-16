@@ -565,28 +565,34 @@ namespace Levara.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Deleted = false,
                             Description = "Cleaning service",
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
                             Name = "Cleaning"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Deleted = false,
                             Description = "Gardening Service",
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
                             Name = "Gardening"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Deleted = false,
                             Description = "Security Service",
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
                             Name = "Security"
                         });
                 });
@@ -703,9 +709,6 @@ namespace Levara.DAL.Migrations
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
 
-                    b.Property<List<string>>("MatchTags")
-                        .HasColumnType("text[]");
-
                     b.Property<int>("OwnerId")
                         .HasColumnType("integer");
 
@@ -756,19 +759,101 @@ namespace Levara.DAL.Migrations
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("LeaseId")
+                    b.Property<int>("TransactionId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TransactionId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeaseId");
-
                     b.HasIndex("TransactionId");
 
+                    b.HasIndex("TypeId");
+
                     b.ToTable("LeaseCharges", (string)null);
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.LeaseChargeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaseChargeTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            Description = "Refundable amount held to cover damages or unpaid rent",
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Name = "Security Deposit"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            Description = "Charge for occupying the property",
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Name = "Rent"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            Description = "Refundable deposit to cover potential damages caused by pets",
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Name = "Pet Deposit"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
+                            Deleted = false,
+                            Description = "Additional charge for keeping a pet in the property",
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
+                            Name = "Pet Rent"
+                        });
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.LeasePayment", b =>
@@ -976,28 +1061,34 @@ namespace Levara.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Deleted = false,
                             Description = "Plumber Service",
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
                             Name = "Plumber"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Deleted = false,
                             Description = "Electrician Service",
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
                             Name = "Electrician"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatorId = 1,
                             Deleted = false,
                             Description = "Other Service",
-                            LastEditedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastEditedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = 1,
                             Name = "OtherService"
                         });
                 });
@@ -1449,13 +1540,55 @@ namespace Levara.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("ActualAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AmountDifference")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AmountDifferencePercent")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AmountMatchScore")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AmountPenalty")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AmountThreshold")
+                        .HasColumnType("numeric");
+
+                    b.Property<bool>("AmountWithinThreshold")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AppliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("AppliedByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConfiguredTags")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("CreatorId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("DateMatchScore")
+                        .HasColumnType("numeric");
+
                     b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("ExpectedAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<bool>("HasExactAmountMatch")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasExactTagMatch")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastEditedDate")
@@ -1464,15 +1597,65 @@ namespace Levara.DAL.Migrations
                     b.Property<int?>("LastEditorId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("MatchPercentage")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("MatchReason")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("MatchedAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("MatchedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MatchedDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MatchedTagsList")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PlaidDescription")
+                        .HasColumnType("text");
+
                     b.Property<int>("PlaidTransactionId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TransactionId")
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RecurringChargeId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("RecurringChargeName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TagMatchScore")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("TagsMatched")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TenantName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TotalTags")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TransactionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UnmatchedTagsList")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PlaidTransactionId");
+
+                    b.HasIndex("RecurringChargeId");
 
                     b.HasIndex("TransactionId");
 
@@ -1606,6 +1789,125 @@ namespace Levara.DAL.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Properties", (string)null);
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.RecurringCharge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ExpenseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Frequency")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsRecurrent")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LeaseChargeTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LeaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("MaintenanceTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<List<string>>("MatchTags")
+                        .HasColumnType("text[]");
+
+                    b.Property<DateTime?>("NextChargeDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.HasIndex("LeaseChargeTypeId");
+
+                    b.HasIndex("LeaseId");
+
+                    b.HasIndex("MaintenanceTypeId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("RecurringCharges", (string)null);
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.RecurringChargeInstance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastEditedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastEditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RecurringChargeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecurringChargeId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("RecurringChargeInstances", (string)null);
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.Tenant", b =>
@@ -2152,21 +2454,21 @@ namespace Levara.DAL.Migrations
 
             modelBuilder.Entity("Levara.Domain.Models.LeaseCharge", b =>
                 {
-                    b.HasOne("Levara.Domain.Models.Lease", "Lease")
-                        .WithMany()
-                        .HasForeignKey("LeaseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Levara.Domain.Models.Transaction", "Transaction")
                         .WithMany()
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Lease");
+                    b.HasOne("Levara.Domain.Models.LeaseChargeType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Transaction");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.LeasePayment", b =>
@@ -2324,13 +2626,18 @@ namespace Levara.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Levara.Domain.Models.RecurringCharge", "RecurringCharge")
+                        .WithMany()
+                        .HasForeignKey("RecurringChargeId");
+
                     b.HasOne("Levara.Domain.Models.Transaction", "Transaction")
                         .WithMany()
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("PlaidTransaction");
+
+                    b.Navigation("RecurringCharge");
 
                     b.Navigation("Transaction");
                 });
@@ -2363,6 +2670,64 @@ namespace Levara.DAL.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.RecurringCharge", b =>
+                {
+                    b.HasOne("Levara.Domain.Models.Expense", "Expense")
+                        .WithMany()
+                        .HasForeignKey("ExpenseId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.LeaseChargeType", "LeaseChargeType")
+                        .WithMany()
+                        .HasForeignKey("LeaseChargeTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.Lease", "Lease")
+                        .WithMany()
+                        .HasForeignKey("LeaseId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.MaintenanceType", "MaintenanceType")
+                        .WithMany()
+                        .HasForeignKey("MaintenanceTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Levara.Domain.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Expense");
+
+                    b.Navigation("Lease");
+
+                    b.Navigation("LeaseChargeType");
+
+                    b.Navigation("MaintenanceType");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("Levara.Domain.Models.RecurringChargeInstance", b =>
+                {
+                    b.HasOne("Levara.Domain.Models.RecurringCharge", "RecurringCharge")
+                        .WithMany()
+                        .HasForeignKey("RecurringChargeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Levara.Domain.Models.Transaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("RecurringCharge");
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("Levara.Domain.Models.Tenant", b =>

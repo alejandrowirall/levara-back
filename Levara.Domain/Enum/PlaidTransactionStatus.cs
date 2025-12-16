@@ -8,15 +8,24 @@ public enum PlaidTransactionStatus
     [Description("Created")]
     Created = 0,
 
+    [Description("NoMatch")]
+    NoMatch = 1,
+
     [Description("NeedReview")]
-    NeedReview = 1,
+    NeedReview = 2,
 
     [Description("PersonalPayment")]
-    PersonalPayment = 2,
+    PersonalPayment = 3,
 
     [Description("FeeBank")]
-    FeeBank = 3,
+    FeeBank = 4,
 
-    [Description("RelevantTransaction")]
-    RelevantTransaction = 4
+    [Description("Reconciled")]
+    Reconciled = 5,
+
+    [Description("AutoReconciled")]
+    AutoReconciled = 6,
+
+    [Description("Error")]
+    Error = 7
 }

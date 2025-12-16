@@ -40,7 +40,6 @@ public class LeaseUpdateQueryResponse
         DateTo = lease.DateTo;
         Price = lease.Amount;
         Status = lease.Status;
-        MatchTags = lease.MatchTags;
 
     }
     [Range(1, int.MaxValue)]
@@ -59,7 +58,5 @@ public class LeaseUpdateQueryResponse
     public decimal Price { get; set; }
 
     public LeaseStatus Status { get; set; }
-
-    public List<string>? MatchTags { get; set; }
 
 }

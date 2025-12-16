@@ -1,6 +1,7 @@
 ﻿using Levara.DAL.DbContext;
 using Levara.Domain.DAL;
 using Levara.Domain.Models;
+using Levara.Shared.Results;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Levara.DAL;
@@ -53,6 +54,31 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         {
             // Ejecuta la lógica personalizada
             T result = await asyncLogic();
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw; // Mantén la excepción original
+        }
+    }
+
+    public async Task<OperationResult<T>> ExecuteAsTransactionAsync<T>(Func<Task<OperationResult<T>>> asyncLogic)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            // Ejecuta la lógica personalizada
+            OperationResult<T> result = await asyncLogic();
+            if(!result.Success)
+            {
+                await transaction.RollbackAsync();
+                return result;
+            }
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();

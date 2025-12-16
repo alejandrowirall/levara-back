@@ -33,6 +33,7 @@ public class SeedManager
             new OwnerSeed(),
             new AdminSeed(),
             new MaintananceTypeSeed(),
+            new LeaseChargeTypeSeed(),
             new ExpenseSeed(),
         }.ToArray();
     }

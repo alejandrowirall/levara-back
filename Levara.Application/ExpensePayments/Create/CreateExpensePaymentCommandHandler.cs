@@ -74,7 +74,6 @@ public class CreateExpensePaymentCommandHandler : ICommandHandler<CreateExpenseP
                                             command.Amount!.Value,
                                             expense.Name,
                                             currentPropertyRunningBalance,
-                                            command.CreateExpenseCharge!.DueDate!.Value,
                                             newPayment.Date);
 
         newExpenseChargeTx.Status = TransactionStatus.Paid;

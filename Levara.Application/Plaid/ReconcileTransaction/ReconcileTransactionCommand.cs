@@ -7,6 +7,6 @@ public class ReconcileTransactionCommand : Command<ReconcileTransactionCommandRe
 {
     [Required]
     [Range(1, int.MaxValue)]
-    public int? PlaidId {  get; set; }
+    public int? OwnerBankAccountId {  get; set; }
 
 }

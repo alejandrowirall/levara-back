@@ -28,6 +28,9 @@ namespace Levara.Application.LeaseCharges.Create
         [Range(1, int.MaxValue)]
         public int? LeaseId { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int? TypeId { get; set; }
 
     }
 }

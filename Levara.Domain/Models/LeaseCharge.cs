@@ -11,9 +11,11 @@ public class LeaseCharge : Entity
     public int TransactionId { get; set; }
     public Transaction Transaction { get; set; }
 
-    public int LeaseId { get; set; }
+    public int TypeId { get; set; }
 
-    public Lease Lease { get; set; }
+    public LeaseChargeType Type { get; set; }
+
+
 
     public static Transaction CreateTransaction(int propertyId,
         decimal amount,

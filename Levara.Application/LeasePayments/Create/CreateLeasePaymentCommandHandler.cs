@@ -13,6 +13,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
     private readonly IPaymentRepository _paymentRepository;
     private readonly ILeaseRepository _leaseRepository;
     private readonly ILeaseChargeRepository _leaseChargeRepository;
+    private readonly ILeaseChargeTypeRepository _leaseChargeTypeRepository;
     private readonly ILeasePaymentRepository _leasePaymentRepository;
     private readonly ITransactionRepository _transactionRepository;
     private readonly ITransactionApplicationRepository _transactionApplicationRepository;
@@ -20,6 +21,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         IPaymentRepository paymentRepository,
         ILeaseRepository leaseRepository,
         ILeaseChargeRepository leaseChargeRepository,
+        ILeaseChargeTypeRepository leaseChargeTypeRepository,
         ILeasePaymentRepository leasePaymentRepository,
         ITransactionRepository transactionRepository,
         ITransactionApplicationRepository transactionApplicationrepository)
@@ -28,6 +30,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         _paymentRepository = paymentRepository;
         _leaseRepository = leaseRepository;
         _leaseChargeRepository = leaseChargeRepository;
+        _leaseChargeTypeRepository = leaseChargeTypeRepository;
         _leasePaymentRepository = leasePaymentRepository;
         _transactionRepository = transactionRepository;
         _transactionApplicationRepository = transactionApplicationrepository;
@@ -50,6 +53,9 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         var lease = await _leaseRepository.FirstOrDefaultAsync(leaseQuery);
         if (lease == null)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found Lease with id: {command.CreateLeaseCharge!.LeaseId!.Value}"));
+
+        if (!await _leaseChargeTypeRepository.AnyAsync(lct => lct.Id == command.CreateLeaseCharge!.TypeId))
+            return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found LeaseChargeType with id {command.CreateLeaseCharge!.TypeId}"));
 
         decimal paymentRunningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(lease.PropertyId);
         decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(command.CreateLeaseCharge!.LeaseId!.Value);
@@ -88,7 +94,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         {
             Transaction = newLeaseChargeTx,
             Description = command.CreateLeaseCharge!.Description,
-            LeaseId = lease.Id,
+            TypeId = command.CreateLeaseCharge!.TypeId!.Value,
         };
 
         Transaction newLeasePaymentTx =
@@ -146,7 +152,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         if (leaseCharge == null)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(404, $"Not found lease charge with id: {command.TransactionId}"));
 
-        if (leaseCharge.Lease.OwnerId != command.OwnerId)
+        if (leaseCharge.Transaction.Lease!.OwnerId != command.OwnerId)
             return OperationResult<CreateLeasePaymentCommandResponse>.ErrorResult(new ErrorDetails(400, "The charge does not belong to a lease of the owner"));
 
         if (leaseCharge.Transaction.Status == TransactionStatus.Paid)
@@ -164,7 +170,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
     {
 
         decimal paymentRunningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
-        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(leaseCharge.LeaseId);
+        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(leaseCharge.Transaction.LeaseId!.Value);
 
         Payment newPayment = new()
         {
@@ -175,7 +181,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = paymentRunningBalance + command.Amount!.Value,
             BankAccountRunningBalance = null,
-            LeaseId = leaseCharge.LeaseId,
+            LeaseId = leaseCharge.Transaction.LeaseId!.Value,
             LeaseRunningBalance = leasePaymentRunningBalance + command.Amount!.Value,
             PlaidTransactionId = null,
             Type = TransactionType.Lease,
@@ -183,11 +189,11 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         };
 
         decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
-        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(leaseCharge.LeaseId);
+        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(leaseCharge.Transaction.LeaseId!.Value);
 
         Transaction tx = LeasePayment.CreateTransaction(leaseCharge.Transaction.PropertyId,
                                                         command.Amount!.Value,
-                                                        leaseCharge.LeaseId,
+                                                        leaseCharge.Transaction.LeaseId!.Value,
                                                         leaseCharge.Description,
                                                         currentPropertyRunningBalance,
                                                         currentLeaseRunningBalance, 
@@ -203,7 +209,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
 
         LeasePayment leasePayment = new()
         {
-            LeaseId = leaseCharge.LeaseId,
+            LeaseId = leaseCharge.Transaction.LeaseId!.Value,
             Transaction = tx,
         };
 
@@ -234,7 +240,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
     {
 
         decimal paymentRunningBalance = await _paymentRepository.GetLastPropertyPaymentRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
-        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(leaseCharge.LeaseId);
+        decimal leasePaymentRunningBalance = await _paymentRepository.GetLastLeasePaymentRunningBalanceAsync(leaseCharge.Transaction.LeaseId!.Value);
 
         Payment newPayment = new()
         {
@@ -245,7 +251,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
             PropertyId = leaseCharge.Transaction.PropertyId,
             RunningBalance = paymentRunningBalance + command.Amount!.Value,
             BankAccountRunningBalance = null,
-            LeaseId = leaseCharge.LeaseId,
+            LeaseId = leaseCharge.Transaction.LeaseId!.Value,
             LeaseRunningBalance = leasePaymentRunningBalance + command.Amount!.Value,
             PlaidTransactionId = null,
             Type = TransactionType.Lease,
@@ -253,11 +259,11 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
         };
 
         decimal currentPropertyRunningBalance = await _transactionRepository.GetLastPropertyRunningBalanceAsync(leaseCharge.Transaction.PropertyId);
-        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(leaseCharge.LeaseId);
+        decimal currentLeaseRunningBalance = await _transactionRepository.GetLastLeaseRunningBalanceAsync(leaseCharge.Transaction.LeaseId!.Value);
 
         Transaction tx = LeasePayment.CreateTransaction(leaseCharge.Transaction.PropertyId,
                                                         command.Amount!.Value,
-                                                        leaseCharge.LeaseId,
+                                                        leaseCharge.Transaction.LeaseId!.Value,
                                                         leaseCharge.Description,
                                                         currentPropertyRunningBalance,
                                                         currentLeaseRunningBalance, 
@@ -280,7 +286,7 @@ public class CreateLeasePaymentCommandHandler : ICommandHandler<CreateLeasePayme
 
         LeasePayment leasePayment = new()
         {
-            LeaseId = leaseCharge.LeaseId,
+            LeaseId = leaseCharge.Transaction.LeaseId!.Value,
             Transaction = tx,
         };
 

@@ -15,7 +15,7 @@ public class LeaseChargeRepository : Repository<LeaseCharge>, ILeaseChargeReposi
 
     public IQueryable<LeaseCharge> GetAllFull()
     {
-        return GetAll().Include(l => l.Lease)
-                       .Include(lc => lc.Transaction);
+        return GetAll().Include(lc => lc.Type)
+                       .Include(lc => lc.Transaction).ThenInclude(t => t.Lease);
     }
 }

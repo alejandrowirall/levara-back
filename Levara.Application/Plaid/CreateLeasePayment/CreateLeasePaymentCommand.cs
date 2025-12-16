@@ -31,5 +31,9 @@ public class CreateLeaseCharge
 
     [Required]
     [Range(1, int.MaxValue)]
+    public int? TypeId { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue)]
     public int? LeaseId { get; set; }
 }

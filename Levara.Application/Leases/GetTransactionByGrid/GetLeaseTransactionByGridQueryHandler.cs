@@ -29,7 +29,11 @@ public class GetLeaseTransactionByGridQueryHandler : IQueryHandler<GetLeaseTrans
             transactionQuery = transactionQuery.Where(t => t.Lease != null && t.Lease.TenantId == query.TenantId!.Value);
         }
 
-        var transactionQueryResponse = transactionQuery.OrderByDescending(t => t.Date)
+        //var transactionQueryResponse = transactionQuery.OrderByDescending(t => t.Date)
+        //                                               .ThenByDescending(t => t.CreatedDate)
+        //                                               .Select(t => new GetLeaseTransactionByGridQueryResponse(t));
+
+        var transactionQueryResponse = transactionQuery.OrderByDescending(t => t.CreatedDate)
                                                        .Select(t => new GetLeaseTransactionByGridQueryResponse(t));
 
         var response = await _transactionRepository.ToListPagedAsync(transactionQueryResponse, query.PageNumber!.Value, query.PageSize!.Value);

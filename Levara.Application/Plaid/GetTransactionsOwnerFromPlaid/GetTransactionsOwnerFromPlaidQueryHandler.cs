@@ -144,29 +144,28 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
                         .Where(pt => !existingTransactionIds.Contains(pt.TransactionId))
                         .ToList();
 
-        if (newTransactions.Count > 0)
+        await _unitOfWork.ExecuteAsTransactionAsync(async () =>
         {
-            IEnumerable<PlaidTransactionCreated> events = new List<PlaidTransactionCreated>();
-
-            await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+            if (newTransactions.Count > 0)
             {
                 await _plaidRepository.AddAsync(newTransactions);
-                await _unitOfWork.SaveChangesAsync();
+            }
 
-                _ownerBankAccountRepository.Update(account_Token);
-
-                events = [.. newTransactions.Select(transaction => new PlaidTransactionCreated(Guid.NewGuid(), transaction.Id))];
-                await _domainEventRepository.AddAsync([.. events]);
-                await _eventBus.PublishAsync([.. events]);
-            });
-
-        }
-        else
-        {
             _ownerBankAccountRepository.Update(account_Token);
             await _unitOfWork.SaveChangesAsync();
 
-        }
+            // Publicar evento de sincronización completada (siempre, aunque no haya nuevas)
+            var syncCompletedEvent = new PlaidBankAccountSyncCompleted(
+                Guid.NewGuid(),
+                account_Token.Id
+            )
+            {
+                NewTransactionsCount = newTransactions.Count
+            };
+
+            await _domainEventRepository.AddAsync([syncCompletedEvent]);
+            await _eventBus.PublishAsync([syncCompletedEvent]);
+        });
 
         var responseFunction = new GetTransactionsOwnerQueryFromPlaidResponse(allTransactions.Count);
        
