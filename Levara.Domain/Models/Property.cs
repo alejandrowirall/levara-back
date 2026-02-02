@@ -1,6 +1,4 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Levara.Domain.Models;
 
@@ -24,7 +22,6 @@ public class Property : Entity
 
     public int? BathroomQuantity { get; set; }
 
-
     public decimal? AreaQuantity { get; set; }
 
     public bool? HasPool { get; set; }
@@ -41,6 +38,10 @@ public class Property : Entity
     public DateTime? AvailableFrom { get; set; }
 
     public byte[]? Img { get; set; }
+
+    public int? OwnerBankAccountId { get; set; }
+
+    public OwnerBankAccount? OwnerBankAccount { get; set; }
 
     public string OneLineDescription()
     {

@@ -54,6 +54,7 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
         property.TenantRequirements = command.TenantRequirements;
         property.AvailableFrom = command.AvailableFrom;
         property.Img= command.Img!;
+        property.OwnerBankAccountId = command.OwnerBankAccountId;
 
         await _unitOfWork.ExecuteAsTransactionAsync(() =>
         {

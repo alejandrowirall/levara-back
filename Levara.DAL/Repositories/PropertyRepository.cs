@@ -16,6 +16,6 @@ public class PropertyRepository : Repository<Property>, IPropertyRepository
 
     public IQueryable<Property> GetAllWithAddress()
     {
-        return GetAll().Include(o => o.Address);
+        return GetAll().Include(o => o.Address).Include(x=>x.OwnerBankAccount);
     }
 }

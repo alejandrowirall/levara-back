@@ -39,6 +39,7 @@ public class PropertyUpdateQueryResponse
         PetsPoliticAndRate = property.PetsPoliticAndRate;
         TenantRequirements = property.TenantRequirements;
         AvailableFrom = property.AvailableFrom;
+        OwnerBankAccount = property.OwnerBankAccount;
     }
     public int Id { get; }
 
@@ -77,5 +78,6 @@ public class PropertyUpdateQueryResponse
     public string? PetsPoliticAndRate { get; set; }
 
     public string? TenantRequirements { get; set; }
+    public OwnerBankAccount? OwnerBankAccount { get; set; }
 
 }

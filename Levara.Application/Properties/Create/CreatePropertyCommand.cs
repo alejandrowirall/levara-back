@@ -60,7 +60,7 @@ namespace Levara.Application.Properties.Create
         public DateTime? AvailableFrom { get; set; }
 
         public byte[]? Img { get; set; }
-       
 
+        public int? OwnerBankAccountId { get; set; }
     }
 }

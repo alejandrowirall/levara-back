@@ -47,6 +47,7 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
             AvailableFrom = command.AvailableFrom,
             Img = command.Img,
             Address = newAddress,
+            OwnerBankAccountId = command.OwnerBankAccountId
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>
