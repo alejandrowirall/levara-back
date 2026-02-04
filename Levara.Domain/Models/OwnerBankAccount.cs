@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Levara.Domain.Models;
 
@@ -19,6 +20,6 @@ public class OwnerBankAccount : Entity
     public Owner Owner { get; set; }
 
     public string? LastSyncId { get; set; }
-
+    [JsonIgnore]
     public ICollection<Property> Properties { get; set; } = new List<Property>();
 }

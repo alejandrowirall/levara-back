@@ -50,7 +50,9 @@ public class CreateRExpenseChargeCommandHandler : ICommandHandler<CreateRExpense
             command.StartDate,
             command.EndDate,
             command.Active!.Value,
-            command.MatchTags);
+            command.MatchTags,
+            command.Spliteable!.Value
+            );
 
         await _recurringChargeRepository.AddAsync(newRecurringCharge);
         await _unitOfWork.SaveChangesAsync();

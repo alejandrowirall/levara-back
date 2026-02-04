@@ -24,6 +24,8 @@ namespace Levara.Domain.Models
 
         public bool Active { get; set; } = true;
 
+        public bool Spliteable { get; set; } = false;
+
         // NUEVO: Próxima fecha a generar (solo para IsRecurrent = true)
         public DateTime? NextChargeDate { get; set; }
 
@@ -242,7 +244,8 @@ namespace Levara.Domain.Models
             DateTime? startDate,
             DateTime? endDate,
             bool active,
-            List<string>? matchTags = null)
+            List<string>? matchTags = null, 
+            bool spliteable=false)
         {
             var recurringCharge = new RecurringCharge
             {
@@ -255,7 +258,8 @@ namespace Levara.Domain.Models
                 PropertyId = propertyId,
                 ExpenseId = expenseId,
                 Active = active,
-                MatchTags = matchTags
+                MatchTags = matchTags,
+                Spliteable= spliteable
             };
 
             recurringCharge.ValidateForType();
