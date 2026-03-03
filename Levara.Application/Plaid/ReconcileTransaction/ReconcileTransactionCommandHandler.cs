@@ -19,6 +19,7 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOwnerBankAccountRepository _ownerBankAccountRepository;
+    private readonly IPropertyRepository _propertyRepository;
     private readonly IRecurringChargeInstanceRepository _recurringChargeInstanceRepository;
     private readonly IRecurringChargeRepository _recurringChargeRepository;
     private readonly IPlaidRepository _plaidRepository;
@@ -52,6 +53,7 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         IPlaidRepository plaidRepository,
         IPlaidReconciliationRepository plaidReconciliationRepository,
         ITransactionRepository transactionRepository,
+        IPropertyRepository propertyRepository,
 
         CreateLeasePaymentCommandService createLeasePaymentCommandService,
         CreateExpensePaymentCommandService createExpensePaymentCommandService,
@@ -70,6 +72,7 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         _plaidRepository = plaidRepository;
         _plaidReconciliationRepository = plaidReconciliationRepository;
         _transactionRepository = transactionRepository;
+        _propertyRepository = propertyRepository;
 
         _createLeasePaymentCommandService = createLeasePaymentCommandService;
         _createExpensePaymentCommandService = createExpensePaymentCommandService;
@@ -87,12 +90,20 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         var utcNow = DateTime.UtcNow; // Fecha de corte para filtrar cargos futuros
 
         var ownerBankAccount = await _ownerBankAccountRepository.FirstOrDefaultAsync(oba => oba.Id == command.OwnerBankAccountId!.Value);
+        if (ownerBankAccount == null)
+        {
+            return OperationResult<ReconcileTransactionCommandResponse>.ErrorResult(new ErrorDetails(404, "OwnerBankAccount not found"));
+        }
+        //Aca obtengo solo las propiedades relacionadas al bank account
+        var propertiesQuery= _propertyRepository.GetAll().Where(p=>p.OwnerBankAccountId == ownerBankAccount.Id);
+        var propertyIds = await _propertyRepository.ToListAsync(propertiesQuery);
+        var propertyIdSet = propertyIds.Select(p => p.Id).ToHashSet();
 
         // Cargar RecurringCharges por separado según IsRecurrent
         var recurringChargesRecurrentQuery = _recurringChargeRepository.GetAllFull()
-            .Where(rc => rc.Property.OwnerId == ownerBankAccount.OwnerId &&
+            .Where(rc => propertyIdSet.Contains(rc.PropertyId) &&
                           rc.Active &&
-                          rc.IsRecurrent == true);
+                          rc.IsRecurrent == true && !rc.Spliteable);
 
         var recurringChargesRecurrent = await _recurringChargeRepository.ToListAsync(recurringChargesRecurrentQuery);
         // ============================================================
@@ -119,11 +130,22 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
 
         var recurringChargesNonRecurrentQuery = _recurringChargeRepository.GetAllFull()
             .Where(rc => rc.Property.OwnerId == ownerBankAccount.OwnerId &&
-                          rc.Active &&
-                          rc.IsRecurrent == false);
+                         propertyIdSet.Contains(rc.PropertyId) &&
+                         rc.Active &&
+                         rc.IsRecurrent == false && !rc.Spliteable);
 
         var recurringChargesNonRecurrent = await _recurringChargeRepository.ToListAsync(recurringChargesNonRecurrentQuery);
 
+
+
+        
+        var recurringChargesNonRecurrentSplitablesQuery = _recurringChargeRepository.GetAllFull()
+           .Where(rc => rc.Property.OwnerId == ownerBankAccount.OwnerId &&
+                         propertyIdSet.Contains(rc.PropertyId) &&
+                         rc.Active &&
+                         rc.IsRecurrent == false && rc.Spliteable);
+
+        var recurringChargesNonRecurrentSplitables = await _recurringChargeRepository.ToListAsync(recurringChargesNonRecurrentSplitablesQuery);
         // ============================================================
         // FILTRO EN MEMORIA: Transacciones en NeedReview en esta ejecución
         // Evita que múltiples PlaidTransactions matcheen con los mismos cargos
@@ -139,6 +161,12 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         // NIVEL 2: RecurringCharges con IsRecurrent=false (Pasadas 4-6)
         // ============================================================
         await ProcessLevel2_NonRecurrentCharges(pendingTransactions, recurringChargesNonRecurrent);
+        //ACA METER CARGOS SPLITEABLES 
+        // ============================================================
+        // NIVEL 3: NonRecurringChargesSpliteables con IsRecurrent=false Spliteable=true (Pasadas 4-6)
+        // ============================================================
+        await ProcessLevel3_NonRecurrentChargesSpliteable(pendingTransactions, recurringChargesNonRecurrentSplitables, propertyIdSet);
+
 
         // ============================================================
         // PASADA FINAL: NeedReview con candidatos de todos los niveles
@@ -413,6 +441,7 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                                 LeaseId = rc.LeaseId,
                                 MatchTags = rc.MatchTags ?? new List<string>(),
                                 IsPending = true,
+                                IsSpliteable=rc.Spliteable
                             });
                         }
 
@@ -451,6 +480,142 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             _plaidRepository.Update(plaidTx);
 
                             hasChanges = true;
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    plaidTx.Status = PlaidTransactionStatus.Error;
+                    await _unitOfWork.SaveChangesAsync();
+                }
+            }
+
+            // Si no hubo cambios, salir del loop de pasadas
+            if (!hasChanges) break;
+        }
+
+    }
+
+
+    /// <summary>
+    /// NIVEL 3: Procesa RecurringChargesSpliteables con IsRecurrent=false y Spliteable=true
+    /// Crea candidatos virtuales usando el Date de cada PlaidTransaction y reconcilia si hay match >= 90%
+    /// Si el cargo es spliteable, divide el monto entre todas las propiedades y crea reconciliaciones/pagos para cada una.
+    /// </summary>
+    private async Task ProcessLevel3_NonRecurrentChargesSpliteable(
+        IEnumerable<PlaidTransaction> pendingTransactions,
+        IEnumerable<RecurringCharge> recurringChargesNonRecurrentSplitable,
+        HashSet<int> propertyIdSet)
+    {
+        for (int passNumber = 1; passNumber <= MAX_RECONCILIATION_PASSES; passNumber++)
+        {
+            bool hasChanges = false;
+
+            foreach (var plaidTx in pendingTransactions)
+            {
+                // Saltar las ya reconciliadas
+                if (plaidTx.Status == PlaidTransactionStatus.AutoReconciled)
+                    continue;
+
+                // En la primera pasada, re-evaluar NoMatch por si ahora hay nuevos cargos
+                if (plaidTx.Status == PlaidTransactionStatus.NoMatch && passNumber > 1)
+                    continue;
+
+                try
+                {
+                    await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+                    {
+                        // Obtener candidatos de RecurringCharges con IsRecurrent=false
+                        // Para estos, creamos candidatos virtuales usando el Date de la PlaidTransaction
+                        var candidates = new List<ChargeCandidate>();
+                        foreach (var rc in recurringChargesNonRecurrentSplitable)
+                        {
+                            candidates.Add(new ChargeCandidate
+                            {
+                                RecurringChargeId = rc.Id,
+                                TransactionId = null,  // Virtual
+                                ChargeDate = plaidTx.Date,  // Usar Date de PlaidTransaction
+                                Amount = rc.Amount,  // Puede ser null
+                                Description = $"Virtual {rc.Type}",
+                                PropertyId = rc.PropertyId,
+                                LeaseId = rc.LeaseId,
+                                MatchTags = rc.MatchTags ?? new List<string>(),
+                                IsPending = true,
+                                IsSpliteable = rc.Spliteable
+                            });
+                        }
+
+                        // Calcular scores
+                        var scoredCandidates = candidates
+                            .Select(candidate => new ScoredCandidate
+                            {
+                                Candidate = candidate,
+                                Score = CalculateMatchScore(plaidTx, candidate, out var details),
+                                Details = details
+                            })
+                            .Where(sc => sc.Score >= SCORE_THRESHOLD)
+                            .OrderByDescending(sc => sc.Score)
+                            .ThenBy(sc => sc.Candidate.ChargeDate)
+                            .ToList();
+
+                        // Verificar si hay exactamente 1 candidato con score >= 90%
+                        var highConfidenceCandidates = scoredCandidates
+                            .Where(sc => sc.Score >= AUTO_APPLY_THRESHOLD)
+                            .ToList();
+
+                        if (highConfidenceCandidates.Count == 1)
+                        {
+                            var selectedCandidate = highConfidenceCandidates[0];
+
+                            if (selectedCandidate.Candidate.IsSpliteable)
+                            {
+                                // Dividir el monto entre todas las propiedades
+                                int propertyCount = propertyIdSet.Count;
+                                if (propertyCount == 0)
+                                    return;
+                                decimal splitAmount = plaidTx.Amount / propertyCount;
+                                foreach (var propertyId in propertyIdSet)
+                                {
+                                    // Crear un candidato virtual para cada propiedad
+                                    var splitCandidate = new ChargeCandidate
+                                    {
+                                        RecurringChargeId = selectedCandidate.Candidate.RecurringChargeId,
+                                        TransactionId = null,
+                                        ChargeDate = plaidTx.Date,
+                                        Amount = splitAmount,
+                                        Description = $"Virtual Split {selectedCandidate.Candidate.Description}",
+                                        PropertyId = propertyId,
+                                        LeaseId = selectedCandidate.Candidate.LeaseId,
+                                        MatchTags = selectedCandidate.Candidate.MatchTags,
+                                        IsPending = true,
+                                        IsSpliteable = true
+                                    };
+                                    var splitScoredCandidate = new ScoredCandidate
+                                    {
+                                        Candidate = splitCandidate,
+                                        Score = selectedCandidate.Score,
+                                        Details = selectedCandidate.Details
+                                    };
+                                    var reconciliation = CreatePlaidReconciliation(plaidTx, splitScoredCandidate);
+                                    reconciliation.Status = PlaidReconciliationStatus.AutoApplied;
+                                    await _plaidReconciliationRepository.AddAsync(reconciliation);
+                                    await ApplyPayment(reconciliation);
+                                }
+                                plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
+                                _plaidRepository.Update(plaidTx);
+                                hasChanges = true;
+                            }
+                            else
+                            {
+                                // Comportamiento original para no spliteable
+                                var reconciliation = CreatePlaidReconciliation(plaidTx, selectedCandidate);
+                                reconciliation.Status = PlaidReconciliationStatus.AutoApplied;
+                                await _plaidReconciliationRepository.AddAsync(reconciliation);
+                                await ApplyPayment(reconciliation);
+                                plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
+                                _plaidRepository.Update(plaidTx);
+                                hasChanges = true;
+                            }
                         }
                     });
                 }
@@ -1055,6 +1220,7 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         public int? LeaseId { get; set; }
         public List<string>? MatchTags { get; set; }
         public bool IsPending { get; set; }  // Si es instancia pendiente vs creada
+        public bool IsSpliteable { get; set; } = false;
     }
 
     private class ScoredCandidate
