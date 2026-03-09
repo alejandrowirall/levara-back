@@ -98,7 +98,7 @@ public class GetTransactionsOwnerFromPlaidQueryHandler : IQueryHandler<GetTransa
 
                     var result = JsonConvert.DeserializeObject<PlaidTransactions>(resultContent, settings);
                     
-                    allTransactions.AddRange(result.Added);
+                    allTransactions.AddRange(result.Added.Where(t => !t.Pending));
                     account_Token.LastSyncId = result.NextCursor;
                     // Incrementa el offset para la siguiente iteración
                     offset += maxCount;
