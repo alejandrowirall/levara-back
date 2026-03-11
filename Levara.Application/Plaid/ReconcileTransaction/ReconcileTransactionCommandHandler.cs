@@ -319,6 +319,10 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         IEnumerable<RecurringCharge> recurringChargesRecurrent,
         DateTime utcNow)
     {
+        // Rastrea instancias ya asignadas en esta ejecución para evitar que dos PlaidTransactions
+        // del mismo monto compitan por el mismo cargo (cada una debe ir a una propiedad distinta)
+        var usedCandidateTransactionIds = new HashSet<int>();
+
         for (int passNumber = 1; passNumber <= MAX_RECONCILIATION_PASSES; passNumber++)
         {
             bool hasChanges = false;
@@ -348,8 +352,13 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             }
                         }
 
+                        // Excluir candidatos ya asignados a otras PlaidTransactions en esta ejecución
+                        var availableCandidates = candidates
+                            .Where(c => !c.TransactionId.HasValue || !usedCandidateTransactionIds.Contains(c.TransactionId.Value))
+                            .ToList();
+
                         // Calcular scores
-                        var scoredCandidates = candidates
+                        var scoredCandidates = availableCandidates
                             .Select(candidate => new ScoredCandidate
                             {
                                 Candidate = candidate,
@@ -361,12 +370,14 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             .ThenBy(sc => sc.Candidate.ChargeDate)
                             .ToList();
 
-                        // Verificar si hay exactamente 1 candidato con score >= 90%
+                        // Con la reserva en memoria, si quedan candidatos con score >= 90% tomar el primero.
+                        // Cuando múltiples propiedades tienen el mismo monto, cada PlaidTransaction
+                        // toma el siguiente candidato disponible (las anteriores ya fueron reservadas).
                         var highConfidenceCandidates = scoredCandidates
                             .Where(sc => sc.Score >= AUTO_APPLY_THRESHOLD)
                             .ToList();
 
-                        if (highConfidenceCandidates.Count == 1)
+                        if (highConfidenceCandidates.Count >= 1)
                         {
                             var selectedCandidate = highConfidenceCandidates[0];
 
@@ -381,6 +392,10 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             // Marcar PlaidTransaction como AutoReconciled
                             plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
                             _plaidRepository.Update(plaidTx);
+
+                            // Reservar este candidato para que no sea usado por otras PlaidTransactions
+                            if (selectedCandidate.Candidate.TransactionId.HasValue)
+                                usedCandidateTransactionIds.Add(selectedCandidate.Candidate.TransactionId.Value);
 
                             hasChanges = true;
                         }
@@ -407,6 +422,9 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         IEnumerable<PlaidTransaction> pendingTransactions,
         IEnumerable<RecurringCharge> recurringChargesNonRecurrent)
     {
+        // Rastrea RecurringCharges ya asignados en esta ejecución (candidatos virtuales sin TransactionId)
+        var usedCandidateRcIds = new HashSet<int>();
+
         for (int passNumber = 1; passNumber <= MAX_RECONCILIATION_PASSES; passNumber++)
         {
             bool hasChanges = false;
@@ -445,8 +463,13 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             });
                         }
 
+                        // Excluir candidatos ya asignados a otras PlaidTransactions en esta ejecución
+                        var availableCandidates = candidates
+                            .Where(c => !c.RecurringChargeId.HasValue || !usedCandidateRcIds.Contains(c.RecurringChargeId.Value))
+                            .ToList();
+
                         // Calcular scores
-                        var scoredCandidates = candidates
+                        var scoredCandidates = availableCandidates
                             .Select(candidate => new ScoredCandidate
                             {
                                 Candidate = candidate,
@@ -458,12 +481,12 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             .ThenBy(sc => sc.Candidate.ChargeDate)
                             .ToList();
 
-                        // Verificar si hay exactamente 1 candidato con score >= 90%
+                        // Con la reserva en memoria, si quedan candidatos con score >= 90% tomar el primero.
                         var highConfidenceCandidates = scoredCandidates
                             .Where(sc => sc.Score >= AUTO_APPLY_THRESHOLD)
                             .ToList();
 
-                        if (highConfidenceCandidates.Count == 1)
+                        if (highConfidenceCandidates.Count >= 1)
                         {
                             var selectedCandidate = highConfidenceCandidates[0];
 
@@ -478,6 +501,10 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             // Marcar PlaidTransaction como AutoReconciled
                             plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
                             _plaidRepository.Update(plaidTx);
+
+                            // Reservar este RC para que no sea usado por otras PlaidTransactions
+                            if (selectedCandidate.Candidate.RecurringChargeId.HasValue)
+                                usedCandidateRcIds.Add(selectedCandidate.Candidate.RecurringChargeId.Value);
 
                             hasChanges = true;
                         }
@@ -507,6 +534,9 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         IEnumerable<RecurringCharge> recurringChargesNonRecurrentSplitable,
         HashSet<int> propertyIdSet)
     {
+        // Rastrea RecurringCharges ya asignados en esta ejecución (candidatos virtuales sin TransactionId)
+        var usedCandidateRcIds = new HashSet<int>();
+
         for (int passNumber = 1; passNumber <= MAX_RECONCILIATION_PASSES; passNumber++)
         {
             bool hasChanges = false;
@@ -545,8 +575,13 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             });
                         }
 
+                        // Excluir candidatos ya asignados a otras PlaidTransactions en esta ejecución
+                        var availableCandidates = candidates
+                            .Where(c => !c.RecurringChargeId.HasValue || !usedCandidateRcIds.Contains(c.RecurringChargeId.Value))
+                            .ToList();
+
                         // Calcular scores
-                        var scoredCandidates = candidates
+                        var scoredCandidates = availableCandidates
                             .Select(candidate => new ScoredCandidate
                             {
                                 Candidate = candidate,
@@ -558,12 +593,12 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                             .ThenBy(sc => sc.Candidate.ChargeDate)
                             .ToList();
 
-                        // Verificar si hay exactamente 1 candidato con score >= 90%
+                        // Con la reserva en memoria, si quedan candidatos con score >= 90% tomar el primero.
                         var highConfidenceCandidates = scoredCandidates
                             .Where(sc => sc.Score >= AUTO_APPLY_THRESHOLD)
                             .ToList();
 
-                        if (highConfidenceCandidates.Count == 1)
+                        if (highConfidenceCandidates.Count >= 1)
                         {
                             var selectedCandidate = highConfidenceCandidates[0];
 
@@ -603,6 +638,11 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                                 }
                                 plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
                                 _plaidRepository.Update(plaidTx);
+
+                                // Reservar este RC para que no sea usado por otras PlaidTransactions
+                                if (selectedCandidate.Candidate.RecurringChargeId.HasValue)
+                                    usedCandidateRcIds.Add(selectedCandidate.Candidate.RecurringChargeId.Value);
+
                                 hasChanges = true;
                             }
                             else
@@ -614,6 +654,11 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
                                 await ApplyPayment(reconciliation);
                                 plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
                                 _plaidRepository.Update(plaidTx);
+
+                                // Reservar este RC para que no sea usado por otras PlaidTransactions
+                                if (selectedCandidate.Candidate.RecurringChargeId.HasValue)
+                                    usedCandidateRcIds.Add(selectedCandidate.Candidate.RecurringChargeId.Value);
+
                                 hasChanges = true;
                             }
                         }
