@@ -5,6 +5,7 @@ using Levara.Application.MaintenancesCharges.Create;
 using Levara.Application.Plaid.CreateExpensePayment;
 using Levara.Application.Plaid.CreateLeasePayment;
 using Levara.Application.Plaid.CreateMaintenancePayment;
+using Levara.Application.Plaid.ReconcileTransaction.Services;
 using Levara.Shared.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -28,6 +29,13 @@ public static class ApplicationExtensions
         services.AddScoped<CreateLeaseChargeCommandService>();
         services.AddScoped<CreateExpenseChargeCommandService>();
         services.AddScoped<CreateMaintenanceChargeCommandService>();
+
+        // Reconciliation services
+        services.AddSingleton<ReconciliationScoreCalculator>();
+        services.AddScoped<PendingChargeGenerator>();
+        services.AddScoped<ReconciliationCandidateBuilder>();
+        services.AddScoped<ReconciliationPaymentApplier>();
+        services.AddScoped<ReconciliationLevelProcessor>();
 
         return services;
     }
