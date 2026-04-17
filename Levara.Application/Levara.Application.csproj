@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Identity\Register\ConfirmationEmail.html" />
+    <None Remove="Plaid\ReconcileTransaction\ReconcileTransactionCommandHandler.bak" />
   </ItemGroup>
 
   <ItemGroup>

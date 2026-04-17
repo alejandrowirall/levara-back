@@ -20,7 +20,7 @@ public class GetLeaseByGridQueryResponse
         DateFrom = lease.DateFrom;
         PropertyAddress = lease.Property.OneLineDescription();
 
-        PropertyStreet = $"{lease.Property.Address.Street} {lease.Property.Address.Number}";
+        PropertyStreet = $"{lease.Property.Address.Street}";
         PropertyCity = $"{lease.Property.Address.City}, {lease.Property.Address.State}";
 
         OwnerName = $"{lease.Owner.Surname}, {lease.Owner.Name}";

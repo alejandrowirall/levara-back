@@ -23,7 +23,6 @@ public class PropertyUpdateQueryResponse
         OwnerId = property.OwnerId;
         Number = property.Number;
         Street = property.Address.Street;
-        StreetNumber = property.Address.Number;
         City = property.Address.City;
         State = property.Address.State;
         PostalCode = property.Address.PostalCode;
@@ -48,8 +47,6 @@ public class PropertyUpdateQueryResponse
     public int Number { get; }
 
     public string Street { get; }
-
-    public int StreetNumber { get; set; }
 
     public string? AdditionalLine { get; }
 

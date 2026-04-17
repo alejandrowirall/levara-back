@@ -44,7 +44,6 @@ public class CreateOwnerCommandHandler : ICommandHandler<CreateOwnerCommand, Cre
             Address = new()
             {
                 Street = command.Street!,
-                Number = command.Number.GetValueOrDefault(),
                 AdditionalLine = command.AdditionalLine,
                 City = command.City!,
                 State = command.State!,

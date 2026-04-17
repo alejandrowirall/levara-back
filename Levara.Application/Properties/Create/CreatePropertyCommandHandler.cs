@@ -24,7 +24,6 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
         Address newAddress = new()
         {
             Street = command.Street!,
-            Number = command.StreetNumber!.Value,
             AdditionalLine = command.AdditionalLine,
             City = command.City!,
             State = command.State!,

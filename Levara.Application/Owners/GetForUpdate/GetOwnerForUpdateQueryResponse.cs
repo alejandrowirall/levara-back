@@ -37,7 +37,6 @@ public class OwnerUpdateQueryResponse
         MobilePhone = owner.MobilePhone;
         Email = owner.Email;
         Street = owner.Address.Street;
-        Number = owner.Address.Number;
         AdditionalLine = owner.Address.AdditionalLine;
         City = owner.Address.City;
         State = owner.Address.State;
@@ -62,8 +61,6 @@ public class OwnerUpdateQueryResponse
     public string Email { get; }
 
     public string Street { get; }
-
-    public int Number { get; }
 
     public string? AdditionalLine { get; }
 

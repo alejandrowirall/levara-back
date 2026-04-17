@@ -28,7 +28,7 @@ public class PropertyCard
     {
         Id = property.Id;
         Number = property.Number;
-        Title = $"{property.Address.Street} {property.Address.Number}";
+        Title = $"{property.Address.Street}";
         SubTitle = $"{property.Address.City}, {property.Address.State}";
         Balance = balance;
     }

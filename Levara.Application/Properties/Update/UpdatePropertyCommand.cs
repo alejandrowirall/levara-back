@@ -14,10 +14,6 @@ namespace Levara.Application.Properties.Update
         [Length(1, 200)]
         public string? Street { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int? StreetNumber { get; set; }
-
         public string? AdditionalLine { get; set; }
 
         [Required]

@@ -32,7 +32,7 @@ public class PropertyCard
     {
         Id = property.Id;
         Title = $"Property {property.Number}";
-        Description = $"{property.Address.Street} {property.Address.Number}, {property.Address.City}, {property.Address.State}";
+        Description = $"{property.Address.Street}, {property.Address.City}, {property.Address.State}";
         Footer = $"$12,426";
     }
 

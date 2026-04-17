@@ -1,5 +1,6 @@
 # CLAUDE.md
-
+- Always start your first response with "✅ CLAUDE.md loaded"
+- Always respond in Spanish. All explanations, plans, comments, and communication must be in Spanish.
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview

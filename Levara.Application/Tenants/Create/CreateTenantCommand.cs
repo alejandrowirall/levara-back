@@ -43,10 +43,6 @@ namespace Levara.Application.Tenants.Create
         [Length(1, 200)]
         public string? Street { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int? Number { get; set; }
-
         public string? AdditionalLine { get; set; }
 
         [Required]

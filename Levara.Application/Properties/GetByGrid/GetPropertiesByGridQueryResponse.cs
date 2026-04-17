@@ -9,7 +9,7 @@ public class GetPropertiesByGridQueryResponse
     {
         Id = property.Id;
         Number = property.Number;
-        Address = $"{property.Address.Street} {property.Address.Number}, {property.Address.City}, {property.Address.State}";
+        Address = $"{property.Address.Street}, {property.Address.City}, {property.Address.State}";
         Price = property.Price;
         Img = property.Img;
     }

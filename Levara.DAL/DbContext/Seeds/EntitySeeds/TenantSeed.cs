@@ -52,7 +52,6 @@ public class TenantSeed : SeedBase
             {
                 Id = i + 500,
                 Street = "Madison Ave",
-                Number = 1660,
                 AdditionalLine = null,
                 City = "New York",
                 State = "New York",

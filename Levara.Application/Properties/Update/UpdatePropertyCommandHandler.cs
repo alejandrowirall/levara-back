@@ -37,7 +37,6 @@ public class UpdatePropertyCommandHandler : ICommandHandler<UpdatePropertyComman
             return OperationResult<UpdatePropertyCommandResponse>.ErrorResult(new ErrorDetails(403, "The owner does not have permissions to update this property."));
 
         property.Address.Street = command.Street!;
-        property.Address.Number = command.StreetNumber!.Value;
         property.Address.AdditionalLine = command.AdditionalLine;
         property.Address.City = command.City!;
         property.Address.State = command.State!;

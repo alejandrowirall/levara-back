@@ -8,9 +8,6 @@ public class Address : Entity
     [Length(1, 200)]
     public required string Street { get; set; }
 
-    [Length(1, int.MaxValue)]
-    public required int Number { get; set; }
-
     [Length(1, 200)]
     public string? AdditionalLine { get; set; }
 

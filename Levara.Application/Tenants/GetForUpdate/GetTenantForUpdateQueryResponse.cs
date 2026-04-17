@@ -37,7 +37,6 @@ public class TenantUpdateQueryResponse
         MobilePhone = tenant.MobilePhone;
         Email = tenant.Email;
         Street = tenant.Address.Street;
-        Number = tenant.Address.Number;
         AdditionalLine = tenant.Address.AdditionalLine;
         City = tenant.Address.City;
         State = tenant.Address.State;
@@ -62,8 +61,6 @@ public class TenantUpdateQueryResponse
     public string Email { get; }
 
     public string Street { get; }
-
-    public int Number { get; }
 
     public string? AdditionalLine { get; }
 

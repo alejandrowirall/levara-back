@@ -42,7 +42,6 @@ public class UpdateTenantCommandHandler : ICommandHandler<UpdateTenantCommand, U
         tenant.MobilePhone = command.MobilePhone!;
         tenant.Email = command.Email!;
         tenant.Address.Street = command.Street!;
-        tenant.Address.Number = command.Number.GetValueOrDefault();
         tenant.Address.AdditionalLine = command.AdditionalLine!;
         tenant.Address.City = command.City!;
         tenant.Address.State = command.State!;

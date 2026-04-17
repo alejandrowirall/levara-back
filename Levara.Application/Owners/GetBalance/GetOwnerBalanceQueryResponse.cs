@@ -29,7 +29,7 @@ public class PropertyBalanceGrid
     {
         Id = property.Id;
         Number = property.Number;
-        Address = $"{property.Address.Street} {property.Address.Number}";
+        Address = $"{property.Address.Street}";
         City = $"{property.Address.City}, {property.Address.State}";
         Balance = 0;
     }

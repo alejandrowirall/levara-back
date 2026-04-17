@@ -45,6 +45,6 @@ public class Property : Entity
 
     public string OneLineDescription()
     {
-        return $"{Number} - {Address.Street} {Address.Number}, {Address.City}, {Address.State} {Address.PostalCode}";
+        return $"{Number} - {Address.Street}, {Address.City}, {Address.State} {Address.PostalCode}";
     }
 }

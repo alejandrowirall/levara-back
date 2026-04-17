@@ -36,7 +36,6 @@ public class CreateTenantCommandHandler : ICommandHandler<CreateTenantCommand, C
         Address newAddress = new()
         {
             Street = command.Street!,
-            Number = command.Number!.Value,
             AdditionalLine = command.AdditionalLine,
             City = command.City!,
             State = command.State!,

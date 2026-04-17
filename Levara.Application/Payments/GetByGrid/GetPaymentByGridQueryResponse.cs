@@ -9,7 +9,7 @@ public class GetPaymentByGridQueryResponse
     {
         Id = payment.Id;
         Description = payment.Description;
-        PropertyDesc = $"{payment.Property.Number}-{payment.Property.Address.Street} {payment.Property.Address.Number}, {payment.Property.Address.City}, {payment.Property.Address.State}";
+        PropertyDesc = $"{payment.Property.Number}-{payment.Property.Address.Street}, {payment.Property.Address.City}, {payment.Property.Address.State}";
         Date = payment.Date;
         TypeDesc = EnumExtensions.GetEnumDescription(payment.Type);
         PaymentMethodDesc = EnumExtensions.GetEnumDescription(payment.PaymentMethod);

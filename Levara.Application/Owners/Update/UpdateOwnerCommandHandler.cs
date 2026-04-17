@@ -39,7 +39,6 @@ public class UpdateOwnerCommandHandler : ICommandHandler<UpdateOwnerCommand, Upd
         owner.MobilePhone = command.MobilePhone!;
         owner.Email = command.Email!;
         owner.Address.Street = command.Street!;
-        owner.Address.Number = command.Number.GetValueOrDefault();
         owner.Address.AdditionalLine = command.AdditionalLine!;
         owner.Address.City = command.City!;
         owner.Address.State = command.State!;
