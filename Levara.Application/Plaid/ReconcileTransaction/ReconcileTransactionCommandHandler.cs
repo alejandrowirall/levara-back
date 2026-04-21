@@ -70,15 +70,41 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         var rcSpliteable = await LoadRecurringChargesAsync(
             propertyIdSet, isRecurrent: false, spliteable: true, ownerId: ownerBankAccount.OwnerId);
 
-        // 4. Generar cargos pendientes para recurrentes
-        await _chargeGenerator.GenerateAsync(rcRecurrent, utcNow);
-
-        // 5. Cargar transacciones pendientes
+        // 4. Cargar transacciones pendientes
         var pendingTxs = await LoadPendingTransactionsAsync(command.OwnerBankAccountId!.Value);
         if (!pendingTxs.Any())
             return OperationResult<ReconcileTransactionCommandResponse>.SuccessResult(new());
 
-        // 6. Level 1: Recurrentes con instancias reales
+        // 5. Distribución equitativa — primer paso: RCs con misma config (Amount+Type) en N propiedades
+        // Combina rcRecurrent + rcNonRecurrent (ambos no-spliteable) para cubrir el caso
+        // donde los RCs de las propiedades estén marcados como no-recurrentes.
+        var allNonSplitRcs = rcRecurrent.Concat(rcNonRecurrent).ToList();
+
+        var rcGroups = allNonSplitRcs
+            .Where(rc => rc.Amount.HasValue)
+            .GroupBy(rc => (Amount: Math.Abs(rc.Amount!.Value), rc.Type))
+            .Where(g => g.Select(rc => rc.PropertyId).Distinct().Count() > 1)
+            .Select(g => g
+                .GroupBy(rc => rc.PropertyId)
+                .Select(gg => gg.First())
+                .ToList())
+            .ToList();
+
+        if (rcGroups.Any())
+        {
+            await _levelProcessor.ProcessEquitableDistributionAsync(
+                pendingTxs,
+                rcGroups,
+                async (rc, plaidTx) =>
+                    await _candidateBuilder.GetInstanceForMonthAsync(rc, plaidTx.Date.Year, plaidTx.Date.Month, utcNow)
+                    ?? _candidateBuilder.BuildVirtualCandidates(new[] { rc }, plaidTx.Date).Single()
+            );
+        }
+
+        // 6. Generar cargos pendientes para recurrentes
+        await _chargeGenerator.GenerateAsync(rcRecurrent, utcNow);
+
+        // 7. Level 1: Recurrentes con instancias reales
         await _levelProcessor.ProcessLevelAsync(pendingTxs, new LevelConfig
         {
             BuildCandidatesAsync = async _ =>

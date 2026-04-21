@@ -112,6 +112,27 @@ public class ReconciliationScoreCalculator
         };
     }
 
+    public ScoredCandidate? SelectAutoApplyCandidate(List<ScoredCandidate> scored)
+    {
+        if (scored.Count == 0) return null;
+
+        var best = scored[0];
+
+        // Regla principal: score supera el threshold
+        if (best.Score >= AUTO_APPLY_THRESHOLD) return best;
+
+        bool isUnique = scored.Count == 1 || scored[1].Score < best.Score;
+
+        // Regla extendida 1: importe dentro de tolerancia → auto-apply incluso con empate
+        // El mecanismo IsAvailable/ReserveCandidate garantiza que cada candidato se use una sola vez
+        if (best.Details.AmountWithinThreshold) return best;
+
+        // Regla extendida 2: tag coincide y RC sin importe → solo si es el único mejor
+        if (isUnique && best.Details.TagScore > 0 && !best.Candidate.Amount.HasValue) return best;
+
+        return null;
+    }
+
     public List<ScoredCandidate> ScoreAndFilter(PlaidTransaction plaidTx, List<ChargeCandidate> candidates)
     {
         return candidates

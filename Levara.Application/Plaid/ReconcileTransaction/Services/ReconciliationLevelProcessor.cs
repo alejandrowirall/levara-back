@@ -71,9 +71,7 @@ public class ReconciliationLevelProcessor
 
                         var scored = _scoreCalculator.ScoreAndFilter(plaidTx, available);
 
-                        var best = scored
-                            .Where(sc => sc.Score >= ReconciliationScoreCalculator.AUTO_APPLY_THRESHOLD)
-                            .FirstOrDefault();
+                        var best = _scoreCalculator.SelectAutoApplyCandidate(scored);
 
                         if (best == null) return;
 
@@ -132,9 +130,7 @@ public class ReconciliationLevelProcessor
 
                     if (scored.Any())
                     {
-                        var best = scored
-                            .Where(sc => sc.Score >= ReconciliationScoreCalculator.AUTO_APPLY_THRESHOLD)
-                            .FirstOrDefault();
+                        var best = _scoreCalculator.SelectAutoApplyCandidate(scored);
 
                         if (best != null)
                         {
@@ -178,6 +174,63 @@ public class ReconciliationLevelProcessor
                 _logger.LogError(ex, "Error in final pass for PlaidTx {Id}", plaidTx.Id);
                 plaidTx.Status = PlaidTransactionStatus.Error;
                 await _unitOfWork.SaveChangesAsync();
+            }
+        }
+    }
+
+    public async Task ProcessEquitableDistributionAsync(
+        List<PlaidTransaction> pendingTransactions,
+        List<List<RecurringCharge>> rcGroups,
+        Func<RecurringCharge, PlaidTransaction, Task<ChargeCandidate>> resolveCandidateAsync)
+    {
+        foreach (var rcGroup in rcGroups)
+        {
+            if (rcGroup.Count < 2) continue;
+
+            var orderedProperties = rcGroup.OrderBy(rc => rc.PropertyId).ToList();
+            if (!orderedProperties[0].Amount.HasValue) continue;
+            var groupAmount = Math.Abs(orderedProperties[0].Amount!.Value);
+
+            var matchingTxs = pendingTransactions
+                .Where(tx => tx.Status != PlaidTransactionStatus.AutoReconciled)
+                .Where(tx => Math.Abs(tx.Amount) == groupAmount);
+
+            var byMonth = matchingTxs
+                .GroupBy(tx => (tx.Date.Year, tx.Date.Month))
+                .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month);
+
+            foreach (var monthGroup in byMonth)
+            {
+                var monthTxs = monthGroup.OrderBy(tx => tx.Date).ToList();
+                var pairCount = Math.Min(monthTxs.Count, orderedProperties.Count);
+
+                for (int i = 0; i < pairCount; i++)
+                {
+                    var plaidTx = monthTxs[i];
+                    var rc = orderedProperties[i];
+
+                    var candidate = await resolveCandidateAsync(rc, plaidTx);
+
+                    _scoreCalculator.CalculateMatchScore(plaidTx, candidate, out var details);
+                    var scored = new ScoredCandidate
+                    {
+                        Candidate = candidate,
+                        Score = details.TagScore + details.AmountScore,
+                        Details = details
+                    };
+
+                    try
+                    {
+                        await _unitOfWork.ExecuteAsTransactionAsync(async () =>
+                            await ProcessSingleCandidateAsync(plaidTx, scored));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error in equitable distribution for PlaidTx {Id}", plaidTx.Id);
+                        plaidTx.Status = PlaidTransactionStatus.Error;
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
             }
         }
     }

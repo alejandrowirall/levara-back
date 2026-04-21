@@ -70,6 +70,23 @@ public class ReconciliationCandidateBuilder
         }).ToList();
     }
 
+    public async Task<ChargeCandidate?> GetInstanceForMonthAsync(
+        RecurringCharge rc,
+        int year,
+        int month,
+        DateTime utcNow)
+    {
+        var query = _instanceRepository.GetAllFull()
+            .Where(i => i.RecurringChargeId == rc.Id)
+            .Where(i => i.Transaction != null)
+            .Where(i => i.Transaction!.Status == TransactionStatus.Unpaid)
+            .Where(i => i.Transaction!.Date.Year == year && i.Transaction!.Date.Month == month)
+            .Where(i => i.Transaction!.Date <= utcNow);
+
+        var instance = await _instanceRepository.FirstOrDefaultAsync(query);
+        return instance != null ? MapInstanceToCandidate(rc, instance) : null;
+    }
+
     public async Task<List<ChargeCandidate>> BuildLooseTransactionCandidatesAsync(
         int ownerId,
         DateTime utcNow)
