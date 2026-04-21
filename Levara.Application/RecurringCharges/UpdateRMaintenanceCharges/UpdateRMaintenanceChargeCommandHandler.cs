@@ -171,6 +171,7 @@ public class UpdateRMaintenanceChargeCommandHandler : ICommandHandler<UpdateRMai
         existingCharge.Amount = command.Amount;
         existingCharge.MaintenanceTypeId = command.MaintenanceTypeId!.Value;
         existingCharge.Active = command.Active!.Value;
+        existingCharge.Spliteable = command.Spliteable ?? false;
         existingCharge.MatchTags = command.MatchTags;
     }
 

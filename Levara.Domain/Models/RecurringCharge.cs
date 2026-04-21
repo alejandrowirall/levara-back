@@ -209,6 +209,7 @@ namespace Levara.Domain.Models
             DateTime? startDate,
             DateTime? endDate,
             bool active,
+            bool spliteable,
             List<string>? matchTags = null)
         {
             var recurringCharge = new RecurringCharge
@@ -222,6 +223,7 @@ namespace Levara.Domain.Models
                 PropertyId = propertyId,
                 MaintenanceTypeId = maintenanceTypeId,
                 Active = active,
+                Spliteable = spliteable,
                 MatchTags = matchTags
             };
 

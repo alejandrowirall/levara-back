@@ -35,6 +35,8 @@ namespace Levara.Application.RecurringCharges.UpdateRExpenseCharges
         [Required]
         public bool? Active { get; set; }
 
+        public bool? Spliteable { get; set; }
+
         public List<string>? MatchTags { get; set; }
     }
 }
