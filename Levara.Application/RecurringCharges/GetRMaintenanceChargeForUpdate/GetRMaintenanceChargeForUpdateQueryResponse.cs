@@ -19,6 +19,7 @@ public class GetRMaintenanceChargeForUpdateQueryResponse
         MaintenanceTypeId = recurringCharge.MaintenanceTypeId!.Value;
         NextChargeDate = recurringCharge.NextChargeDate;
         Active = recurringCharge.Active;
+        Spliteable = recurringCharge.Spliteable;
 
         Description = property.OneLineDescription();
         StartDate = recurringCharge.StartDate;
@@ -38,6 +39,7 @@ public class GetRMaintenanceChargeForUpdateQueryResponse
     public int MaintenanceTypeId { get; set; }
     public DateTime? NextChargeDate { get; set; }
     public bool Active { get; set; }
+    public bool Spliteable { get; set; }
     public string Description { get; }
     public IEnumerable<ListModel> FrequencyTypes { get; }
     public IEnumerable<ListModel> MaintenanceTypes { get; }

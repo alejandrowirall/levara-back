@@ -19,6 +19,7 @@ public class GetRExpenseChargeForUpdateQueryResponse
         ExpenseId = recurringCharge.ExpenseId!.Value;
         NextChargeDate = recurringCharge.NextChargeDate;
         Active = recurringCharge.Active;
+        Spliteable = recurringCharge.Spliteable;
 
         Description = property.OneLineDescription();
         StartDate = recurringCharge.StartDate;
@@ -38,6 +39,7 @@ public class GetRExpenseChargeForUpdateQueryResponse
     public int ExpenseId { get; set; }
     public DateTime? NextChargeDate { get; set; }
     public bool Active { get; set; }
+    public bool Spliteable { get; set; }
     public string Description { get; }
     public IEnumerable<ListModel> FrequencyTypes { get; }
     public IEnumerable<ListModel> Expenses { get; }

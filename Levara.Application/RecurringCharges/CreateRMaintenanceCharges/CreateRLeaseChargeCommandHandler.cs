@@ -50,6 +50,7 @@ public class CreateRMaintenanceChargeCommandHandler : ICommandHandler<CreateRMai
             command.StartDate,
             command.EndDate,
             command.Active!.Value,
+            command.Spliteable ?? false,
             command.MatchTags);
 
         await _recurringChargeRepository.AddAsync(newRecurringCharge);

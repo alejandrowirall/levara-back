@@ -171,6 +171,7 @@ public class UpdateRExpenseChargeCommandHandler : ICommandHandler<UpdateRExpense
         existingCharge.Amount = command.Amount;
         existingCharge.ExpenseId = command.ExpenseId!.Value;
         existingCharge.Active = command.Active!.Value;
+        existingCharge.Spliteable = command.Spliteable ?? false;
         existingCharge.MatchTags = command.MatchTags;
     }
 
