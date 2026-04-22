@@ -61,7 +61,12 @@ public class ReconciliationPaymentApplier
         ChargeCandidate candidate,
         PlaidTransaction plaidTx)
     {
-        var amount = Math.Abs(reconciliation.ActualAmount);
+        // Para splits el candidato ya trae amount y propertyId correctos.
+        // Para no-split se mantiene el comportamiento previo (amount = total reconciliation).
+        var amount = candidate.IsSpliteable && candidate.Amount.HasValue
+            ? Math.Abs(candidate.Amount.Value)
+            : Math.Abs(reconciliation.ActualAmount);
+
         var ownerId = plaidTx.OwnerBankAccount!.OwnerId;
 
         // Rama 1: cargo real ya existe → solo crear pago
@@ -75,7 +80,7 @@ public class ReconciliationPaymentApplier
         if (candidate.SourceRecurringCharge != null)
         {
             return await CreateChargeAndPayAsync(
-                reconciliation, candidate.SourceRecurringCharge, plaidTx, amount, ownerId);
+                reconciliation, candidate, plaidTx, amount, ownerId);
         }
 
         _logger.LogWarning("No source entity for candidate RC:{RcId} TX:{TxId}",
@@ -124,16 +129,22 @@ public class ReconciliationPaymentApplier
 
     private async Task<bool> CreateChargeAndPayAsync(
         PlaidReconciliation reconciliation,
-        RecurringCharge rc,
+        ChargeCandidate candidate,
         PlaidTransaction plaidTx,
         decimal amount,
         int ownerId)
     {
+        var rc = candidate.SourceRecurringCharge!;
+        // ChargeCandidate.PropertyId siempre se popula desde rc.PropertyId o Transaction.PropertyId;
+        // para splits, el LevelProcessor lo fija a la propiedad destino del split.
+        var propertyId = candidate.PropertyId;
+        var skipInstanceUpdate = candidate.IsSpliteable;
+
         return rc.Type switch
         {
-            TransactionType.Lease => await CreateAndPayLeaseAsync(reconciliation, rc, plaidTx, amount, ownerId),
-            TransactionType.Expense => await CreateAndPayExpenseAsync(reconciliation, rc, plaidTx, amount, ownerId),
-            TransactionType.Maintenance => await CreateAndPayMaintenanceAsync(reconciliation, rc, plaidTx, amount, ownerId),
+            TransactionType.Lease => await CreateAndPayLeaseAsync(reconciliation, rc, propertyId, plaidTx, amount, ownerId, skipInstanceUpdate),
+            TransactionType.Expense => await CreateAndPayExpenseAsync(reconciliation, rc, propertyId, plaidTx, amount, ownerId, skipInstanceUpdate),
+            TransactionType.Maintenance => await CreateAndPayMaintenanceAsync(reconciliation, rc, propertyId, plaidTx, amount, ownerId, skipInstanceUpdate),
             _ => false
         };
     }
@@ -141,14 +152,16 @@ public class ReconciliationPaymentApplier
     private async Task<bool> CreateAndPayLeaseAsync(
         PlaidReconciliation reconciliation,
         RecurringCharge rc,
+        int propertyId,
         PlaidTransaction plaidTx,
         decimal amount,
-        int ownerId)
+        int ownerId,
+        bool skipInstanceUpdate)
     {
         var chargeResponse = await _leaseChargeService.Handle(new CreateLeaseChargeCommand
         {
             OwnerId = ownerId,
-            PropertyId = rc.PropertyId,
+            PropertyId = propertyId,
             LeaseId = rc.LeaseId,
             Amount = amount,
             Description = reconciliation.MatchedDescription,
@@ -169,21 +182,25 @@ public class ReconciliationPaymentApplier
 
         if (!paymentResponse.Success) return false;
 
-        await RegisterInstanceAndUpdateReconciliation(reconciliation, rc, chargeResponse.Result!.Id);
+        await LinkReconciliationToTransactionAsync(reconciliation, chargeResponse.Result!.Id);
+        if (!skipInstanceUpdate)
+            await RegisterInstanceAndAdvanceRecurringAsync(rc, chargeResponse.Result!.Id);
         return true;
     }
 
     private async Task<bool> CreateAndPayExpenseAsync(
         PlaidReconciliation reconciliation,
         RecurringCharge rc,
+        int propertyId,
         PlaidTransaction plaidTx,
         decimal amount,
-        int ownerId)
+        int ownerId,
+        bool skipInstanceUpdate)
     {
         var chargeResponse = await _expenseChargeService.Handle(new CreateExpenseChargeCommand
         {
             OwnerId = ownerId,
-            PropertyId = rc.PropertyId,
+            PropertyId = propertyId,
             Amount = amount,
             Date = plaidTx.Date,
             DueDate = rc.NextChargeDate ?? plaidTx.Date,
@@ -202,21 +219,25 @@ public class ReconciliationPaymentApplier
 
         if (!paymentResponse.Success) return false;
 
-        await RegisterInstanceAndUpdateReconciliation(reconciliation, rc, chargeResponse.Result!.Id);
+        await LinkReconciliationToTransactionAsync(reconciliation, chargeResponse.Result!.Id);
+        if (!skipInstanceUpdate)
+            await RegisterInstanceAndAdvanceRecurringAsync(rc, chargeResponse.Result!.Id);
         return true;
     }
 
     private async Task<bool> CreateAndPayMaintenanceAsync(
         PlaidReconciliation reconciliation,
         RecurringCharge rc,
+        int propertyId,
         PlaidTransaction plaidTx,
         decimal amount,
-        int ownerId)
+        int ownerId,
+        bool skipInstanceUpdate)
     {
         var chargeResponse = await _maintenanceChargeService.Handle(new CreateMaintenanceChargeCommand
         {
             OwnerId = ownerId,
-            PropertyId = rc.PropertyId,
+            PropertyId = propertyId,
             Amount = amount,
             Title = rc.MaintenanceType?.Description,
             Description = reconciliation.MatchedDescription,
@@ -237,12 +258,22 @@ public class ReconciliationPaymentApplier
 
         if (!paymentResponse.Success) return false;
 
-        await RegisterInstanceAndUpdateReconciliation(reconciliation, rc, chargeResponse.Result!.Id);
+        await LinkReconciliationToTransactionAsync(reconciliation, chargeResponse.Result!.Id);
+        if (!skipInstanceUpdate)
+            await RegisterInstanceAndAdvanceRecurringAsync(rc, chargeResponse.Result!.Id);
         return true;
     }
 
-    private async Task RegisterInstanceAndUpdateReconciliation(
+    private async Task LinkReconciliationToTransactionAsync(
         PlaidReconciliation reconciliation,
+        int transactionId)
+    {
+        reconciliation.TransactionId = transactionId;
+        _reconciliationRepository.Update(reconciliation);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task RegisterInstanceAndAdvanceRecurringAsync(
         RecurringCharge rc,
         int transactionId)
     {
@@ -257,9 +288,6 @@ public class ReconciliationPaymentApplier
             rc.NextChargeDate = rc.CalculateNextDate(rc.NextChargeDate.Value);
             _recurringChargeRepository.Update(rc);
         }
-
-        reconciliation.TransactionId = transactionId;
-        _reconciliationRepository.Update(reconciliation);
 
         await _unitOfWork.SaveChangesAsync();
     }

@@ -21,6 +21,7 @@ public class ReconciliationLevelProcessor
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPlaidRepository _plaidRepository;
     private readonly IPlaidReconciliationRepository _reconciliationRepository;
+    private readonly IRecurringChargeRepository _recurringChargeRepository;
     private readonly ReconciliationScoreCalculator _scoreCalculator;
     private readonly ReconciliationPaymentApplier _paymentApplier;
     private readonly ILogger<ReconciliationLevelProcessor> _logger;
@@ -29,6 +30,7 @@ public class ReconciliationLevelProcessor
         IUnitOfWork unitOfWork,
         IPlaidRepository plaidRepository,
         IPlaidReconciliationRepository reconciliationRepository,
+        IRecurringChargeRepository recurringChargeRepository,
         ReconciliationScoreCalculator scoreCalculator,
         ReconciliationPaymentApplier paymentApplier,
         ILogger<ReconciliationLevelProcessor> logger)
@@ -36,6 +38,7 @@ public class ReconciliationLevelProcessor
         _unitOfWork = unitOfWork;
         _plaidRepository = plaidRepository;
         _reconciliationRepository = reconciliationRepository;
+        _recurringChargeRepository = recurringChargeRepository;
         _scoreCalculator = scoreCalculator;
         _paymentApplier = paymentApplier;
         _logger = logger;
@@ -266,10 +269,36 @@ public class ReconciliationLevelProcessor
     {
         if (propertyIdSet.Count == 0) return false;
 
-        decimal splitAmount = plaidTx.Amount / propertyIdSet.Count;
+        var sourceRc = best.Candidate.SourceRecurringCharge;
+        var propertyList = propertyIdSet.ToList();
 
-        foreach (var propertyId in propertyIdSet)
+        // Snapshot del estado pre-split. Las PaymentServices validan que la Plaid Tx
+        // esté en un estado "pre-conciliación" (Created/NeedReview/NoMatch/Error) y la
+        // mutan a Reconciled en cada invocación. Para N splits necesitamos restaurar
+        // ese estado antes de cada iteración; de lo contrario solo la primera pasa.
+        var originalStatus = plaidTx.Status;
+
+        // Redondeo a 2 decimales; el residuo queda en la última propiedad para cuadrar al total.
+        decimal baseSplit = Math.Round(plaidTx.Amount / propertyList.Count, 2, MidpointRounding.AwayFromZero);
+        decimal assigned = 0m;
+        bool anyFailure = false;
+
+        for (int i = 0; i < propertyList.Count; i++)
         {
+            var propertyId = propertyList[i];
+            decimal splitAmount = (i == propertyList.Count - 1)
+                ? plaidTx.Amount - assigned
+                : baseSplit;
+            assigned += splitAmount;
+
+            // Restaurar estado válido antes de invocar la PaymentService.
+            if (plaidTx.Status != originalStatus)
+            {
+                plaidTx.Status = originalStatus;
+                _plaidRepository.Update(plaidTx);
+                await _unitOfWork.SaveChangesAsync();
+            }
+
             var splitCandidate = new ChargeCandidate
             {
                 RecurringChargeId = best.Candidate.RecurringChargeId,
@@ -282,7 +311,7 @@ public class ReconciliationLevelProcessor
                 MatchTags = best.Candidate.MatchTags,
                 IsPending = true,
                 IsSpliteable = true,
-                SourceRecurringCharge = best.Candidate.SourceRecurringCharge
+                SourceRecurringCharge = sourceRc
             };
 
             var splitScored = new ScoredCandidate
@@ -293,15 +322,37 @@ public class ReconciliationLevelProcessor
             };
 
             var reconciliation = _scoreCalculator.CreatePlaidReconciliation(plaidTx, splitScored);
+            // Override: CreatePlaidReconciliation setea ActualAmount = plaidTx.Amount (total).
+            // Para splits cada reconciliation debe reflejar su porción.
+            reconciliation.ActualAmount = splitAmount;
+            reconciliation.ExpectedAmount = splitAmount;
             reconciliation.Status = PlaidReconciliationStatus.AutoApplied;
             await _reconciliationRepository.AddAsync(reconciliation);
 
-            await _paymentApplier.ApplyAsync(reconciliation, splitCandidate, plaidTx);
+            var applied = await _paymentApplier.ApplyAsync(reconciliation, splitCandidate, plaidTx);
+            if (!applied)
+            {
+                anyFailure = true;
+                _logger.LogError(
+                    "Split iteration failed for PlaidTx {PlaidId} property {PropertyId} amount {Amount}",
+                    plaidTx.Id, propertyId, splitAmount);
+            }
         }
 
-        plaidTx.Status = PlaidTransactionStatus.AutoReconciled;
+        // Avanzar NextChargeDate solo si todas las iteraciones fueron exitosas.
+        if (!anyFailure && sourceRc != null && sourceRc.IsRecurrent && sourceRc.NextChargeDate.HasValue)
+        {
+            sourceRc.NextChargeDate = sourceRc.CalculateNextDate(sourceRc.NextChargeDate.Value);
+            _recurringChargeRepository.Update(sourceRc);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        // Estado final de la Plaid Tx: Error si algún split falló, AutoReconciled si todas ok.
+        plaidTx.Status = anyFailure
+            ? PlaidTransactionStatus.Error
+            : PlaidTransactionStatus.AutoReconciled;
         _plaidRepository.Update(plaidTx);
 
-        return true;
+        return !anyFailure;
     }
 }

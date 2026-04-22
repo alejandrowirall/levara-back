@@ -137,19 +137,27 @@ public class ReconcileTransactionCommandHandler : ICommandHandler<ReconcileTrans
         });
 
         // 8. Level 3: Spliteables
+        // Deduplicar por (Amount + Type + Tags) para que, si hay N propiedades con el mismo RC
+        // spliteable, se use un solo "representante" por grupo. ProcessSplitCandidateAsync ya
+        // itera sobre propertyIdSet para crear el cargo en cada propiedad.
+        var rcSpliteableDeduped = rcSpliteable
+            .GroupBy(rc => (
+                Amount: rc.Amount ?? 0m,
+                rc.Type,
+                Tags: string.Join("|", (rc.MatchTags ?? new List<string>()).OrderBy(t => t))))
+            .Select(g => g.First())
+            .ToList();
+
         await _levelProcessor.ProcessLevelAsync(pendingTxs, new LevelConfig
         {
             BuildCandidatesAsync = plaidTx =>
-                Task.FromResult(_candidateBuilder.BuildVirtualCandidates(rcSpliteable, plaidTx.Date)),
+                Task.FromResult(_candidateBuilder.BuildVirtualCandidates(rcSpliteableDeduped, plaidTx.Date)),
 
-            IsAvailable = (c, _, usedRcIds) =>
-                !c.RecurringChargeId.HasValue || !usedRcIds.Contains(c.RecurringChargeId.Value),
-
-            ReserveCandidate = (c, _, usedRcIds) =>
-            {
-                if (c.RecurringChargeId.HasValue)
-                    usedRcIds.Add(c.RecurringChargeId.Value);
-            },
+            // Los RCs spliteables no se "consumen" — cada Plaid Tx mensual debe poder
+            // disparar el split independientemente. La Plaid Tx queda AutoReconciled tras
+            // ProcessSplitCandidateAsync, por lo que no hay riesgo de reprocessing.
+            IsAvailable = (_, _, _) => true,
+            ReserveCandidate = (_, _, _) => { },
 
             IsSplitLevel = true,
             PropertyIdSet = propertyIdSet
