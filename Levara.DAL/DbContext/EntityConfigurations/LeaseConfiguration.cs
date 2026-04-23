@@ -30,6 +30,11 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                   .HasForeignKey(o => o.TenantId)
                   .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Property(o => o.ExternalId).HasMaxLength(100);
+            builder.HasIndex(o => o.ExternalId)
+                   .IsUnique()
+                   .HasFilter("\"ExternalId\" IS NOT NULL");
+
             builder.ToTable("Leases")
                    .HasQueryFilter(c => !c.Deleted);
         }

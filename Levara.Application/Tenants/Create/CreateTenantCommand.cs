@@ -57,5 +57,8 @@ namespace Levara.Application.Tenants.Create
         [Length(1, 20)]
         public string? PostalCode { get; set; }
 
+        [MaxLength(100)]
+        public string? ExternalId { get; set; }
+
     }
 }

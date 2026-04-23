@@ -5,4 +5,5 @@ namespace Levara.Domain.DAL.Repositories;
 public interface ITenantRepository : IRepository<Tenant>
 {
     IQueryable<Tenant> GetAllWithAddress();
+    Task<Tenant?> GetByExternalIdAsync(string externalId);
 }

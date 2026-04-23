@@ -18,4 +18,10 @@ public class OwnerRepository : Repository<Owner>, IOwnerRepository
     {
         return GetAll().Include(o => o.Address);
     }
+
+    public async Task<Owner?> GetByExternalIdAsync(string externalId)
+    {
+        var query = GetAll().Where(o => o.ExternalId == externalId);
+        return await FirstOrDefaultAsync(query);
+    }
 }

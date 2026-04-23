@@ -21,6 +21,15 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
     }
     public async Task<OperationResult<CreatePropertyCommandResponse>> Handle(CreatePropertyCommand command)
     {
+        // Idempotencia: si ExternalId fue provisto y ya existe, devolvemos el existente
+        if (!string.IsNullOrEmpty(command.ExternalId))
+        {
+            var existing = await _propertyRepository.GetByExternalIdAsync(command.ExternalId);
+            if (existing != null)
+                return OperationResult<CreatePropertyCommandResponse>.SuccessResult(
+                    new CreatePropertyCommandResponse { Id = existing.Id });
+        }
+
         Address newAddress = new()
         {
             Street = command.Street!,
@@ -46,7 +55,8 @@ public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyComman
             AvailableFrom = command.AvailableFrom,
             Img = command.Img,
             Address = newAddress,
-            OwnerBankAccountId = command.OwnerBankAccountId
+            OwnerBankAccountId = command.OwnerBankAccountId,
+            ExternalId = command.ExternalId
         };
 
         await _unitOfWork.ExecuteAsTransactionAsync(async () =>

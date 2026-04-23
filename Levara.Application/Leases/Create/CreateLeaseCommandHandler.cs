@@ -19,6 +19,15 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
     }
     public async Task<OperationResult<CreateLeaseCommandResponse>> Handle(CreateLeaseCommand command)
     {
+        // Idempotencia: si ExternalId fue provisto y ya existe, devolvemos el existente
+        if (!string.IsNullOrEmpty(command.ExternalId))
+        {
+            var existing = await _leaseRepository.GetByExternalIdAsync(command.ExternalId);
+            if (existing != null)
+                return OperationResult<CreateLeaseCommandResponse>.SuccessResult(
+                    new CreateLeaseCommandResponse { Id = existing.Id });
+        }
+
         Lease lease = new()
         {
             OwnerId = command.OwnerId!.Value,
@@ -28,7 +37,8 @@ public class CreateLeaseCommandHandler : ICommandHandler<CreateLeaseCommand, Cre
             DateFrom = command.DateFrom!.Value,
             DateTo = command.DateTo!.Value,
             Amount = command.Price!.Value,
-            Status = command.Status!.Value
+            Status = command.Status!.Value,
+            ExternalId = command.ExternalId
         };
 
         await _leaseRepository.AddAsync(lease);

@@ -29,6 +29,11 @@ namespace Levara.DAL.DbContext.EntityConfigurations
                    .WithMany()
                    .HasForeignKey(o => o.AddressId);
 
+            builder.Property(o => o.ExternalId).HasMaxLength(100);
+            builder.HasIndex(o => o.ExternalId)
+                   .IsUnique()
+                   .HasFilter("\"ExternalId\" IS NOT NULL");
+
             builder.ToTable("Owners")
                    .HasQueryFilter(c => !c.Deleted);
         }

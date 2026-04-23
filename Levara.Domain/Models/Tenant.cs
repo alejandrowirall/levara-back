@@ -38,6 +38,9 @@ public class Tenant : Entity
     public int? ApplicationUserId { get; set; }
     public ApplicationUser? ApplicationUser { get; set; }
 
+    [MaxLength(100)]
+    public string? ExternalId { get; set; }
+
     public string OneLineDescription()
     {
         return $"{Surname} {Name}";

@@ -43,6 +43,9 @@ public class Property : Entity
 
     public OwnerBankAccount? OwnerBankAccount { get; set; }
 
+    [MaxLength(100)]
+    public string? ExternalId { get; set; }
+
     public string OneLineDescription()
     {
         return $"{Number} - {Address.Street}, {Address.City}, {Address.State} {Address.PostalCode}";

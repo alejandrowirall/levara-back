@@ -18,4 +18,10 @@ public class PropertyRepository : Repository<Property>, IPropertyRepository
     {
         return GetAll().Include(o => o.Address).Include(x=>x.OwnerBankAccount);
     }
+
+    public async Task<Property?> GetByExternalIdAsync(string externalId)
+    {
+        var query = GetAll().Where(p => p.ExternalId == externalId);
+        return await FirstOrDefaultAsync(query);
+    }
 }

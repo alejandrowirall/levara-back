@@ -37,4 +37,7 @@ public class Owner : Entity
     public int? ApplicationUserId { get; set; }
     public ApplicationUser? ApplicationUser { get; set; }
 
+    [MaxLength(100)]
+    public string? ExternalId { get; set; }
+
 }

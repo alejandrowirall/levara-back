@@ -36,4 +36,7 @@ public class Lease : Entity
 
     public LeaseStatus Status {  get; set; }
 
+    [MaxLength(100)]
+    public string? ExternalId { get; set; }
+
 }

@@ -28,6 +28,15 @@ public class CreateOwnerCommandHandler : ICommandHandler<CreateOwnerCommand, Cre
     }
     public async Task<OperationResult<CreateOwnerCommandResponse>> Handle(CreateOwnerCommand command)
     {
+        // Idempotencia: si ExternalId fue provisto y ya existe, devolvemos el existente
+        if (!string.IsNullOrEmpty(command.ExternalId))
+        {
+            var existing = await _ownerRepository.GetByExternalIdAsync(command.ExternalId);
+            if (existing != null)
+                return OperationResult<CreateOwnerCommandResponse>.SuccessResult(
+                    new CreateOwnerCommandResponse { Id = existing.Id });
+        }
+
         if (await _ownerRepository.AnyAsync(o => o.IdentificationType == command.IdentificationType && o.Identification == command.Identification))
             return OperationResult<CreateOwnerCommandResponse>.ErrorResult(new ErrorDetails(400, "A owner with the same identification type and number already exists."));
 
@@ -41,6 +50,7 @@ public class CreateOwnerCommandHandler : ICommandHandler<CreateOwnerCommand, Cre
             PersonType = command.PersonType.GetValueOrDefault(),
             MobilePhone = command.MobilePhone!,
             Email = command.Email!,
+            ExternalId = command.ExternalId,
             Address = new()
             {
                 Street = command.Street!,

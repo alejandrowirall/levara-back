@@ -58,5 +58,8 @@ namespace Levara.Application.Properties.Create
         public byte[]? Img { get; set; }
 
         public int? OwnerBankAccountId { get; set; }
+
+        [MaxLength(100)]
+        public string? ExternalId { get; set; }
     }
 }

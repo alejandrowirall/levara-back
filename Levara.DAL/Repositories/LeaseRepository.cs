@@ -20,4 +20,10 @@ public class LeaseRepository : Repository<Lease>, ILeaseRepository
                        .Include(t=>t.Tenant)
                        .Include(p=>p.Property).Include(a=>a.Property.Address);
     }
+
+    public async Task<Lease?> GetByExternalIdAsync(string externalId)
+    {
+        var query = GetAll().Where(l => l.ExternalId == externalId);
+        return await FirstOrDefaultAsync(query);
+    }
 }

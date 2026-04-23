@@ -34,4 +34,7 @@ public class CreateLeaseCommand : Command<CreateLeaseCommandResponse>
     [Required]
     public LeaseStatus? Status { get; set; }
 
+    [MaxLength(100)]
+    public string? ExternalId { get; set; }
+
 }

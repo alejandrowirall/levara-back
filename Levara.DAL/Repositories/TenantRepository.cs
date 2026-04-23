@@ -17,4 +17,10 @@ public class TenantRepository : Repository<Tenant>, ITenantRepository
     {
         return GetAll().Include(o => o.Address);
     }
+
+    public async Task<Tenant?> GetByExternalIdAsync(string externalId)
+    {
+        var query = GetAll().Where(t => t.ExternalId == externalId);
+        return await FirstOrDefaultAsync(query);
+    }
 }
